@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>P3(Logisim)</title>
+    <url>/2025/02/09/P3-Logisim/</url>
+    <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>
+<h2 id="模块需求"><a href="#模块需求" class="headerlink" title="模块需求"></a>模块需求</h2><p>根据工作流程，我们可以看到其实CPU工作总的来说就是一个状态的不断转移，在每个状态中做相应的操作。<br/>进一步看，每个状态完全由PC来决定，所以状态转移其实只涉及PC的算术运算，将PC的算术运算电路与PC寄存器相连就能实现状态转移。<br/>而操作部分其实就完完全全是组合逻辑电路，但操作部分是很庞大的系统，我们需要对其进行细分实现更小的模块。根据工作流程中的操作分析，我们可以看到在这一部分我们应该需要一个解析指令的模块，一个寄存器堆，一个算术运算模块，一个数据存储器。但由于指令的不同，执行的相关操作也不同，例如对于add与sub，一个在算术运算模块中需要执行加法操作，一个需要执行减法操作，因此我们需要相应的控制信号来控制每个操作模块的具体操作（相应的控制信号有寄存器堆写信号，数据存储器写信号，数据存储器读信号，指令相关位数选择信号，算术运算模块操作数选择信号，算术运算模块选项信号，寄存器堆数据输入选择信号），而这些控制信号便是由相应的指令来得出的，因此还需要一个控制器。</p>
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\计组\logism\p3\截屏_2024-10-25_10.28.36.png"
+                      title="lw草图"
+                ></p>
+<h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\计组\logism\p3\截屏_2024-10-25_10.45.06.png"
+                     
+                ></p>
+<h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\计组\logism\p3\cpu.png"
+                     
+                ></p>
+<hr>
+<h2 id="易遗漏或出错的地方"><a href="#易遗漏或出错的地方" class="headerlink" title="易遗漏或出错的地方"></a>易遗漏或出错的地方</h2><ul>
+<li>在对beq指令做考虑的时候，<del>需要对PC与立即数的4倍相加</del>，我们要意识到这时PC首先应该自增再与立即数的4倍相加，这才是正确的操作。</li>
+<li>若当前指令为I型指令，由于算术运算模块对数据位数的限制，<del>我们用一个位拓展器将立即数扩展到32位就行了</del>，对于不同的I型指令，立即数的扩展方式是不同的，例如对于ori要对立即数进行无符号扩展，对于lw要对立即数进行有符号扩展，因此我们需要加一个选择信号去对立即数进行何种扩展方式做出说明。（幸运的是该次CPU设计只涉及ori一个需要对立即数进行无符号扩展的指令，因此将ori信号作为选择信号即可，若后续增加指令，加上一个或电路即可）</li>
+</ul>
+<hr>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>测试中尽可能使每条指令的每种情况都覆盖，并且由最基本的指令开始构造测试（不需要其他指令就可以检验覆盖率的指令为最基本的），因此，从ori与lui开始构造，并通过他们几条指令让寄存器的值不全为0，是得能对后续指令做检验。<br/>根据以上指导思想设计的MIPS测试程序如下：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,0x1011</span><br><span class="line">ori $2,$1,0x0111</span><br><span class="line">ori $11,$0,2</span><br><span class="line">lui $3,0</span><br><span class="line">lui $3,0x0111</span><br><span class="line">lui $3,0xffff</span><br><span class="line">ori $4,$3,0xffff</span><br><span class="line">lui $3,0x0111</span><br><span class="line">add $5,$3,$0</span><br><span class="line">add $5,$4,$0</span><br><span class="line">add $5,$3,$1</span><br><span class="line">add $5,$3,$4</span><br><span class="line">add $5,$4,$4</span><br><span class="line">add $5,$5,$5</span><br><span class="line">loop3:add $11,$11,$4</span><br><span class="line">beq $11,$0,loop4</span><br><span class="line">sub $6,$3,$0</span><br><span class="line">sub $6,$4,$0</span><br><span class="line">sub $6,$3,$1</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">ori $7,$0,1</span><br><span class="line">sub $8,$4,$7</span><br><span class="line">sub $6,$4,$8</span><br><span class="line">sub $6,$6,$6</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">loop3:sw $5,4($1)</span><br><span class="line">sw $6,4($2)</span><br><span class="line">nop</span><br><span class="line">lw $9,4($1)</span><br><span class="line">lw $10,4($2)</span><br><span class="line">beq $5,$10,loop1</span><br><span class="line">beq $5,$9,loop2</span><br><span class="line">loop1:sw $10,8($2)</span><br><span class="line">loop2:beq $6,$10,loop3</span><br><span class="line">loop4:sw $9,12($2)</span><br></pre></td></tr></table></figure></div>
+<h1 id="单周期CPU思考题"><a href="#单周期CPU思考题" class="headerlink" title="单周期CPU思考题"></a>单周期CPU思考题</h1><h2 id="单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"><a href="#单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？" class="headerlink" title="单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"></a>单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？</h2><h3 id="状态转移功能"><a href="#状态转移功能" class="headerlink" title="状态转移功能"></a>状态转移功能</h3><ul>
+<li>NPC模块</li>
+<li><ul>
+<li>NPC模块当中，需要判断下一个PC的值，如果当前指令不是beq指令，则PC相对于当前值加4便得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器，否则在加4的基础上，与当前获得的立即数的4倍相加得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="状态存储功能"><a href="#状态存储功能" class="headerlink" title="状态存储功能"></a>状态存储功能</h3><ul>
+<li>PC存储器</li>
+<li><ul>
+<li>PC存储器存储当前周期PC的值，并以该值指导后续工作电路的所有操作。</li>
+</ul>
+</li>
+<li>GRF模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，GRF根据指令做出相关操作，并决定是否在内部某个存储器存入新的值。</li>
+</ul>
+</li>
+<li>DM模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，DM根据指令做出相关操作，并决定是否在内部某个空间写入新的值。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出"><a href="#模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出" class="headerlink" title="模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出"></a>模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出</h2><ul>
+<li>IM模块为指令存储器，由于在CPU执行操作的时候是从相应的地址空间里读取该周期使用的指令，不会对指令作出修改，也就是针对指令只需实现读的操作，因此使用ROM来实现IM模块是合理的。</li>
+<li>DM模块为数据存储器，是在相应的地址空间存储数据，在指令不同时，可以从相应的地址空间读取数据，也可以将新的数据写入相应的地址空间，因此需要同时做到读和写的操作，因此使用RAM可以实现且最为方便。</li>
+<li>GRF是通用寄存器组，里面放置了三十二个寄存器用于读取和写入数据，且搭建的是单周期CPU，因此在每个周期最多对里面的一个寄存器写入新数据（该新数据将在下一个时钟上沿存入寄存器），因此使用三十二个寄存器的组合来实现GRF是合理的。</li>
+</ul>
+<hr>
+<h2 id="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"><a href="#在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路" class="headerlink" title="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"></a>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路</h2><h3 id="beq指令操作模块"><a href="#beq指令操作模块" class="headerlink" title="beq指令操作模块"></a>beq指令操作模块</h3><ul>
+<li>该模块是实现beq操作的模块，因为针对beq指令，最终所需要操作改变的数并不是寄存器里的值或者内存空间的值，而是PC的值，因此需要将其单独拿出来进行一个操作。该模块由原本的（PC+4）与当前立即数的四倍相加的一个运算电路再加上由beq信号和alu模块判断相等信号的与作为选择信号的多路选择器构成，若当前两个寄存器的值相等且beq信号为1，那么下一个PC将为经过运算电路得到的值，否则就为（PC+4）。</li>
+</ul>
+<hr>
+<h2 id="实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？"><a href="#实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？" class="headerlink" title="实现 nop 空指令，我们并不需要将它加入控制信号真值表，为什么？"></a>实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</h2><ul>
+<li>nop指令为空指令，如若该周期CPU执行该条指令，则不会发生任何操作（除了PC自增）。不将nop指令加入控制信号真值表说明在计算相应控制信号的值时，我们不需考虑nop指令的影响，也即当当前指令为nop时，所有控制信号的值均为0。这时，首先考虑beq指令操作部分，由于此时beq信号为0，因此下一个PC的值只是当前PC的值的简单自增，不受影响；而针对其他指令操作部分，我们关心的仅是这些操作部分会不会在nop指令期间影响寄存器的值或者内存空间里存储的值，这都与写操作有关，但nop指令期间寄存器写信号和数据存储器写信号均为0，因此不会执行写操作，所以二者内部的值都不会改变。</li>
+</ul>
+<hr>
+<h2 id="阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"><a href="#阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。" class="headerlink" title="阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"></a>阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</h2><p>测试样例的数据针对其给出的几条指令（<code>ori</code>, <code>lui</code>, <code>add</code>, <code>sw</code>, <code>lw</code>, <code>beq</code>）已经较强，每个指令的覆盖率都较高，但仍在一些方面存在不足，下面列出不足之处：</p>
+<ul>
+<li><code>add</code>进行了正数和正数，正数和负数，负数和负数的操作，但未进行0与正负数的操作，不能确保CPU是否会在至少有一个数为0时出差错。</li>
+<li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2025/02/08/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a class="link"   href="https://hexo.io/" >Hexo<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>! This is your very first post. Check <a class="link"   href="https://hexo.io/docs/" >documentation<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> for more info. If you get any problems when using Hexo, you can find the answer in <a class="link"   href="https://hexo.io/docs/troubleshooting.html" >troubleshooting<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> or you can ask me on <a class="link"   href="https://github.com/hexojs/hexo/issues" >GitHub<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/writing.html" >Writing<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/server.html" >Server<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/generating.html" >Generating<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a class="link"   href="https://hexo.io/docs/one-command-deployment.html" >Deployment<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+]]></content>
+  </entry>
+</search>

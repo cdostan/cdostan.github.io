@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>P3(Logisim)</title>
+    <title>计算机组成原理P3(Logisim)</title>
     <url>/2025/02/09/P3-Logisim/</url>
     <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
 <h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>

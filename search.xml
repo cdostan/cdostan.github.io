@@ -78,6 +78,12 @@
 <li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>计算机组成原理</category>
+      </categories>
+      <tags>
+        <tag>计算机组成原理</tag>
+      </tags>
   </entry>
   <entry>
     <title>Hello World</title>

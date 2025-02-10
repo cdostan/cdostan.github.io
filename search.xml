@@ -9,19 +9,19 @@
 <h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\计组\logism\p3\截屏_2024-10-25_10.28.36.png"
-                      title="lw草图"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.28.36.png"
+                     
                 ></p>
 <h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\计组\logism\p3\截屏_2024-10-25_10.45.06.png"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
                      
                 ></p>
 <h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\计组\logism\p3\cpu.png"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/cpu.png"
                      
                 ></p>
 <hr>

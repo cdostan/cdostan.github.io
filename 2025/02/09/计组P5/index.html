@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Cdostan">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://cdostan.github.io/2025/02/09/计组p5/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成原理P5">
+<meta property="og:url" content="https://cdostan.github.io/2025/02/09/%E8%AE%A1%E7%BB%84P5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
+<meta property="article:published_time" content="2025-02-09T13:10:31.000Z">
+<meta property="article:modified_time" content="2025-02-10T10:18:44.274Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="计算机组成原理">
+<meta property="article:tag" content="BUAA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdostan.github.io/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/cd-favicon.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/cd-favicon.jpg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/cd-favicon.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            计算机组成原理P5 | CD&#39;s Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"cdostan.github.io","root":"/","language":"en","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["MVP++"]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":true,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":"P.Y.T"},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"CD's Blog","subtitle":{"text":["Learn and Enjoy","The real talent is resolute aspirations"],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":20,"backing_speed":30,"starting_delay":500,"backing_delay":3000,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/cdostan","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags/","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories/","icon":"fa-regular fa-folder"},"Album":{"path":"/masonry/","icon":"fa-solid fa-image"},"Github":{"path":"https://github.com/","icon":"fa-brands fa-github"},"X":{"path":"https://x.com/","icon":"fa-brands fa-twitter"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":"Write something","show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"MMM D, YYYY","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2025/2/8 21:10:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":true};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+	<span class="scroll-progress-bar"></span>
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        P.Y.T
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({ loop: true })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [20, 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                filter: ['blur(5px)', 'blur(0px)'],
+                easing: "easeOutExpo",
+                duration: 1200,
+                delay: (el, i) => 300 + 20 * i,
+            })
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [0, -20],
+                opacity: [1, 0],
+                filter: ['blur(0px)', 'blur(5px)'],
+                easing: "easeInExpo",
+                duration: 1000,
+                delay: (el, i) => 15 * i,
+                complete: function() {
+                    hidePreloader();
+                }
+            }, '-=700');
+
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                CD&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags/"
+                                        >
+                                    <i class="fa-regular fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry/"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    ALBUM
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://github.com/"
+                                        >
+                                    <i class="fa-brands fa-github fa-fw"></i>
+                                    GITHUB
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://x.com/"
+                                        >
+                                    <i class="fa-brands fa-twitter fa-fw"></i>
+                                    X
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags/"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry/"
+                        >
+                            <span>
+                                ALBUM
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://github.com/"
+                        >
+                            <span>
+                                GITHUB
+                            </span>
+                            
+                                <i class="fa-brands fa-github fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://x.com/"
+                        >
+                            <span>
+                                X
+                            </span>
+                            
+                                <i class="fa-brands fa-twitter fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">计算机组成原理P5</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/mantou-avatar.jpg">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">Cdostan</span>
+					
+					<span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">MVP++</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-02-09 21:10:31</span>
+        <span class="mobile">2025-02-09 21:10:31</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-02-10 18:18:44</span>
+            <span class="mobile">2025-02-10 18:18:44</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">计算机组成原理</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/BUAA/">BUAA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.5k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>13 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<h1 id="流水线CPU设计文档"><a href="#流水线CPU设计文档" class="headerlink" title="流水线CPU设计文档"></a>流水线CPU设计文档</h1><p>本次课下要求我们使用<code>verilog</code>来搭建一个支持十条指令的流水线CPU。可以说难度与复杂度较之前几次都上升了不少，但理清思路将CPU运行步骤印在心里后，会发现复杂度也没那么大。</p>
+<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><p>流水线CPU的搭建是在单周期CPU之上的，所以其实其整个数据通路和单周期的CPU没有太大的区别，唯一不同的就是单周期一条指令只需一个周期，而我们搭建的流水线CPU需要5个周期，这也要求我们将数据进行流水，每一级在每个周期将相应数据传到下一级。</p>
+<h3 id="数据通路"><a href="#数据通路" class="headerlink" title="数据通路"></a>数据通路</h3><p>在此首先附上单周期的<code>logisim</code>图与流水线的数据通路图。</p>
+<ul>
+<li>单周期CPU<code>logisim</code>设计图：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
+                      alt="单周期CPUlogisim设计图"
+                ></li>
+<li>流水线数据通路图：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF.png"
+                     
+                ></li>
+</ul>
+<p>可以看到，若暂时不考虑冒险问题，流水线的数据通路和单周期的数据通路几乎一致，其只是将单周期的数据通路分为五个部级:F、D、E、M、W，相关部级所要做的工作根据名字一目了然。而在每个部级之间，我们加上一个流水寄存器用于传递和保存所要用的数据。什么数据需要传呢？这就要看我们下一级的需求了。但是可以知道的是，<code>pc</code>和相应的<code>instructioncode</code>是必须要一直流水下去的，其他按照需求流水即可，例如在E级还需要将ALU产生的结果等流水下去。</p>
+<h3 id="冒险"><a href="#冒险" class="headerlink" title="冒险"></a>冒险</h3><p>数据通路看起来是比较简单的，使用<code>verilog</code>搭建起来可能会有一定的复杂度，但我们整体的思路还算清晰。接下来扰乱我们思绪的就应该是关于冒险的处理了。流水线CPU可能会存在结构冒险、控制冒险和数据冒险三种冒险问题，但由于我们的CPU的im和mem并不是一个存储器，因此结构冒险的问题对于我们来说是不存在的，因此主要考虑剩下两种。</br><br>而我认为最重要的冒险其实是数据冒险，也就是前面一条指令要写入的寄存器和当前指令要读取的寄存器一样时，这时我们读取的数据可能不是真正的数据。其之所以重要是因为几乎每一条指令都会产生这样的冒险，因此首先来考虑它。</p>
+<h4 id="数据冒险"><a href="#数据冒险" class="headerlink" title="数据冒险"></a>数据冒险</h4><p>在这里，我采用的是教程里的A-T法来解决此问题。<br>A指的即是address，T指的即是time，在满足address和time的条件下，我们要做出相应操作来处理冒险。</p>
+<ul>
+<li>A条件：address相同</li>
+<li>T条件</li>
+<li><ul>
+<li>Tuse:指令位于D级的时候，再经过多少个时钟周期就必须要使用相应的数据</li>
+</ul>
+</li>
+<li><ul>
+<li>Tnew:位于某个流水级的某个指令，它经过多少个时钟周期可以算出结果并且存储到流水级寄存器里</br>在满足Tuse &gt; Tnew 且 Tnew &#x3D; 0时，我们可以将相关数据进行转发，而当Tuse &lt; Tnew时，我们需要让指令在D级阻塞一周期。</li>
+</ul>
+</li>
+</ul>
+<p>基本思路便是如此，满足A-T的条件，我们就将相应数据进行转发，不满足我们就阻塞一周期。而相应的数据也不会太复杂，其实我们仔细思考可以发现，有写入功能的指令他们写入的数据无非就是三种，一种是jal，它会写入下一条指令的地址，一种是ALU计算型，他们回写入ALU的计算结果，一种是lw，会写入MEM的读取值，况且再结合上阻塞会发现，如果我们当前指令是与lw产生冒险，那一定会阻塞到lw流水到M级或W级，而那时便可将MEM读取值转发，因此我们注意将下一条指令的地址以及ALU的结果流水下去即可。</br>还有一点需要注意的是对于一些不用相关数据的指令例如jr，我们不应把他们的Tuse设为0，而是应该设为一个尽可能大的数，不然会产生无谓的阻塞，使得运行周期加长。</p>
+<h4 id="控制冒险"><a href="#控制冒险" class="headerlink" title="控制冒险"></a>控制冒险</h4><p>控制冒险即是分支指令（如 beq ）的判断结果会影响接下来指令的执行的情况，例如beq需要判断rs和rt寄存器是否相等，而我们在单周期里是在ALU进行判断的，也就是说现在我们将在E级判断，但等判断结果出来后，F级已经又流水了两条指令了，而这时如果判断的结果是真，将会产生错误，为此，我们将beq的判断移至D级，但我们会发现F级仍会往下流水一条指令，所以这时加上延时槽便可解决这样的问题。</p>
+<h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><p>我们可以采用两种译码方式，一种是分布式译码，一种是集中式译码。集中式译码需要在某一级译码完成后将控制信号流水下去，这样流水的信号数量会很大，因此我采用的是分布式译码的方式，也就是在每一级对在该级的指令译码一次产生我所需要的控制信号即可，因此这样我会将控制器实例化4次。在控制器中除了单周期CPU里对应的控制信号以外，还需要加入转发的控制信号，我对Tuse和Tnew的计算也放进了控制器里。</p>
+<h2 id="模块搭建"><a href="#模块搭建" class="headerlink" title="模块搭建"></a>模块搭建</h2><h3 id="IM"><a href="#IM" class="headerlink" title="IM"></a>IM</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> IM(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">13</span>:<span class="number">2</span>] addr,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] out</span><br><span class="line">    );</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] im [<span class="number">0</span>:<span class="number">4095</span>];</span><br></pre></td></tr></table></figure></div>
+<h3 id="FD-reg"><a href="#FD-reg" class="headerlink" title="FD_reg"></a>FD_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> FD_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">	 <span class="keyword">input</span> reset,</span><br><span class="line">	 <span class="keyword">input</span> fd_enable,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] f_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] f_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] d_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] d_instr</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="GRF"><a href="#GRF" class="headerlink" title="GRF"></a>GRF</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> GRF(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a1,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a2,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a3,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] wd,</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> regwe,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] pc,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rd1,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rd2</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="STALL"><a href="#STALL" class="headerlink" title="STALL"></a>STALL</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> Stall(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] erd,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] mrd,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] wrd,</span><br><span class="line">	 <span class="keyword">input</span> e_regwe,</span><br><span class="line">	 <span class="keyword">input</span> m_regwe,</span><br><span class="line">	 <span class="keyword">input</span> w_regwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] rs_tuse,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] rt_tuse,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] e_tnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] m_tnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] w_tnew,</span><br><span class="line">	 <span class="keyword">output</span> pcstop,</span><br><span class="line">    <span class="keyword">output</span> stall</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="EXT"><a href="#EXT" class="headerlink" title="EXT"></a>EXT</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> EXT(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] opt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">15</span>:<span class="number">0</span>] imm,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] outimm</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="DE-reg"><a href="#DE-reg" class="headerlink" title="DE_reg"></a>DE_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> DE_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">	 <span class="keyword">input</span> clr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_rd1,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_rd2,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_imm,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] d_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_rd1,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_rd2,</span><br><span class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_imm,</span><br><span class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] e_grfwr</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="FWD"><a href="#FWD" class="headerlink" title="FWD"></a>FWD</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> FWD(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] mrd,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] wrd,</span><br><span class="line">    <span class="keyword">input</span> mregwe,</span><br><span class="line">    <span class="keyword">input</span> wregwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] mtnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] wtnew,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rs_slt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rt_slt</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="ALU"><a href="#ALU" class="headerlink" title="ALU"></a>ALU</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> ALU(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] int_a,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] int_b,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] aluopt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] out</span><br><span class="line">    );</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h3 id="EM-reg"><a href="#EM-reg" class="headerlink" title="EM_reg"></a>EM_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> EM_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] e_grfwr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_alu,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_memwd,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] m_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_alu,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_memwd</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="MEM"><a href="#MEM" class="headerlink" title="MEM"></a>MEM</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> MEM(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> memwe,</span><br><span class="line">    <span class="keyword">input</span> loadwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">13</span>:<span class="number">2</span>] addr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] wrdata,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] pc,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rddata</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="MW-reg"><a href="#MW-reg" class="headerlink" title="MW_reg"></a>MW_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> MW_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] m_grfwr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_aludata,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_memdata,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] w_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_aludata,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_memdata</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="CONTROLLER"><a href="#CONTROLLER" class="headerlink" title="CONTROLLER"></a>CONTROLLER</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> CONTROLLER(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">2</span>:<span class="number">0</span>] phase,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] opt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] func,</span><br><span class="line">    <span class="keyword">output</span> regwe,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] regdst,</span><br><span class="line">    <span class="keyword">output</span> aluslt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">4</span>:<span class="number">0</span>] aluopt,</span><br><span class="line">    <span class="keyword">output</span> memwe,</span><br><span class="line">    <span class="keyword">output</span> loadwe,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] memreg,</span><br><span class="line">	 <span class="keyword">output</span> beq1,</span><br><span class="line">	 <span class="keyword">output</span> jal1,</span><br><span class="line">	 <span class="keyword">output</span> jr1,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] D_rs_Tuse,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] D_rt_Tuse,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] Tnew</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
+<li>基本指令测试（不含jal和jr）</li>
+</ol>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>跳转测试</li>
+</ol>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x301c</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">jal </span>loop</span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">4</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">6</span>,$<span class="number">4</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。"><a href="#我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。" class="headerlink" title="我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。"></a>我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。</h2><p>例如以下测试代码：</br></p>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x0011</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">2</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">1</span>,$<span class="number">2</span>,loop</span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br></pre></td></tr></table></figure></div>
+
+<p>可以发现，因为lw的原因，beq在D级需要阻塞两个周期，所以其并非总能提高效率。</p>
+<h2 id="因为延迟槽的存在，对于-jal-等需要将指令地址写入寄存器的指令，要写回-PC-8，请思考为什么这样设计"><a href="#因为延迟槽的存在，对于-jal-等需要将指令地址写入寄存器的指令，要写回-PC-8，请思考为什么这样设计" class="headerlink" title="因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计"></a>因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计</h2><p>由于延时槽指的是跳转指令发生时，无论如何会进行下一条指令，所以对于jal 等需要将指令地址写入寄存器的指令来说，真正的下一条指令应该是当前pc值+8</p>
+<h2 id="我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如-DM-、-ALU-），请思考为什么？"><a href="#我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如-DM-、-ALU-），请思考为什么？" class="headerlink" title="我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？"></a>我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？</h2><p>这样可能会造成数据冲突。例如在E级进行转发的时候，当前的rd1值需要转发alu的计算结果，但这样转发后alu又会进行运算，最后得不到一个稳定的值。</p>
+<h2 id="我们为什么要使用-GPR-内部转发？该如何实现？"><a href="#我们为什么要使用-GPR-内部转发？该如何实现？" class="headerlink" title="我们为什么要使用 GPR 内部转发？该如何实现？"></a>我们为什么要使用 GPR 内部转发？该如何实现？</h2><p>因为在当指令传入W级后，真正要写入GRF的内部发生的时间应为下一个周期，而这时若不进行内部转发，在下一个周期就会损失掉这个要写入GRF的值，导致错误。</br>实现方法：<code>assign rd1 = (a1==a3&amp;&amp;regwe&amp;&amp;a1!=0)?wd:grf[a1];</code></p>
+<h2 id="我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？"><a href="#我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？" class="headerlink" title="我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？"></a>我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？</h2><p>主要的需求者为D级grf的两个读取数据，alu的两个计算数据以及mem的写入数据。可能来源于EM流水寄存器的alu输出，MW流水寄存器的写入数据，以及每个部级的pc值。</p>
+<h2 id="在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。"><a href="#在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。" class="headerlink" title="在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。"></a>在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。</h2><ul>
+<li>对于R型指令，因为其操作是grf[rt]&lt;-ALU(grf[rs],grf[rt]),因此我们其实只需对ALU进行扩展即可，其他例如冒险等都与现有的add与sub指令一样</li>
+<li>对于I型指令，其操作也更多和ALU相关，还有一些可能与MEM相关，因此可能需要在这两个地方进行扩展，同时可能还需要考虑M级对E级转发数据通路的扩展。</li>
+<li>对于跳转型指令，直接跳转应该已经被jr和jal所占，因此其他的挑战指令大多应该都涉及寄存器两个读取值之间的某些运算甚至有涉及MEM的操作，因此还需扩展这两个部件，除此之外，这些跳转可能不能再提前至D级，因此可能要增加阻塞信号，或者如果仍保持再D级判断，那么需要考虑更多的转发信号，对转发数据通路进行一定的修改。</li>
+</ul>
+<h2 id="确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。"><a href="#确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。" class="headerlink" title="确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。"></a>确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。</h2><p>我的译码方式是分布式译码，译码器的架构是控制信号驱动型，先通过操作码和功能码将指令译出，这是与逻辑，再通过或逻辑通过相应的指令或起来来实现控制信号的译出。这样的架构使得代码量易于压缩，但若控制器出错，相应的错误比较难以查出。</p>
+<h2 id="请详细描述你的测试方案及测试数据构造策略"><a href="#请详细描述你的测试方案及测试数据构造策略" class="headerlink" title="请详细描述你的测试方案及测试数据构造策略"></a>请详细描述你的测试方案及测试数据构造策略</h2><ul>
+<li>构造策略：针对基本指令，应尽可能将其每种情况考虑到，同时我们还应将不涉及转发和涉及转发的情况都考虑到，不要有该转发没转发或者不该转发转发了的情况产生。而对于跳转指令，除了跳转本身以外，我们也要考虑冒险的情况，涉及转发和不涉及转发的情况都应被考虑。</li>
+<li>测试方案：以下采用一个帮我查出bug的典型方案</li>
+</ul>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x3018</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">3</span>,$<span class="number">2</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">0</span>,<span class="number">8</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">0</span>,<span class="number">8</span></span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">5</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">4</span>,$<span class="number">6</span>,loop</span><br></pre></td></tr></table></figure></div>
+<p>在本方案里，首先对1号寄存器赋值，再存入内存并将值读出到31号寄存器里，再跳转，因为延时槽的原因，跳转的下一条指令add也会被执行，执行后跳转到下一条add指令，并向下执行，最后在beq指令由于4号寄存器与6号寄存器值相同，会再次跳转，并执行，最终结束程序。在该测试样例中，考虑了很多触及转发的情况，且对于基础指令和跳转指令均有，还考虑了跳转指令为程序最后一条指令（因此帮我查出一些错误）的情况，较为全面。</p>
+
+		</div>
+
+		
+		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+			<div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 计算机组成原理P5</li>
+        <li><strong>Author:</strong> Cdostan</li>
+        <li><strong>Created at
+                :</strong> 2025-02-09 21:10:31</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-02-10 18:18:44
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://cdostan.github.io/2025/02/09/计组P5/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+		</div>
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/">#计算机组成原理</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/BUAA/">#BUAA</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2025/02/09/%E8%AE%A1%E7%BB%84P6/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">计算机组成原理P6</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2025/02/09/%E8%AE%A1%E7%BB%84P4/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item">计算机组成原理P4</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+		<div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+			<div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          reaction: false,
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
+    </script>
+
+
+
+        
+    
+</div>
+
+		</div>
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">计算机组成原理P5</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BFCPU%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3"><span class="nav-number">1.</span> <span class="nav-text">流水线CPU设计文档</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%80%9D%E8%B7%AF"><span class="nav-number">1.1.</span> <span class="nav-text">构建思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF"><span class="nav-number">1.1.1.</span> <span class="nav-text">数据通路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%92%E9%99%A9"><span class="nav-number">1.1.2.</span> <span class="nav-text">冒险</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">控制器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E6%90%AD%E5%BB%BA"><span class="nav-number">1.2.</span> <span class="nav-text">模块搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IM"><span class="nav-number">1.2.1.</span> <span class="nav-text">IM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FD-reg"><span class="nav-number">1.2.2.</span> <span class="nav-text">FD_reg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GRF"><span class="nav-number">1.2.3.</span> <span class="nav-text">GRF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#STALL"><span class="nav-number">1.2.4.</span> <span class="nav-text">STALL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EXT"><span class="nav-number">1.2.5.</span> <span class="nav-text">EXT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DE-reg"><span class="nav-number">1.2.6.</span> <span class="nav-text">DE_reg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FWD"><span class="nav-number">1.2.7.</span> <span class="nav-text">FWD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ALU"><span class="nav-number">1.2.8.</span> <span class="nav-text">ALU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EM-reg"><span class="nav-number">1.2.9.</span> <span class="nav-text">EM_reg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MEM"><span class="nav-number">1.2.10.</span> <span class="nav-text">MEM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MW-reg"><span class="nav-number">1.2.11.</span> <span class="nav-text">MW_reg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CONTROLLER"><span class="nav-number">1.2.12.</span> <span class="nav-text">CONTROLLER</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">测试方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%BB%AC%E4%BD%BF%E7%94%A8%E6%8F%90%E5%89%8D%E5%88%86%E6%94%AF%E5%88%A4%E6%96%AD%E7%9A%84%E6%96%B9%E6%B3%95%E5%B0%BD%E6%97%A9%E4%BA%A7%E7%94%9F%E7%BB%93%E6%9E%9C%E6%9D%A5%E5%87%8F%E5%B0%91%E5%9B%A0%E4%B8%8D%E7%A1%AE%E5%AE%9A%E8%80%8C%E5%B8%A6%E6%9D%A5%E7%9A%84%E5%BC%80%E9%94%80%EF%BC%8C%E4%BD%86%E5%AE%9E%E9%99%85%E4%B8%8A%E8%BF%99%E7%A7%8D%E6%96%B9%E6%B3%95%E5%B9%B6%E9%9D%9E%E6%80%BB%E8%83%BD%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%EF%BC%8C%E8%AF%B7%E4%BB%8E%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%86%92%E9%99%A9%E7%9A%84%E8%A7%92%E5%BA%A6%E6%80%9D%E8%80%83%E5%85%B6%E5%8E%9F%E5%9B%A0%E5%B9%B6%E7%BB%99%E5%87%BA%E4%B8%80%E4%B8%AA%E6%8C%87%E4%BB%A4%E5%BA%8F%E5%88%97%E7%9A%84%E4%BE%8B%E5%AD%90%E3%80%82"><span class="nav-number">3.1.</span> <span class="nav-text">我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%A0%E4%B8%BA%E5%BB%B6%E8%BF%9F%E6%A7%BD%E7%9A%84%E5%AD%98%E5%9C%A8%EF%BC%8C%E5%AF%B9%E4%BA%8E-jal-%E7%AD%89%E9%9C%80%E8%A6%81%E5%B0%86%E6%8C%87%E4%BB%A4%E5%9C%B0%E5%9D%80%E5%86%99%E5%85%A5%E5%AF%84%E5%AD%98%E5%99%A8%E7%9A%84%E6%8C%87%E4%BB%A4%EF%BC%8C%E8%A6%81%E5%86%99%E5%9B%9E-PC-8%EF%BC%8C%E8%AF%B7%E6%80%9D%E8%80%83%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%A0%B7%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.2.</span> <span class="nav-text">因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%BB%AC%E8%A6%81%E6%B1%82%E5%A4%A7%E5%AE%B6%E6%89%80%E6%9C%89%E8%BD%AC%E5%8F%91%E6%95%B0%E6%8D%AE%E9%83%BD%E6%9D%A5%E6%BA%90%E4%BA%8E%E6%B5%81%E6%B0%B4%E5%AF%84%E5%AD%98%E5%99%A8%E8%80%8C%E4%B8%8D%E8%83%BD%E6%98%AF%E5%8A%9F%E8%83%BD%E9%83%A8%E4%BB%B6%EF%BC%88%E5%A6%82-DM-%E3%80%81-ALU-%EF%BC%89%EF%BC%8C%E8%AF%B7%E6%80%9D%E8%80%83%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.3.</span> <span class="nav-text">我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8-GPR-%E5%86%85%E9%83%A8%E8%BD%AC%E5%8F%91%EF%BC%9F%E8%AF%A5%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%EF%BC%9F"><span class="nav-number">3.4.</span> <span class="nav-text">我们为什么要使用 GPR 内部转发？该如何实现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%BB%AC%E8%BD%AC%E5%8F%91%E6%97%B6%E6%95%B0%E6%8D%AE%E7%9A%84%E9%9C%80%E6%B1%82%E8%80%85%E5%92%8C%E4%BE%9B%E7%BB%99%E8%80%85%E5%8F%AF%E8%83%BD%E6%9D%A5%E6%BA%90%E4%BA%8E%E5%93%AA%E4%BA%9B%E4%BD%8D%E7%BD%AE%EF%BC%9F%E5%85%B1%E6%9C%89%E5%93%AA%E4%BA%9B%E8%BD%AC%E5%8F%91%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%EF%BC%9F"><span class="nav-number">3.5.</span> <span class="nav-text">我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E8%AF%BE%E4%B8%8A%E6%B5%8B%E8%AF%95%E6%97%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81%E4%BD%A0%E7%8E%B0%E5%9C%BA%E5%AE%9E%E7%8E%B0%E6%96%B0%E7%9A%84%E6%8C%87%E4%BB%A4%EF%BC%8C%E5%AF%B9%E4%BA%8E%E8%BF%99%E4%BA%9B%E6%96%B0%E7%9A%84%E6%8C%87%E4%BB%A4%EF%BC%8C%E4%BD%A0%E5%8F%AF%E8%83%BD%E9%9C%80%E8%A6%81%E5%9C%A8%E5%8E%9F%E6%9C%89%E7%9A%84%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF%E4%B8%8A%E5%81%9A%E5%93%AA%E4%BA%9B%E6%89%A9%E5%B1%95%E6%88%96%E4%BF%AE%E6%94%B9%EF%BC%9F%E6%8F%90%E7%A4%BA%EF%BC%9A%E4%BD%A0%E5%8F%AF%E4%BB%A5%E5%AF%B9%E6%8C%87%E4%BB%A4%E8%BF%9B%E8%A1%8C%E5%88%86%E7%B1%BB%EF%BC%8C%E6%80%9D%E8%80%83%E6%AF%8F%E4%B8%80%E7%B1%BB%E6%8C%87%E4%BB%A4%E5%8F%AF%E8%83%BD%E4%BF%AE%E6%94%B9%E6%88%96%E6%89%A9%E5%B1%95%E5%93%AA%E4%BA%9B%E4%BD%8D%E7%BD%AE%E3%80%82"><span class="nav-number">3.6.</span> <span class="nav-text">在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E4%BD%A0%E7%9A%84%E8%AF%91%E7%A0%81%E6%96%B9%E5%BC%8F%EF%BC%8C%E7%AE%80%E8%A6%81%E6%8F%8F%E8%BF%B0%E4%BD%A0%E7%9A%84%E8%AF%91%E7%A0%81%E5%99%A8%E6%9E%B6%E6%9E%84%EF%BC%8C%E5%B9%B6%E6%80%9D%E8%80%83%E8%AF%A5%E6%9E%B6%E6%9E%84%E7%9A%84%E4%BC%98%E5%8A%BF%E4%BB%A5%E5%8F%8A%E4%B8%8D%E8%B6%B3%E3%80%82"><span class="nav-number">3.7.</span> <span class="nav-text">确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E8%AF%A6%E7%BB%86%E6%8F%8F%E8%BF%B0%E4%BD%A0%E7%9A%84%E6%B5%8B%E8%AF%95%E6%96%B9%E6%A1%88%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E6%9E%84%E9%80%A0%E7%AD%96%E7%95%A5"><span class="nav-number">3.8.</span> <span class="nav-text">请详细描述你的测试方案及测试数据构造策略</span></a></li></ol></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+            <div class="customize-info my-1">今天吃点什么好？</div>
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Cdostan</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        5 posts in total
+                    </span>
+                    
+                        <span>
+                            14.1k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+		<li class="go-comment">
+			<i class="fa-regular fa-comments"></i>
+		</li>
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="Search..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/build/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/tools/runtime.js"></script>
+
+    
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+    
+<script src="/js/build/libs/minimasonry.min.js"></script>
+
+    
+<script src="/js/build/plugins/masonry.js" type="module"></script>
+
+
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-02-13T12:02:30.000Z">
-<meta property="article:modified_time" content="2025-02-13T13:06:04.125Z">
+<meta property="article:modified_time" content="2025-02-22T10:00:00.956Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="操作系统">
@@ -651,8 +651,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-02-13 21:06:04</span>
-            <span class="mobile">2025-02-13 21:06:04</span>
+            <span class="desktop">2025-02-22 18:00</span>
+            <span class="mobile">2025-02-22 18:00</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -694,12 +694,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.2k Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.6k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>5 Mins</span>
         </span>
     
     
@@ -801,6 +801,41 @@
 <li>-l 统计行数</li>
 <li>-w 统计单词数</li>
 </ul>
+<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo+parameter</span><br></pre></td></tr></table></figure></div>
+<p>echo命令的作用与printf函数类似，将指定内容输出到命令行里面，若内容过于复杂可以加上引号（有空格等特殊符号）</p>
+<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail+(-f -num)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>tail命令的作用是拿来查看文件尾部内容，其中参数部分是文件的路径。选项意义：</p>
+<ul>
+<li>-f 代表持续追踪，可以用来查看文件变换</li>
+<li>-num 指定要查看的行数，若不带此选项，则默认查看尾部十行</li>
+</ul>
+<h1 id="一些特殊的符号"><a href="#一些特殊的符号" class="headerlink" title="一些特殊的符号"></a>一些特殊的符号</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><p>管道符符号：<code>|</code><br>作用：将左边命令的输出作为右边命令的输入，例如：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat a.txt | grep &quot;something&quot;</span><br></pre></td></tr></table></figure></div>
+<h2 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h2><p>被反引号修饰（包围）的字符串会作为命令来执行，例如：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo pwd</span><br></pre></td></tr></table></figure></div>
+<p>输出结果为<code>pwd</code><br>但</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo `pwd`</span><br></pre></td></tr></table></figure></div>
+<p>输出结果则是当前工作目录</p>
+<h2 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h2><p>分为输入重定向符和输出重定向符。</p>
+<ul>
+<li>输入重定向符：<code>&lt;</code>，代表将右边的内容（文件……）作为输入传给左边的指令，例如现在有一个可执行文件out，需要传入一个参数，正常执行可以写为：</li>
+</ul>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./out parameter</span><br></pre></td></tr></table></figure></div>
+<p>但若现在已经有一个文件a.txt含有了我们想要的输入参数，则可以通过输入重定向符来实现：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./out &lt; a.txt</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>输出重定向符：将左边命令的结果写入右边的文件</li>
+<li><ul>
+<li>覆盖输出重定向符：<code>&gt;</code>，左边命令的结果将会覆盖文件原有的内容</li>
+</ul>
+</li>
+<li><ul>
+<li>追加输出重定向符：<code>&gt;&gt;</code>，左边命令的结果将会追加到文件的末尾，文件原有内容仍会保留</li>
+</ul>
+</li>
+</ul>
 
 		</div>
 
@@ -815,7 +850,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-02-13 21:06:04
+                    :</strong> 2025-02-22 18:00:00
             </li>
         
         <li>
@@ -925,7 +960,7 @@
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">Linux学习笔记（基本指令）</div>
-		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Linux目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">路径格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">命令格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">ls命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">cd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">pwd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir%E5%91%BD%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#touch%E5%91%BD%E4%BB%A4"><span class="nav-number">3.5.</span> <span class="nav-text">touch命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cat%E5%91%BD%E4%BB%A4"><span class="nav-number">3.6.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#more%E5%91%BD%E4%BB%A4"><span class="nav-number">3.7.</span> <span class="nav-text">more命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp%E5%91%BD%E4%BB%A4"><span class="nav-number">3.8.</span> <span class="nav-text">cp命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv%E5%91%BD%E4%BB%A4"><span class="nav-number">3.9.</span> <span class="nav-text">mv命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rm%E5%91%BD%E4%BB%A4"><span class="nav-number">3.10.</span> <span class="nav-text">rm命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#which%E5%91%BD%E4%BB%A4"><span class="nav-number">3.11.</span> <span class="nav-text">which命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find%E5%91%BD%E4%BB%A4"><span class="nav-number">3.12.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep%E5%91%BD%E4%BB%A4"><span class="nav-number">3.13.</span> <span class="nav-text">grep命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc%E5%91%BD%E4%BB%A4"><span class="nav-number">3.14.</span> <span class="nav-text">wc命令</span></a></li></ol></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Linux目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">路径格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">命令格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">ls命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">cd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">pwd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir%E5%91%BD%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#touch%E5%91%BD%E4%BB%A4"><span class="nav-number">3.5.</span> <span class="nav-text">touch命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cat%E5%91%BD%E4%BB%A4"><span class="nav-number">3.6.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#more%E5%91%BD%E4%BB%A4"><span class="nav-number">3.7.</span> <span class="nav-text">more命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp%E5%91%BD%E4%BB%A4"><span class="nav-number">3.8.</span> <span class="nav-text">cp命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv%E5%91%BD%E4%BB%A4"><span class="nav-number">3.9.</span> <span class="nav-text">mv命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rm%E5%91%BD%E4%BB%A4"><span class="nav-number">3.10.</span> <span class="nav-text">rm命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#which%E5%91%BD%E4%BB%A4"><span class="nav-number">3.11.</span> <span class="nav-text">which命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find%E5%91%BD%E4%BB%A4"><span class="nav-number">3.12.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep%E5%91%BD%E4%BB%A4"><span class="nav-number">3.13.</span> <span class="nav-text">grep命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc%E5%91%BD%E4%BB%A4"><span class="nav-number">3.14.</span> <span class="nav-text">wc命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#echo%E5%91%BD%E4%BB%A4"><span class="nav-number">3.15.</span> <span class="nav-text">echo命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tail%E5%91%BD%E4%BB%A4"><span class="nav-number">3.16.</span> <span class="nav-text">tail命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E7%9A%84%E7%AC%A6%E5%8F%B7"><span class="nav-number">4.</span> <span class="nav-text">一些特殊的符号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E7%AC%A6"><span class="nav-number">4.1.</span> <span class="nav-text">管道符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%BC%95%E5%8F%B7"><span class="nav-number">4.2.</span> <span class="nav-text">反引号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E7%AC%A6"><span class="nav-number">4.3.</span> <span class="nav-text">重定向符</span></a></li></ol></li></ol>
 
 	</div>
 </div>
@@ -958,7 +993,7 @@
                     </span>
                     
                         <span>
-                            15.3k words in total
+                            15.7k words in total
                         </span>
                     
                 </p>

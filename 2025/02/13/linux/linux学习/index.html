@@ -13,7 +13,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://cdostan.github.io/2025/03/09/vim编辑器/"/>
+    <link rel="canonical" href="https://cdostan.github.io/2025/02/13/linux/linux学习/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -23,14 +23,14 @@
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux中的vim编辑器">
-<meta property="og:url" content="https://cdostan.github.io/2025/03/09/vim%E7%BC%96%E8%BE%91%E5%99%A8/index.html">
+<meta property="og:title" content="Linux学习笔记（指令篇）">
+<meta property="og:url" content="https://cdostan.github.io/2025/02/13/linux/linux%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
-<meta property="article:published_time" content="2025-03-09T14:21:00.000Z">
-<meta property="article:modified_time" content="2025-03-09T14:22:53.620Z">
+<meta property="article:published_time" content="2025-02-13T12:02:30.000Z">
+<meta property="article:modified_time" content="2025-03-02T16:04:34.140Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="操作系统">
@@ -47,7 +47,7 @@
     
     <title>
         
-            linux中的vim编辑器 | CD&#39;s Blog
+            Linux学习笔记（指令篇） | CD&#39;s Blog
         
     </title>
 
@@ -623,7 +623,7 @@
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">linux中的vim编辑器</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Linux学习笔记（指令篇）</h1>
 			</div>
 			
 		</div>
@@ -644,15 +644,15 @@
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2025-03-09 22:21</span>
-        <span class="mobile">2025-03-09 22:21</span>
+        <span class="desktop">2025-02-13 20:02:30</span>
+        <span class="mobile">2025-02-13 20:02:30</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-03-09 22:22:53</span>
-            <span class="mobile">2025-03-09 22:22:53</span>
+            <span class="desktop">2025-03-03 00:04:34</span>
+            <span class="mobile">2025-03-03 00:04:34</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -694,12 +694,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>328 Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.8k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>1 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>10 Mins</span>
         </span>
     
     
@@ -718,48 +718,180 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
-<li>命令模式</li>
-<li>输入模式</li>
-<li>底线命令模式</li>
-</ul>
-<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
-<li>i 在当前光标位置进入输入模式</li>
-<li>a 在当前光标之后进入输入模式</li>
-<li>I 在当前行开头进入输入模式</li>
-<li>A 在当前行结尾进入输入模式</li>
-<li>o 在当前光标下一行进入输入模式</li>
-<li>O 在当前光标上一行进入输入模式</li>
-<li>0 移动光标到当前行的开头</li>
-<li>$ 移动光标到当前行的结尾</li>
-<li>&#x2F; 搜索模式</li>
+			<h1 id="Linux目录结构"><a href="#Linux目录结构" class="headerlink" title="Linux目录结构"></a>Linux目录结构</h1><p>在Linux系统中，目录结构与Windows系统类似，都是树形结构，不同的是，Windows系统可以有多个树，也即其能有很多个磁盘，但Linux系统只有一棵树，即所有文件和目录都放在根目录下。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/linux/linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png"
+                     
+                ><br>Linux系统中，以“&#x2F;”表示顶级目录即根目录，层次关系也通过“&#x2F;”表示</p>
+<h2 id="路径格式"><a href="#路径格式" class="headerlink" title="路径格式"></a>路径格式</h2><ul>
+<li>绝对路径：即以根目录“&#x2F;”开头</li>
+<li>相对路径：相对于当前工作目录下的路径，例如当前工作目录下有一个test目录，则其相对路径就是test</li>
+<li>特殊路径符：</li>
 <li><ul>
-<li>n 向下继续搜索</li>
+<li>.:表示当前目录</li>
 </ul>
 </li>
 <li><ul>
-<li>N 向上继续搜索</li>
+<li>..:表示上一级目录</li>
 </ul>
 </li>
-<li>dd 删除光标所在行内容</li>
-<li>ndd 删除当前光标向下n行</li>
-<li>yy 复制当前行</li>
-<li>nyy 复制当前行和下面n行</li>
-<li>p 粘贴复制内容</li>
-<li>u 撤销修改</li>
-<li><code>ctrl</code>+r 反向撤销修改</li>
-<li>gg 跳到首行</li>
-<li>G 跳到末行</li>
-<li>dG 从当前行开始，向下全部删除</li>
-<li>dgg 从当前行开始，向上全部删除</li>
-<li>d$ 从当前光标开始，删除到本行结尾</li>
-<li>d0 从当前光标开始，删除到本行开头</li>
+<li><ul>
+<li>~:表示HOME目录</li>
 </ul>
-<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
-<li>q！ 强制退出</li>
-<li>set nu 显示行号</li>
-<li>set nonu 不显示行号</li>
-<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
+</li>
+</ul>
+<h1 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h1><p>在Linux系统中，每一条命令都是一个可执行的程序，命令都按以下格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">command</span>+(option)+(parameter)</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>command即指令名，如ls,cd,mkdir……</li>
+<li>option是选项，用来执行一些特定的操作</li>
+<li>parameter是相关参数，通常是文件或目录路径</li>
+</ul>
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span>+(-a -l -h)+(parameter)</span><br></pre></td></tr></table></figure></div>
+<p>ls命令的作用是查看相应的目录里的内容，如果不加参数，则默认展示当前工作目录的内容，加上参数则会展示指定目录的内容。<br>该指令有三个选项可选：</p>
+<ul>
+<li>-a 将该目录里的所有内容展示，包括隐藏内容</li>
+<li>-l 以列表的形式将目录里的内容展示，同时把文件或文件夹所属的用户，用户组，相关权限以及文件大小展示出来</li>
+<li>-h 必须结合-l使用，可以将文件大小显示的更加清晰</li>
+</ul>
+<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>+(parameter)</span><br></pre></td></tr></table></figure></div>
+<p>cd命令的作用是切换工作目录到指定目录，如果不加参数，则默认切换到用户的HOME目录，一般是&#x2F;home&#x2F;username</p>
+<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
+<p>pwd命令的作用是展示当前工作目录</p>
+<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span>+(-p)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>mkdir命令的作用是创建新的目录，参数必填<br>-p选项表示自动创建不存在的父目录，这样可以创建一个当前目录下很多层的目录</p>
+<h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>touch命令的作用是创建一个文件</p>
+<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>cat命令的作用是查看文件内容</p>
+<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">more+parameter</span><br></pre></td></tr></table></figure></div>
+<p>more命令的作用也是查看文件内容，但它会将内容非常多的文件一页一页的展示，通过空格翻页，按q退出查看</p>
+<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span>+(-r)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>cp命令的作用是复制文件或文件夹，需要两个参数，第一个是要复制的文件或文件夹的路径，第二个是要复制去的地方，-r选项在复制文件夹的时候使用</p>
+<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>mv命令的作用是移动文件或文件夹，同样需要两个参数，第一个是要移动的文件或文件夹的路径，第二个是要移动去的地方，若目标不存在，则进行改名</p>
+<h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span>+(-r -f)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>rm命令的作用是删除文件或文件夹，参数必填，数量不限，-r选项表示删除文件夹，-f选项表示强制删除，一般在以root用户登录的情况下使用</p>
+<h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>which命令的作用是查看命令的程序文件存放在哪里，因此这里的参数是命令名</p>
+<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find+起始路径+ -name/-size +<span class="string">&quot;被查找文件名&quot;</span>/<span class="string">&quot;+-NMGB&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>find命令的作用是搜索指定的文件，首先要指定起始路径，再选择是以文件名的方式搜索还是以文件大小的方式搜索，以文件名方式搜索需要填写文件名称，以文件大小搜索需要填写相应的文件大小范围，其中“+”代表大于，“-”代表小于。</p>
+<h2 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep+(-n)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>grep命令的作用是从一个文件中过滤相应的文件行，需要两个参数，第一个是过滤的关键字，第二个是文件的路径，-n选项可选，用来显示匹配的行的行号</p>
+<h2 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">wc</span>+(-c -m -l -w)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>wc命令的作用是统计文件的行数，单词数量，若不加选项，则会以行数、单词数、字节数的顺序显示相关数量，而其可选的四个选项意义如下：</p>
+<ul>
+<li>-c 统计字节数量</li>
+<li>-m 统计字符数量</li>
+<li>-l 统计行数</li>
+<li>-w 统计单词数</li>
+</ul>
+<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>echo命令的作用与printf函数类似，将指定内容输出到命令行里面，若内容过于复杂可以加上引号（有空格等特殊符号）</p>
+<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tail</span>+(-f -num)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>tail命令的作用是拿来查看文件尾部内容，其中参数部分是文件的路径。选项意义：</p>
+<ul>
+<li>-f 代表持续追踪，可以用来查看文件变换</li>
+<li>-num 指定要查看的行数，若不带此选项，则默认查看尾部十行</li>
+</ul>
+<h1 id="进阶命令"><a href="#进阶命令" class="headerlink" title="进阶命令"></a>进阶命令</h1><h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree+(-a -d)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>tree命令的作用和ls命令类似，不过其可以根据文件目录生成文件树，参数部分是文件或目录的路径。<br>选项意义：</p>
+<ul>
+<li>-a 代表列出全部文件</li>
+<li>-d 只列出目录</li>
+</ul>
+<p><strong>tree命令可能需要安装之后才能使用，使用yum&#x2F;apt……安装即可</strong></p>
+<h2 id="diff命令"><a href="#diff命令" class="headerlink" title="diff命令"></a>diff命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff+(-b -B -q)+file1+file2</span><br></pre></td></tr></table></figure></div>
+<p>diff命令用于比较文件的差异。<br>选项意义：</p>
+<ul>
+<li>-b 不检查空白字符的不同</li>
+<li>-B 不检查空行</li>
+<li>-q 仅显示有无差异，不显示详细信息</li>
+</ul>
+<h2 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed+(-n -i -e)+<span class="string">&#x27;command&#x27;</span>+input</span><br></pre></td></tr></table></figure></div>
+<p>sed命令的作用是对文件进行处理，其可以将数据进行替换、删除、新增、选取等。相较于一般的命令形式，sed命令需要一个单独的“command”，而input即是输入文本。<br>“command”内容及作用：</p>
+<ul>
+<li>[行号]+a+[内容] 该命令的作用是在对应行号的行后新增一行，其内容即为所输入的内容。行号可以是数字，代表某一特定的行，也可以是“起始行，终止行”的形式，代表在所属范围的每一行后都新增内容为输入内容的一行，其中$代表最后一行，$-1代表倒数第二行，以此类推，如果忽略行号部分，则代表对每一行都进行操作。（后续command里的行号和该条相同）</li>
+<li>[行号]+c+[内容] 用输入的内容取代相应行</li>
+<li>[行号]+i+[内容] 在当前行的上面插入一行文本，内容为输入内容</li>
+<li>[行号]+d 删除相应行的内容</li>
+<li>[行号]+p 输出选择的内容，通常与-n选项搭配使用</li>
+<li>[行号]+s&#x2F;re&#x2F;string(&#x2F;g) 将re(正则表达式)匹配的内容替换为string，如果没有&#x2F;g，则只会将每一行匹配的第一个字符串替换为string，而加上&#x2F;g则表示在整行范围内替换。</li>
+</ul>
+<p>选项意义：</p>
+<ul>
+<li>-n sed默认将文件所有内容输出，而该选项可以使其只显示经过它处理的内容</li>
+<li>-i 直接修改读取的内容，而不是输出到屏幕，若没有该选项则原文件不会发生变化</li>
+<li>-e 允许在同一行里执行执行多条命令</li>
+</ul>
+<h2 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk+(-F -v -f)+<span class="string">&#x27;模式 &#123;操作&#125;&#x27;</span>+输入文件</span><br></pre></td></tr></table></figure></div>
+<p>awk是一个功能十分强大的文本处理工具，其可以进行数据提取、文本处理、模式匹配、报告生成和自动化任务等。要能够运用awk命令，我们要知道以下内容：</p>
+<ol>
+<li>模式是什么：模式可以是一个正则表达式，也可以是一个条件表达式，表示对于匹配或满足条件的行再进行操作，其也可以是空，这时就代表对所有行进行操作。还有一些特殊模式，比如<code>BEGIN</code>和<code>END</code>，后面紧跟一个操作，分别代表在处理任何输入之前执行的操作，处理完所有输入后执行的操作。</li>
+<li>字段和变量：awk需要用内置的变量来处理文本数据，有以下常用的变量:</li>
+</ol>
+<ul>
+<li>$0：表示当前行的完整内容</li>
+<li>$1，$2，$3……：表示当前行的第几个字段（由字段分隔符分隔）</li>
+<li>NF：表示当前行的字段数</li>
+<li>NR：表示当前行的行号</li>
+<li>FS：字段分隔符，默认为空格或制表符</li>
+<li>OFS：输出字段分隔符，默认为空格</li>
+<li>ORS：输出记录分隔符，默认为换行符</li>
+</ul>
+<p>选项意义：</p>
+<ul>
+<li>-F 指定字段分隔符</li>
+<li>-v 设置变量的初始值</li>
+<li>-f 从文件中读取awk脚本</li>
+</ul>
+<p>举些例子更好理解  </p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print&#125;&#x27;</span> filename <span class="comment">#打印文件中所有行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> filename <span class="comment">#打印文件中的第二列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/pattern/ &#123;print&#125;&#x27;</span> filename <span class="comment">#打印包含特定模式的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;NR&gt;=3 &amp;&amp; NR&lt;=5 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第三行到第五行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;&#123;print $1,$3&#125;&#x27;</span> filename <span class="comment">#以逗号为字段分隔符，再打印第一列和第三列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;$2&gt;10 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第二列大于10的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/ERROR/ &#123;count++&#125; END &#123;print &quot;Error count:&quot;, count&#125;&#x27;</span> log.txt</span><br><span class="line"><span class="comment">#统计文件里有ERROR的行数</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;BEGIN &#123;OFS=&quot;:&quot;&#125; &#123;print $1, $2, $3&#125;&#x27;</span> data.txt</span><br><span class="line"><span class="comment">#以逗号为字段分隔符，并以分号为输出字段分隔符将第一、二、三列输出</span></span><br></pre></td></tr></table></figure></div>
+<h1 id="一些特殊的符号"><a href="#一些特殊的符号" class="headerlink" title="一些特殊的符号"></a>一些特殊的符号</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><p>管道符符号：<code>|</code><br>作用：将左边命令的输出作为右边命令的输入，例如：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> a.txt | grep <span class="string">&quot;something&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h2><p>被反引号修饰（包围）的字符串会作为命令来执行，例如：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
+<p>输出结果为<code>pwd</code><br>但</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> `<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure></div>
+<p>输出结果则是当前工作目录</p>
+<h2 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h2><p>分为输入重定向符和输出重定向符。</p>
+<ul>
+<li>输入重定向符：<code>&lt;</code>，代表将右边的内容（文件……）作为输入传给左边的指令，例如现在有一个可执行文件out，需要传入一个参数，正常执行可以写为：</li>
+</ul>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./out parameter</span><br></pre></td></tr></table></figure></div>
+<p>但若现在已经有一个文件a.txt含有了我们想要的输入参数，则可以通过输入重定向符来实现：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./out &lt; a.txt</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>输出重定向符：将左边命令的结果写入右边的文件</li>
+<li><ul>
+<li>覆盖输出重定向符：<code>&gt;</code>，左边命令的结果将会覆盖文件原有的内容</li>
+</ul>
+</li>
+<li><ul>
+<li>追加输出重定向符：<code>&gt;&gt;</code>，左边命令的结果将会追加到文件的末尾，文件原有内容仍会保留</li>
+</ul>
+</li>
 </ul>
 
 		</div>
@@ -768,18 +900,18 @@
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> linux中的vim编辑器</li>
+        <li><strong>Title:</strong> Linux学习笔记（指令篇）</li>
         <li><strong>Author:</strong> Cdostan</li>
         <li><strong>Created at
-                :</strong> 2025-03-09 22:21:00</li>
+                :</strong> 2025-02-13 20:02:30</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-03-09 22:22:53
+                    :</strong> 2025-03-03 00:04:34
             </li>
         
         <li>
-            <strong>Link:</strong> https://cdostan.github.io/2025/03/09/vim编辑器/
+            <strong>Link:</strong> https://cdostan.github.io/2025/02/13/linux/linux学习/
         </li>
         <li>
             <strong>
@@ -817,12 +949,12 @@
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
 			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="prev" rel="prev" href="/2025/03/12/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">
+				<a class="prev" rel="prev" href="/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/">
 					<span class="left arrow-icon flex justify-center items-center">
 						<i class="fa-solid fa-chevron-left"></i>
 					</span>
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">BUAA操作系统lab0</span>
+						<span class="post-nav-title-item">linux中的vim编辑器</span>
 						<span class="post-nav-item">Prev posts</span>
 					</span>
 				</a>
@@ -830,9 +962,9 @@
 			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2025/02/13/linux%E5%AD%A6%E4%B9%A0/">
+				<a class="next" rel="next" href="/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P7/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">Linux学习笔记（指令篇）</span>
+						<span class="post-nav-title-item">计算机组成原理P7</span>
 						<span class="post-nav-item">Next posts</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -896,8 +1028,8 @@
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
-		<div class="page-title">linux中的vim编辑器</div>
-		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vim%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">vim编辑器的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">1.1.</span> <span class="nav-text">命令模式下的快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%95%E7%BA%BF%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8B%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">底线命令模式下命令</span></a></li></ol></li></ol>
+		<div class="page-title">Linux学习笔记（指令篇）</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Linux目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">路径格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">命令格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">ls命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">cd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">pwd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir%E5%91%BD%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#touch%E5%91%BD%E4%BB%A4"><span class="nav-number">3.5.</span> <span class="nav-text">touch命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cat%E5%91%BD%E4%BB%A4"><span class="nav-number">3.6.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#more%E5%91%BD%E4%BB%A4"><span class="nav-number">3.7.</span> <span class="nav-text">more命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp%E5%91%BD%E4%BB%A4"><span class="nav-number">3.8.</span> <span class="nav-text">cp命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv%E5%91%BD%E4%BB%A4"><span class="nav-number">3.9.</span> <span class="nav-text">mv命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rm%E5%91%BD%E4%BB%A4"><span class="nav-number">3.10.</span> <span class="nav-text">rm命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#which%E5%91%BD%E4%BB%A4"><span class="nav-number">3.11.</span> <span class="nav-text">which命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find%E5%91%BD%E4%BB%A4"><span class="nav-number">3.12.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep%E5%91%BD%E4%BB%A4"><span class="nav-number">3.13.</span> <span class="nav-text">grep命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc%E5%91%BD%E4%BB%A4"><span class="nav-number">3.14.</span> <span class="nav-text">wc命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#echo%E5%91%BD%E4%BB%A4"><span class="nav-number">3.15.</span> <span class="nav-text">echo命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tail%E5%91%BD%E4%BB%A4"><span class="nav-number">3.16.</span> <span class="nav-text">tail命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">进阶命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tree%E5%91%BD%E4%BB%A4"><span class="nav-number">4.1.</span> <span class="nav-text">tree命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff%E5%91%BD%E4%BB%A4"><span class="nav-number">4.2.</span> <span class="nav-text">diff命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed%E5%91%BD%E4%BB%A4"><span class="nav-number">4.3.</span> <span class="nav-text">sed命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#awk%E5%91%BD%E4%BB%A4"><span class="nav-number">4.4.</span> <span class="nav-text">awk命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E7%9A%84%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.</span> <span class="nav-text">一些特殊的符号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E7%AC%A6"><span class="nav-number">5.1.</span> <span class="nav-text">管道符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%BC%95%E5%8F%B7"><span class="nav-number">5.2.</span> <span class="nav-text">反引号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E7%AC%A6"><span class="nav-number">5.3.</span> <span class="nav-text">重定向符</span></a></li></ol></li></ol>
 
 	</div>
 </div>

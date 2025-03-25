@@ -1,399 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>BUAA操作系统lab0</title>
-    <url>/2025/03/12/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
-    <content><![CDATA[<h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><strong>执行命令cat Modified.txt，观察其结果和第一次执行 add 命令之前的 status 是否一样，并思考原因</strong><br>这两次的结果是不一样的。第一次将<code>git status</code>命令结果重定向至<code>Untracked.txt</code>文件中时，这时的<code>README.txt</code>文件还未被放入暂存区，所以状态是未被追踪，而第二次进行类似操作时，<code>README.txt</code>文件已被放入暂存区，所以状态应该是已修改。</p>
-<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><strong>仔细看看0.10，思考一下箭头中的add thefile、stage thefile和commit分别对应的是Git里的哪些命令呢</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/pic10.png"
-                     
-                >  </p>
-<ol>
-<li><strong>Untracked-&gt;Staged</strong>：<code>git add</code>  </li>
-<li><strong>Modified-&gt;Staged</strong>：<code>git add</code>  </li>
-<li><strong>Staged-&gt;Modified</strong>：<code>git commit</code></li>
-</ol>
-<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><strong>代码文件print.c被错误删除时，应当使用什么命令将其恢复</strong><br><code>git checkout -- print.c </code><br><strong>代码文件print.c被错误删除后，执行了gitrmprint.c命令，此时应当使用什么命令将其恢复</strong><br><code>git reset HEAD print.c</code><br><code>git checkout -- print.c</code><br><strong>无关文件hello.txt已经被添加到暂存区时，如何在不删除此文件的前提下将其移出暂存区？</strong><br><code>git rm --cached hello.txt</code>  </p>
-<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><p><strong>reset命令作用</strong><br>在循着Thinking中给出的步骤练习后，可以发现reset命令的作用就是让我们回退或恢复版本的，可以通过<code>git reset --hard HEAD~(num)</code>来进行版本回退，也可以直接用版本的哈希值（通过<code>git log</code>查询）来指定移动到哪个版本。</p>
-<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><p><strong>执行如下命令, 并查看结果</strong><br><strong>· echo first</strong><br>result:first(stdout)<br><strong>· echo second &gt; output.txt</strong><br>result:second(output.txt)<br><strong>• echo third &gt; output.txt</strong><br>result:third(otuput.txt)<br><strong>• echo forth &gt;&gt; output.txt</strong><br>result:<br>third<br>forth(output.txt)</p>
-<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><p><strong>使用你知道的方法（包括重定向）创建下图内容的文件（文件命名为test），将创建该文件的命令序列保存在command文件中，并将test文件作为批处理文件运行，将运行结果输出至result文件中。给出command文件和result文件的内容，并对最后的结果进行解释说明（可以从test文件的内容入手）. 具体实现的过程中思考下列问题: echo<br> echo Shell Start 与 echo <code>echo Shell Start</code> 效果是否有区别; echo echo $c&gt;file1与echo <code>echo $c&gt;file1</code> 效果是否有区别</strong><br>command文件内容如图所示：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/command.png"
-                     
-                ><br>result文件内容如图所示：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/result.png"
-                     
-                ><br><strong>解释</strong><br>根据test文件内容，不难发现执行test文件其实就是为变量<code>a</code>，<code>b</code>，<code>c</code>赋值后再把它们的值存到不同的文件中，之后再根据顺序把相应值依次添加到file4文件中，最后输出到result文件中，因此result文件最终结果为”3 2 1”</p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人认为本次实验的难点还是在于接触新的东西时各方面的不熟悉导致的，具体来说有如下：  </p>
-<ul>
-<li>git的使用，对工作区、暂存区、分支、状态、版本的体会  </li>
-<li>linux相关指令的使用，对指令和选项功能的体会（尤其是多功能指令例如sed、awk等命令）  </li>
-<li>shell脚本的编写，对语法的把握和认识</li>
-</ul>
-<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>lab0的实验难度并不算大，主要是让我们熟悉实验环境，回顾之前的知识，了解操作系统基本的概念和原理，并了解linux的基本使用。本人之前并未太多使用linux系统，只能使用一些基本的指令，对于编写脚本，编译代码等并不熟悉，在做完本次实验后，我才终于理解为什么都说程序员要想提高自己的效率一定要会使用linux，当使用多了linux系统后，也会真正体会到cli的魅力，可能它没有gui那么简单，那么直观，但是通过输入指令来控制电脑让我们进一步能体会到人与机器的交互。</p>
-]]></content>
-      <categories>
-        <category>OS(BUAA)</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux学习笔记（指令篇）</title>
-    <url>/2025/02/13/linux%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1 id="Linux目录结构"><a href="#Linux目录结构" class="headerlink" title="Linux目录结构"></a>Linux目录结构</h1><p>在Linux系统中，目录结构与Windows系统类似，都是树形结构，不同的是，Windows系统可以有多个树，也即其能有很多个磁盘，但Linux系统只有一棵树，即所有文件和目录都放在根目录下。<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/linux/linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png"
-                     
-                ><br>Linux系统中，以“&#x2F;”表示顶级目录即根目录，层次关系也通过“&#x2F;”表示</p>
-<h2 id="路径格式"><a href="#路径格式" class="headerlink" title="路径格式"></a>路径格式</h2><ul>
-<li>绝对路径：即以根目录“&#x2F;”开头</li>
-<li>相对路径：相对于当前工作目录下的路径，例如当前工作目录下有一个test目录，则其相对路径就是test</li>
-<li>特殊路径符：</li>
-<li><ul>
-<li>.:表示当前目录</li>
-</ul>
-</li>
-<li><ul>
-<li>..:表示上一级目录</li>
-</ul>
-</li>
-<li><ul>
-<li>~:表示HOME目录</li>
-</ul>
-</li>
-</ul>
-<h1 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h1><p>在Linux系统中，每一条命令都是一个可执行的程序，命令都按以下格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span>+(option)+(parameter)</span><br></pre></td></tr></table></figure></div>
-<ul>
-<li>command即指令名，如ls,cd,mkdir……</li>
-<li>option是选项，用来执行一些特定的操作</li>
-<li>parameter是相关参数，通常是文件或目录路径</li>
-</ul>
-<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span>+(-a -l -h)+(parameter)</span><br></pre></td></tr></table></figure></div>
-<p>ls命令的作用是查看相应的目录里的内容，如果不加参数，则默认展示当前工作目录的内容，加上参数则会展示指定目录的内容。<br>该指令有三个选项可选：</p>
-<ul>
-<li>-a 将该目录里的所有内容展示，包括隐藏内容</li>
-<li>-l 以列表的形式将目录里的内容展示，同时把文件或文件夹所属的用户，用户组，相关权限以及文件大小展示出来</li>
-<li>-h 必须结合-l使用，可以将文件大小显示的更加清晰</li>
-</ul>
-<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span>+(parameter)</span><br></pre></td></tr></table></figure></div>
-<p>cd命令的作用是切换工作目录到指定目录，如果不加参数，则默认切换到用户的HOME目录，一般是&#x2F;home&#x2F;username</p>
-<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
-<p>pwd命令的作用是展示当前工作目录</p>
-<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span>+(-p)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>mkdir命令的作用是创建新的目录，参数必填<br>-p选项表示自动创建不存在的父目录，这样可以创建一个当前目录下很多层的目录</p>
-<h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">touch</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>touch命令的作用是创建一个文件</p>
-<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>cat命令的作用是查看文件内容</p>
-<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">more+parameter</span><br></pre></td></tr></table></figure></div>
-<p>more命令的作用也是查看文件内容，但它会将内容非常多的文件一页一页的展示，通过空格翻页，按q退出查看</p>
-<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cp</span>+(-r)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>cp命令的作用是复制文件或文件夹，需要两个参数，第一个是要复制的文件或文件夹的路径，第二个是要复制去的地方，-r选项在复制文件夹的时候使用</p>
-<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mv</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>mv命令的作用是移动文件或文件夹，同样需要两个参数，第一个是要移动的文件或文件夹的路径，第二个是要移动去的地方，若目标不存在，则进行改名</p>
-<h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">rm</span>+(-r -f)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>rm命令的作用是删除文件或文件夹，参数必填，数量不限，-r选项表示删除文件夹，-f选项表示强制删除，一般在以root用户登录的情况下使用</p>
-<h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>which命令的作用是查看命令的程序文件存放在哪里，因此这里的参数是命令名</p>
-<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">find+起始路径+ -name/-size +<span class="string">&quot;被查找文件名&quot;</span>/<span class="string">&quot;+-NMGB&quot;</span></span><br></pre></td></tr></table></figure></div>
-<p>find命令的作用是搜索指定的文件，首先要指定起始路径，再选择是以文件名的方式搜索还是以文件大小的方式搜索，以文件名方式搜索需要填写文件名称，以文件大小搜索需要填写相应的文件大小范围，其中“+”代表大于，“-”代表小于。</p>
-<h2 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">grep+(-n)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>grep命令的作用是从一个文件中过滤相应的文件行，需要两个参数，第一个是过滤的关键字，第二个是文件的路径，-n选项可选，用来显示匹配的行的行号</p>
-<h2 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">wc</span>+(-c -m -l -w)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>wc命令的作用是统计文件的行数，单词数量，若不加选项，则会以行数、单词数、字节数的顺序显示相关数量，而其可选的四个选项意义如下：</p>
-<ul>
-<li>-c 统计字节数量</li>
-<li>-m 统计字符数量</li>
-<li>-l 统计行数</li>
-<li>-w 统计单词数</li>
-</ul>
-<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>echo命令的作用与printf函数类似，将指定内容输出到命令行里面，若内容过于复杂可以加上引号（有空格等特殊符号）</p>
-<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">tail</span>+(-f -num)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>tail命令的作用是拿来查看文件尾部内容，其中参数部分是文件的路径。选项意义：</p>
-<ul>
-<li>-f 代表持续追踪，可以用来查看文件变换</li>
-<li>-num 指定要查看的行数，若不带此选项，则默认查看尾部十行</li>
-</ul>
-<h1 id="进阶命令"><a href="#进阶命令" class="headerlink" title="进阶命令"></a>进阶命令</h1><h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">tree+(-a -d)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>tree命令的作用和ls命令类似，不过其可以根据文件目录生成文件树，参数部分是文件或目录的路径。<br>选项意义：</p>
-<ul>
-<li>-a 代表列出全部文件</li>
-<li>-d 只列出目录</li>
-</ul>
-<p><strong>tree命令可能需要安装之后才能使用，使用yum&#x2F;apt……安装即可</strong></p>
-<h2 id="diff命令"><a href="#diff命令" class="headerlink" title="diff命令"></a>diff命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">diff+(-b -B -q)+file1+file2</span><br></pre></td></tr></table></figure></div>
-<p>diff命令用于比较文件的差异。<br>选项意义：</p>
-<ul>
-<li>-b 不检查空白字符的不同</li>
-<li>-B 不检查空行</li>
-<li>-q 仅显示有无差异，不显示详细信息</li>
-</ul>
-<h2 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">sed+(-n -i -e)+<span class="string">&#x27;command&#x27;</span>+input</span><br></pre></td></tr></table></figure></div>
-<p>sed命令的作用是对文件进行处理，其可以将数据进行替换、删除、新增、选取等。相较于一般的命令形式，sed命令需要一个单独的“command”，而input即是输入文本。<br>“command”内容及作用：</p>
-<ul>
-<li>[行号]+a+[内容] 该命令的作用是在对应行号的行后新增一行，其内容即为所输入的内容。行号可以是数字，代表某一特定的行，也可以是“起始行，终止行”的形式，代表在所属范围的每一行后都新增内容为输入内容的一行，其中$代表最后一行，$-1代表倒数第二行，以此类推，如果忽略行号部分，则代表对每一行都进行操作。（后续command里的行号和该条相同）</li>
-<li>[行号]+c+[内容] 用输入的内容取代相应行</li>
-<li>[行号]+i+[内容] 在当前行的上面插入一行文本，内容为输入内容</li>
-<li>[行号]+d 删除相应行的内容</li>
-<li>[行号]+p 输出选择的内容，通常与-n选项搭配使用</li>
-<li>[行号]+s&#x2F;re&#x2F;string(&#x2F;g) 将re(正则表达式)匹配的内容替换为string，如果没有&#x2F;g，则只会将每一行匹配的第一个字符串替换为string，而加上&#x2F;g则表示在整行范围内替换。</li>
-</ul>
-<p>选项意义：</p>
-<ul>
-<li>-n sed默认将文件所有内容输出，而该选项可以使其只显示经过它处理的内容</li>
-<li>-i 直接修改读取的内容，而不是输出到屏幕，若没有该选项则原文件不会发生变化</li>
-<li>-e 允许在同一行里执行执行多条命令</li>
-</ul>
-<h2 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">awk+(-F -v -f)+<span class="string">&#x27;模式 &#123;操作&#125;&#x27;</span>+输入文件</span><br></pre></td></tr></table></figure></div>
-<p>awk是一个功能十分强大的文本处理工具，其可以进行数据提取、文本处理、模式匹配、报告生成和自动化任务等。要能够运用awk命令，我们要知道以下内容：</p>
-<ol>
-<li>模式是什么：模式可以是一个正则表达式，也可以是一个条件表达式，表示对于匹配或满足条件的行再进行操作，其也可以是空，这时就代表对所有行进行操作。还有一些特殊模式，比如<code>BEGIN</code>和<code>END</code>，后面紧跟一个操作，分别代表在处理任何输入之前执行的操作，处理完所有输入后执行的操作。</li>
-<li>字段和变量：awk需要用内置的变量来处理文本数据，有以下常用的变量:</li>
-</ol>
-<ul>
-<li>$0：表示当前行的完整内容</li>
-<li>$1，$2，$3……：表示当前行的第几个字段（由字段分隔符分隔）</li>
-<li>NF：表示当前行的字段数</li>
-<li>NR：表示当前行的行号</li>
-<li>FS：字段分隔符，默认为空格或制表符</li>
-<li>OFS：输出字段分隔符，默认为空格</li>
-<li>ORS：输出记录分隔符，默认为换行符</li>
-</ul>
-<p>选项意义：</p>
-<ul>
-<li>-F 指定字段分隔符</li>
-<li>-v 设置变量的初始值</li>
-<li>-f 从文件中读取awk脚本</li>
-</ul>
-<p>举些例子更好理解  </p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print&#125;&#x27;</span> filename <span class="comment">#打印文件中所有行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> filename <span class="comment">#打印文件中的第二列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/pattern/ &#123;print&#125;&#x27;</span> filename <span class="comment">#打印包含特定模式的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;NR&gt;=3 &amp;&amp; NR&lt;=5 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第三行到第五行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;&#123;print $1,$3&#125;&#x27;</span> filename <span class="comment">#以逗号为字段分隔符，再打印第一列和第三列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;$2&gt;10 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第二列大于10的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/ERROR/ &#123;count++&#125; END &#123;print &quot;Error count:&quot;, count&#125;&#x27;</span> log.txt</span><br><span class="line"><span class="comment">#统计文件里有ERROR的行数</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;BEGIN &#123;OFS=&quot;:&quot;&#125; &#123;print $1, $2, $3&#125;&#x27;</span> data.txt</span><br><span class="line"><span class="comment">#以逗号为字段分隔符，并以分号为输出字段分隔符将第一、二、三列输出</span></span><br></pre></td></tr></table></figure></div>
-<h1 id="一些特殊的符号"><a href="#一些特殊的符号" class="headerlink" title="一些特殊的符号"></a>一些特殊的符号</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><p>管道符符号：<code>|</code><br>作用：将左边命令的输出作为右边命令的输入，例如：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> a.txt | grep <span class="string">&quot;something&quot;</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h2><p>被反引号修饰（包围）的字符串会作为命令来执行，例如：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
-<p>输出结果为<code>pwd</code><br>但</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> `<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure></div>
-<p>输出结果则是当前工作目录</p>
-<h2 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h2><p>分为输入重定向符和输出重定向符。</p>
-<ul>
-<li>输入重定向符：<code>&lt;</code>，代表将右边的内容（文件……）作为输入传给左边的指令，例如现在有一个可执行文件out，需要传入一个参数，正常执行可以写为：</li>
-</ul>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out parameter</span><br></pre></td></tr></table></figure></div>
-<p>但若现在已经有一个文件a.txt含有了我们想要的输入参数，则可以通过输入重定向符来实现：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out &lt; a.txt</span><br></pre></td></tr></table></figure></div>
-<ul>
-<li>输出重定向符：将左边命令的结果写入右边的文件</li>
-<li><ul>
-<li>覆盖输出重定向符：<code>&gt;</code>，左边命令的结果将会覆盖文件原有的内容</li>
-</ul>
-</li>
-<li><ul>
-<li>追加输出重定向符：<code>&gt;&gt;</code>，左边命令的结果将会追加到文件的末尾，文件原有内容仍会保留</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux操作系统</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>linux中的vim编辑器</title>
-    <url>/2025/03/09/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
-    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
-<li>命令模式</li>
-<li>输入模式</li>
-<li>底线命令模式</li>
-</ul>
-<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
-<li>i 在当前光标位置进入输入模式</li>
-<li>a 在当前光标之后进入输入模式</li>
-<li>I 在当前行开头进入输入模式</li>
-<li>A 在当前行结尾进入输入模式</li>
-<li>o 在当前光标下一行进入输入模式</li>
-<li>O 在当前光标上一行进入输入模式</li>
-<li>0 移动光标到当前行的开头</li>
-<li>$ 移动光标到当前行的结尾</li>
-<li>&#x2F; 搜索模式</li>
-<li><ul>
-<li>n 向下继续搜索</li>
-</ul>
-</li>
-<li><ul>
-<li>N 向上继续搜索</li>
-</ul>
-</li>
-<li>dd 删除光标所在行内容</li>
-<li>ndd 删除当前光标向下n行</li>
-<li>yy 复制当前行</li>
-<li>nyy 复制当前行和下面n行</li>
-<li>p 粘贴复制内容</li>
-<li>u 撤销修改</li>
-<li><code>ctrl</code>+r 反向撤销修改</li>
-<li>gg 跳到首行</li>
-<li>G 跳到末行</li>
-<li>dG 从当前行开始，向下全部删除</li>
-<li>dgg 从当前行开始，向上全部删除</li>
-<li>d$ 从当前光标开始，删除到本行结尾</li>
-<li>d0 从当前光标开始，删除到本行开头</li>
-</ul>
-<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
-<li>q！ 强制退出</li>
-<li>set nu 显示行号</li>
-<li>set nonu 不显示行号</li>
-<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux操作系统</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2025_BUAA_OO_Unit1</title>
-    <url>/2025/03/20/oo_Unit1/</url>
-    <content><![CDATA[<p>第一单元的OO在紧张与刺激中落下帷幕，回顾第一单元，真是应了吴际老师上学期在OOPre的最后讲的“一定要好好理解文法分析，不然下学期的第一单元会很痛苦”。整个Unit1就是围绕文法展开，前前后后就是让我们展开表达式，在我们做好这个蛋糕后，再用化简优化去为它裱花点缀。</p>
-<h1 id="第一次作业"><a href="#第一次作业" class="headerlink" title="第一次作业"></a>第一次作业</h1><p>第一次作业较为简单，因为出现的是最基本的常数与幂函数，且括号最多一层，因此实现起来并不困难，只要把词法和语法分析做好，并能实现展开，第一次作业就基本成型。</p>
-<h2 id="1-1程序架构"><a href="#1-1程序架构" class="headerlink" title="1.1程序架构"></a>1.1程序架构</h2><p><strong>UML类图</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw1uml.png"
-                     
-                ></p>
-<p><strong>功能说明</strong>  </p>
-<ul>
-<li><code>Main</code>：程序入口  </li>
-<li><code>Expr</code>、<code>Term</code>、<code>Variable</code>、<code>Const</code>：表达式的基础结构  </li>
-<li><code>Symbol</code>：进行符号处理，保证每一个项的内部不会出现正号或负号，且每个项前最多有一个符号  </li>
-<li><code>Lexer</code>、<code>Parser</code>：进行语法和词法分析  </li>
-<li><code>Poly</code>：把项规范为形如$a*x^b$的形式  </li>
-<li><code>Operate</code>：进行运算，包括表达式幂的展开和项的展开</li>
-</ul>
-<h2 id="1-2代码复杂度"><a href="#1-2代码复杂度" class="headerlink" title="1.2代码复杂度"></a>1.2代码复杂度</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw1_complexity.png"
-                     
-                ></p>
-<p>可以发现，其中<code>Operate</code>、<code>Parse</code>、<code>Symbol</code>的复杂度比较高，其中有最大的圈复杂度甚至达到了16。我在这几个类里面所用到的条件判断语句和循环语句以及函数调用比较多，因此造成了圈复杂度比较高。拿<code>Symbol</code>类举例来说，虽然里面就只有两个方法，但针对字符串化简符号的逻辑是十分复杂的，尤其是项里面有子表达式的时候，因此涉及到很多判断和循环，造成圈复杂度很高，而这样的结果也说明了我这个类以及里面的方法其实可迭代性和可维护性并不好，因为化简符号不像词法和语法分析那样只需要添加一定的<code>token</code>和语法解析就能实现，在后续表达式逐渐变复杂后整个符号化简的逻辑可能会大变，而且遇上多层嵌套括号后复杂度可能会很高。<br>进一步分析，其实会发现我第一次作业的架构和”高内聚低耦合”似乎不太沾边，我后续作业是经过了重构的，因此后续完全没有回顾过我第一次作业。而当我重看第一次作业代码时，抛开写得shi不shi不谈，其实理解还是很容易理解的，但是整体看下来其实好像并不是在写面向对象编程，而是在写面向过程编程，很多类的耦合度过高，而有的类该自己干的事没干，不该自己干的事干了，甚至有的类干的事和自己的名字都没啥关系，比如<code>Poly</code>。因此我在第一次作业结束后发现在这样的代码基础上迭代十分困难，决定重构。</p>
-<h2 id="1-3化简优化"><a href="#1-3化简优化" class="headerlink" title="1.3化简优化"></a>1.3化简优化</h2><p>能把整个表达式正确展开后，其实本次作业的正确性我们已经可以拿满分了，但是估计性能分会很低。针对第一次作业，其实化简无非就是同类项合并，而判断能否合并也十分简单，只需要判断展开后每个项中x的幂次相等，最后如果所有项里有符号为正的，我们把它放在第一位即可省掉一个负号带来的长度，实现了这些后，性能分也可以拿满。</p>
-<h2 id="1-4Bug分析"><a href="#1-4Bug分析" class="headerlink" title="1.4Bug分析"></a>1.4Bug分析</h2><p>在互测中我出现了一些WA的错误，而错误的来源全是来自于我<code>Symbol</code>类中化简符号的方法出错（其逻辑真的很复杂，bug修复时针对这一个bug都修改了好多行），具体出错的原因是我把项里子表达式的第一个符号拿出来给了整个项，若是正号还好，但如果是负号，我整个项的符号就会取一次反，最终造成错误。<br>事实上，这个符号简化的方法完全是自己折腾自己，因为完全可以把符号放在语法分析里面一起，这样在解析完一个项时，它的符号也被解析出来，因此我后续重构的时候完全摒弃了这一个类。</p>
-<h1 id="第二次作业"><a href="#第二次作业" class="headerlink" title="第二次作业"></a>第二次作业</h1><p>第二次作业较第一次作业的难度陡然上升，引进了三角函数和自定义递推函数，同时允许多层嵌套括号。主要有两个难点，一个是如何正确地算出递推函数并代入表达式，一个是针对有三角函数的化简可以怎么做，如果不考虑化简的话，只需要解决递推函数这个难点即可。由于第一次作业我的架构很烂，层次不清淅，因此第二次作业我首先进行了重构。</p>
-<h2 id="2-1程序架构"><a href="#2-1程序架构" class="headerlink" title="2.1程序架构"></a>2.1程序架构</h2><p><strong>UML类图</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw2uml.png"
-                     
-                ></p>
-<p><strong>功能说明</strong>  </p>
-<ul>
-<li><code>Main</code>：程序入口  </li>
-<li><code>Expr</code>、<code>Term</code>、<code>Var</code>、<code>Const</code>、<code>Trigono</code>、<code>Func</code>：表达式基础结构  </li>
-<li><code>Parser</code>、<code>Lexer</code>、<code>Token</code>：语法词法解析  </li>
-<li><code>Funcrecur</code>：递推函数相关信息获取，并计算递推函数  </li>
-<li><code>Regofunc</code>：存储被解析出来的递推函数规则，供整个项目使用  </li>
-<li><code>Bracketdeal</code>：括号处理，寻找匹配的括号  </li>
-<li><code>Equandneg</code>：判断表达式是否相等或相反  </li>
-<li><code>Unit</code>：最终表达式中的最小单元，形如$a*x^b*{sin()}*{cos()}$  </li>
-<li><code>Entirety</code>：由多个<code>Unit</code>组成的单元</li>
-</ul>
-<h2 id="2-2代码复杂度"><a href="#2-2代码复杂度" class="headerlink" title="2.2代码复杂度"></a>2.2代码复杂度</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw2_complexity.png"
-                     
-                >  </p>
-<p>在本次项目中，复杂度较高的类为<code>Unit</code>类，其他类复杂度稍高可能是因为条件和循环语句稍多，例如<code>Lexer</code>和<code>Bracketdeal</code>类，而<code>Unit</code>类的复杂度是由于其里面涉及了很多方法，包括运算以及判断是否能合并等方法，涉及到的方法调用也较多，因此呈现了一个较高的复杂度。<br>此次作业我尽可能的满足了“高内聚低耦合”的想法，尽可能把一些特定功能单独抽象出来成为一个类，同时尽量保证每个类只干和自己相关的事。<br><strong>重构前后对比</strong><br>先抛开本次作业新增的三角函数和自定义递推函数不谈，其他部分我也和第一次作业有很大的差别。<br>首先是词法和语法解析，本次我单独设计了一个<code>Token</code>类，里面包含了字符串所包含的可能的字符类型，而不是在<code>Lexer</code>类里对字符串中的一个一个字符分析，整理来说可理解性和可迭代行会增强不少。我还在<code>Parser</code>里面确定了项的符号，直接抛弃了第一次作业中的<code>Symbol</code>类，且这样的方法几乎适用于往后的所有迭代。<br>其次我设计了<code>Entirety</code>和<code>Unit</code>两个类，最终的计算化简全都在这两个类中进行，而所有的表达式基础结构如<code>Expr</code>等都有一个<code>toentirety()</code>方法，方便之后的展开和化简，这样，我的代码在面临下一次迭代时可能不需要修改很多东西就能适应情景，而层次化的结构也比较清晰，这提高了整个项目的可维护性。  </p>
-<h2 id="2-3难点分析及化简优化"><a href="#2-3难点分析及化简优化" class="headerlink" title="2.3难点分析及化简优化"></a>2.3难点分析及化简优化</h2><p>前面说到，本次作业主要有两个难点：一个是递推函数，一个是三角函数化简。<br>针对递推函数，我采用字符串替换的方式，替换字符串后再对得到的字符串进行一次词法和语法分析并重复操作直到表达式中不含形如“f{n}(x)”的东西。要注意的是，在这里替换字符串的时候为了以防错误替换，可以先把第i个参数用“ai”替换，全部替换完后再将对应的“ai”替换为真正的实参。<br>针对三角函数的化简，其实难点在于如何判断两个三角函数是否相等或相反，也即三角函数内部的表达式是否相等或相反。这里我采用了一种比较暴力的方式，我想既然我们整个程序做的事情就是化简表达式，那我要判断两个表达式是否相等或相反，是不是可以把这两个表达式相加或相减，然后调用我们的程序其是否为零即可。综合各方面性能考虑，我最后决定只做$cos(0)$，$sin(0)$，以及正弦函数二倍角的化简，而且为了使最终结果的长度尽可能短，我在最后一步才化简，以防出现本来可以合并但在中途化简之后无法合并的情况。</p>
-<h2 id="2-4Bug分析"><a href="#2-4Bug分析" class="headerlink" title="2.4Bug分析"></a>2.4Bug分析</h2><p>此次作业我出现了一些RE和WA以及TLE的错误，其中最主要的是RE错误。RE的原因是我在做递推函数的字符串替换时，忽略了可能嵌套函数的情况，导致我用的逗号下标可能是嵌套函数里面的逗号的下标，最后替换的结果自然是错的，为了修复这个问题，我添加在<code>Token</code>中添加了<code>Comma</code>这一类型，这样就能准确找到属于当前函数的逗号的下标，从而正确替换字符串。<br>而WA和TLE的原因在于我在合并<code>Unit</code>时，需要判断每个三角函数的幂次是否相同，但是我的三角函数在<code>Unit</code>里是用<code>HashMap&lt;String,Integer&gt;</code>来存储的，我对幂次相同的判断直接用的等号，但是显然等号是不适用于<code>Integer</code>内容的判相等的，因此出现了错误，当我改用<code>Objects</code>的<code>equals</code>方法后，问题就解决了。</p>
-<h1 id="第三次作业"><a href="#第三次作业" class="headerlink" title="第三次作业"></a>第三次作业</h1><p>第三次作业添加了自定义普通函数和求导算子，自定义普通函数的处理方法和第二次作业的自定义递归函数的处理方法类似，而且更简单，只不过由于函数内部的因子多了自定义普通函数这一选项，在替换和解析的时候可能需要做一点改动。而关于求导，可以采用自下而上的方法，先把最基本的常数、幂函数和三角函数的求导实现，再实现项和表达式的求导。本次作业我在第二次作业的基础上进行迭代，添加的东西并不多。</p>
-<h2 id="3-1程序架构"><a href="#3-1程序架构" class="headerlink" title="3.1程序架构"></a>3.1程序架构</h2><p><strong>UML类图</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw3uml.png"
-                     
-                ></p>
-<p><strong>新增类和功能</strong>  </p>
-<ul>
-<li><code>Deriva</code>：表达式基础结构，表示求导因子  </li>
-<li><code>Funcparse</code>：新增解析普通函数功能  </li>
-<li><code>Regofunc</code>：新增了两个普通函数规则  </li>
-<li><code>Parser</code>、<code>Lexer</code>、<code>Token</code>：新增对求导因子的解析  </li>
-<li>各类基本单元：新增求导方法</li>
-</ul>
-<h2 id="3-2代码复杂度"><a href="#3-2代码复杂度" class="headerlink" title="3.2代码复杂度"></a>3.2代码复杂度</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw3_complexity.png"
-                     
-                >  </p>
-<p>本次复杂度和第二次作业类似，但由于我把读取字符串的行为放在了<code>Main</code>类里，而这次读取字符串需要读普通函数，因此条件语句可能会增多导致圈复杂度上升。  </p>
-<h2 id="3-3Bug分析"><a href="#3-3Bug分析" class="headerlink" title="3.3Bug分析"></a>3.3Bug分析</h2><p>本次作业出现了几个RE和WA的错误。<br>RE是由于我在解析递推函数的参数个数时是靠逗号的个数来计算的，而此次由于递推函数表达式中可以出现普通函数，因此很可能会得到错误的参数个数，针对此问题，我修改为只考察等号左边是否有逗号，这样可以省去对右边复杂的分析。<br>WA是由于我没有考虑嵌套求导的情况，我原本的<code>Deriva</code>类里有<code>toentirety()</code>和<code>derivative()</code>两个方法，但这两个方法完全一样，因此导致嵌套求导时该求多次导的表达式只求了一次导，针对该问题，我将<code>toentirety()</code>方法修改为求一次导，将<code>derivative()</code>方法修改为求两次导，这样便修复了Bug。  </p>
-<h1 id="TalkTalk"><a href="#TalkTalk" class="headerlink" title="TalkTalk"></a>TalkTalk</h1><h2 id="程序优缺点总结"><a href="#程序优缺点总结" class="headerlink" title="程序优缺点总结"></a>程序优缺点总结</h2><p>仅针对重构后的程序<del>（重构前的优点是写的复杂）</del><br><strong>优点</strong>  </p>
-<ul>
-<li>层次清晰，类设计合理，基本实现高内聚低耦合<br><strong>缺点</strong>  </li>
-<li>代码写得有点冗余，有些部分可能出现了好几次，这时应该把其抽象出来为一个方法  </li>
-<li>性能不够优秀，判断表达式相等或相反直接调用整个程序，在嵌套很深的时候会出现卡死的情况，可以考虑重写<code>Hashcode</code>来方便判断。  </li>
-<li>没有实现更多的化简，这也主要是由于对判相等方法性能的担忧，若修改了判想等方法，应该能实现更多化简。</li>
-</ul>
-<h2 id="新迭代情景"><a href="#新迭代情景" class="headerlink" title="新迭代情景"></a>新迭代情景</h2><p>加入指数函数以及自定义分段函数（自定义分段函数内的因子一定满足在某个确切的自定义分段范围内，比如常数因子，或者表达式（x^2-2*x+1）等）。<br>针对指数函数较好实现，只需新增一个实现接口<code>Factor</code>的类，并添加相应的求导方法即可。<br>针对自定义分段函数需要新增解析其规则的方法，而若因子为常数，只需判断其在哪个区间并代入相应函数表达式即可，对于含变量x的因子，可以新建一个方法（直接代值计算）去判断其属于哪个区间并代入相应函数表达式。</p>
-<h2 id="hack策略"><a href="#hack策略" class="headerlink" title="hack策略"></a>hack策略</h2><p>这三次作业我都成功hack到了同组的同学，尤其是第三次几乎将组内所有同学都hack了。我的策略是自己设计数据，从简到繁，且充分考虑特殊情况。拿第三次作业来说，我先从sin(0)^0这样的数据开始，然后到求导，设计一些可能出错的求导样例去验证大家求导实现得是否正确，最后添加函数，并考虑嵌套函数等情况。<br>可能有部分同学用评测机来进行该环节，单个人认为数据生成器生成的数据随机性过大，可能运行很久也没有一个有效的样例能hack到别人，而如果是生成了十分复杂的数据造成同学tle，可能又会因为cost的限制而难以修改到能够成功提交。但我认为评测机针对我们自己查自己bug还是十分重要的，尤其是针对强测环节，而这也是由于其生成数据的随机性。</p>
-<h2 id="心得体会"><a href="#心得体会" class="headerlink" title="心得体会"></a>心得体会</h2><h3 id="1）Don’t-be-reckless"><a href="#1）Don’t-be-reckless" class="headerlink" title="1）Don’t be reckless"></a>1）Don’t be reckless</h3><p>我们拿到一个题目或需求或想法时，不应一上来就开始敲键盘，这样不计后果的行为是十分危险的，没有经过充分的理解题目和需求，没有经过充分地思考，没有经过精心的设计，直接开始写代码很大概率会写出一个极难阅读、理解和维护的怪物。而且当你写着写着很可能会想起好像还有什么需求没有实现又去修改前面写的代码，这样在写的过程中不断的进行修改，写程序本应是伴随修改的，但应该是负责任的修改，是考虑过的修改，而不是鲁莽随意的修改。因此，在开始写代码前，我们应该对自己的架构有了一个基本的认知，清楚的知道自己的需求和目标是什么，这样才能使整个项目层次尽可能清晰，方便后续的阅读和修改。</p>
-<h3 id="2）be-careful"><a href="#2）be-careful" class="headerlink" title="2）be careful"></a>2）be careful</h3><p>谨慎，既在思考设计时，又在编写程序时，还在回顾修改时。在三个阶段都应该保持谨慎的心态，尽可能去思考自己的程序是否有什么情况还没有考虑到。我便是忽略了这一点，写完总是认为自己的程序应该没什么问题了，导致强测常会出一些错误。</p>
-<h3 id="3）be-stern"><a href="#3）be-stern" class="headerlink" title="3）be stern"></a>3）be stern</h3><p>这里我不是想说要认真的意思，我想表达的是我们可以逼自己一把，对自己狠一点，做一做自己不敢做的事，比如化简，做一做自己不想做的事，比如重构，做了这些，我们首先会积累到相应的经验，总结到方法，能提升自己的能力，还能进一步加强对架构的理解，理解某种架构为什么好，好在哪里。</p>
-<h3 id="4）be-exclamatory"><a href="#4）be-exclamatory" class="headerlink" title="4）be exclamatory"></a>4）be exclamatory</h3><p>我在unit1经常感叹别人的设计，别人的方法，无论是上机时发给我们的代码还是往届学长学姐们的博客以及讨论区大家的发言，很多时候我都会想起余华老师评价莫言老师那句“**，写得那么NB”。学习和运用这些架构和方法，也让我的代码变得更好，让我逐渐学会怎么写出优雅的代码，让我对项目设计有了更深的理解。我认为本单元交给我最重要的方法就是递归下降法，但交给我最重要的思想是架构设计的思想，什么时候该分一个类，类里面该干什么事，怎样降低不同类之间的耦合度，怎样让项目可维护性更好……我在上学期除了OOPre之外还修了一门java程序设计，那门课的大作业是写一个工作量为2000行代码的程序，我写了一个创新的贪吃蛇游戏，其实逻辑并不复杂，但由于涉及到GUI，仍然需要去设计相应的架构，设计不同的面板之间的关系，不同类中的方法，但我当时写得很杂，几乎是每一关就对应了一个类，很多该抽象出来的方法和类并没有抽象出来，导致代码非常冗余，且修改起来也十分头疼，当时为了修复一个很奇怪的bug找了半天对应的代码位置。所以我是真的十分感叹unit1中遇到的所有设计和方法，当然不能止于感叹，还要运用，化为自己的东西才有用。</p>
-<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><ul>
-<li>可以介绍一下项目的度量分析的各类指标分别是什么，是由什么决定的，反映了什么，这样能让大家在度量分析后对自己的代码有更深的认识</li>
-<li>提交hack数据时可以返回给我们提交数据的相应cost，这样在cost超过限制时，我们能够好地去修改数据</li>
-</ul>
-]]></content>
-      <categories>
-        <category>面向对象(BUAA)</category>
-      </categories>
-      <tags>
-        <tag>面向对象</tag>
-        <tag>BUAA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>计算机组成原理P3(Logisim)</title>
     <url>/2025/02/09/%E8%AE%A1%E7%BB%84/P3-Logisim/</url>
     <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
@@ -475,95 +82,53 @@
         <category>计算机组成原理</category>
       </categories>
       <tags>
-        <tag>BUAA</tag>
         <tag>计算机组成原理</tag>
+        <tag>BUAA</tag>
       </tags>
   </entry>
   <entry>
-    <title>计算机组成原理P5</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P5/</url>
-    <content><![CDATA[<h1 id="流水线CPU设计文档"><a href="#流水线CPU设计文档" class="headerlink" title="流水线CPU设计文档"></a>流水线CPU设计文档</h1><p>本次课下要求我们使用<code>verilog</code>来搭建一个支持十条指令的流水线CPU。可以说难度与复杂度较之前几次都上升了不少，但理清思路将CPU运行步骤印在心里后，会发现复杂度也没那么大。</p>
-<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><p>流水线CPU的搭建是在单周期CPU之上的，所以其实其整个数据通路和单周期的CPU没有太大的区别，唯一不同的就是单周期一条指令只需一个周期，而我们搭建的流水线CPU需要5个周期，这也要求我们将数据进行流水，每一级在每个周期将相应数据传到下一级。</p>
-<h3 id="数据通路"><a href="#数据通路" class="headerlink" title="数据通路"></a>数据通路</h3><p>在此首先附上单周期的<code>logisim</code>图与流水线的数据通路图。</p>
-<ul>
-<li>单周期CPU<code>logisim</code>设计图：<br><img  
+    <title>BUAA操作系统lab0</title>
+    <url>/2025/03/12/OS/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><strong>执行命令cat Modified.txt，观察其结果和第一次执行 add 命令之前的 status 是否一样，并思考原因</strong><br>这两次的结果是不一样的。第一次将<code>git status</code>命令结果重定向至<code>Untracked.txt</code>文件中时，这时的<code>README.txt</code>文件还未被放入暂存区，所以状态是未被追踪，而第二次进行类似操作时，<code>README.txt</code>文件已被放入暂存区，所以状态应该是已修改。</p>
+<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><strong>仔细看看0.10，思考一下箭头中的add thefile、stage thefile和commit分别对应的是Git里的哪些命令呢</strong><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
-                      alt="单周期CPUlogisim设计图"
-                ></li>
-<li>流水线数据通路图：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF.png"
+                     data-src="/img/os/lab0/pic10.png"
                      
-                ></li>
-</ul>
-<p>可以看到，若暂时不考虑冒险问题，流水线的数据通路和单周期的数据通路几乎一致，其只是将单周期的数据通路分为五个部级:F、D、E、M、W，相关部级所要做的工作根据名字一目了然。而在每个部级之间，我们加上一个流水寄存器用于传递和保存所要用的数据。什么数据需要传呢？这就要看我们下一级的需求了。但是可以知道的是，<code>pc</code>和相应的<code>instructioncode</code>是必须要一直流水下去的，其他按照需求流水即可，例如在E级还需要将ALU产生的结果等流水下去。</p>
-<h3 id="冒险"><a href="#冒险" class="headerlink" title="冒险"></a>冒险</h3><p>数据通路看起来是比较简单的，使用<code>verilog</code>搭建起来可能会有一定的复杂度，但我们整体的思路还算清晰。接下来扰乱我们思绪的就应该是关于冒险的处理了。流水线CPU可能会存在结构冒险、控制冒险和数据冒险三种冒险问题，但由于我们的CPU的im和mem并不是一个存储器，因此结构冒险的问题对于我们来说是不存在的，因此主要考虑剩下两种。</br><br>而我认为最重要的冒险其实是数据冒险，也就是前面一条指令要写入的寄存器和当前指令要读取的寄存器一样时，这时我们读取的数据可能不是真正的数据。其之所以重要是因为几乎每一条指令都会产生这样的冒险，因此首先来考虑它。</p>
-<h4 id="数据冒险"><a href="#数据冒险" class="headerlink" title="数据冒险"></a>数据冒险</h4><p>在这里，我采用的是教程里的A-T法来解决此问题。<br>A指的即是address，T指的即是time，在满足address和time的条件下，我们要做出相应操作来处理冒险。</p>
+                >  </p>
+<ol>
+<li><strong>Untracked-&gt;Staged</strong>：<code>git add</code>  </li>
+<li><strong>Modified-&gt;Staged</strong>：<code>git add</code>  </li>
+<li><strong>Staged-&gt;Modified</strong>：<code>git commit</code></li>
+</ol>
+<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><strong>代码文件print.c被错误删除时，应当使用什么命令将其恢复</strong><br><code>git checkout -- print.c </code><br><strong>代码文件print.c被错误删除后，执行了gitrmprint.c命令，此时应当使用什么命令将其恢复</strong><br><code>git reset HEAD print.c</code><br><code>git checkout -- print.c</code><br><strong>无关文件hello.txt已经被添加到暂存区时，如何在不删除此文件的前提下将其移出暂存区？</strong><br><code>git rm --cached hello.txt</code>  </p>
+<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><p><strong>reset命令作用</strong><br>在循着Thinking中给出的步骤练习后，可以发现reset命令的作用就是让我们回退或恢复版本的，可以通过<code>git reset --hard HEAD~(num)</code>来进行版本回退，也可以直接用版本的哈希值（通过<code>git log</code>查询）来指定移动到哪个版本。</p>
+<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><p><strong>执行如下命令, 并查看结果</strong><br><strong>· echo first</strong><br>result:first(stdout)<br><strong>· echo second &gt; output.txt</strong><br>result:second(output.txt)<br><strong>• echo third &gt; output.txt</strong><br>result:third(otuput.txt)<br><strong>• echo forth &gt;&gt; output.txt</strong><br>result:<br>third<br>forth(output.txt)</p>
+<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><p><strong>使用你知道的方法（包括重定向）创建下图内容的文件（文件命名为test），将创建该文件的命令序列保存在command文件中，并将test文件作为批处理文件运行，将运行结果输出至result文件中。给出command文件和result文件的内容，并对最后的结果进行解释说明（可以从test文件的内容入手）. 具体实现的过程中思考下列问题: echo<br> echo Shell Start 与 echo <code>echo Shell Start</code> 效果是否有区别; echo echo $c&gt;file1与echo <code>echo $c&gt;file1</code> 效果是否有区别</strong><br>command文件内容如图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab0/command.png"
+                     
+                ><br>result文件内容如图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab0/result.png"
+                     
+                ><br><strong>解释</strong><br>根据test文件内容，不难发现执行test文件其实就是为变量<code>a</code>，<code>b</code>，<code>c</code>赋值后再把它们的值存到不同的文件中，之后再根据顺序把相应值依次添加到file4文件中，最后输出到result文件中，因此result文件最终结果为”3 2 1”</p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人认为本次实验的难点还是在于接触新的东西时各方面的不熟悉导致的，具体来说有如下：  </p>
 <ul>
-<li>A条件：address相同</li>
-<li>T条件</li>
-<li><ul>
-<li>Tuse:指令位于D级的时候，再经过多少个时钟周期就必须要使用相应的数据</li>
+<li>git的使用，对工作区、暂存区、分支、状态、版本的体会  </li>
+<li>linux相关指令的使用，对指令和选项功能的体会（尤其是多功能指令例如sed、awk等命令）  </li>
+<li>shell脚本的编写，对语法的把握和认识</li>
 </ul>
-</li>
-<li><ul>
-<li>Tnew:位于某个流水级的某个指令，它经过多少个时钟周期可以算出结果并且存储到流水级寄存器里</br>在满足Tuse &gt; Tnew 且 Tnew &#x3D; 0时，我们可以将相关数据进行转发，而当Tuse &lt; Tnew时，我们需要让指令在D级阻塞一周期。</li>
-</ul>
-</li>
-</ul>
-<p>基本思路便是如此，满足A-T的条件，我们就将相应数据进行转发，不满足我们就阻塞一周期。而相应的数据也不会太复杂，其实我们仔细思考可以发现，有写入功能的指令他们写入的数据无非就是三种，一种是jal，它会写入下一条指令的地址，一种是ALU计算型，他们回写入ALU的计算结果，一种是lw，会写入MEM的读取值，况且再结合上阻塞会发现，如果我们当前指令是与lw产生冒险，那一定会阻塞到lw流水到M级或W级，而那时便可将MEM读取值转发，因此我们注意将下一条指令的地址以及ALU的结果流水下去即可。</br>还有一点需要注意的是对于一些不用相关数据的指令例如jr，我们不应把他们的Tuse设为0，而是应该设为一个尽可能大的数，不然会产生无谓的阻塞，使得运行周期加长。</p>
-<h4 id="控制冒险"><a href="#控制冒险" class="headerlink" title="控制冒险"></a>控制冒险</h4><p>控制冒险即是分支指令（如 beq ）的判断结果会影响接下来指令的执行的情况，例如beq需要判断rs和rt寄存器是否相等，而我们在单周期里是在ALU进行判断的，也就是说现在我们将在E级判断，但等判断结果出来后，F级已经又流水了两条指令了，而这时如果判断的结果是真，将会产生错误，为此，我们将beq的判断移至D级，但我们会发现F级仍会往下流水一条指令，所以这时加上延时槽便可解决这样的问题。</p>
-<h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><p>我们可以采用两种译码方式，一种是分布式译码，一种是集中式译码。集中式译码需要在某一级译码完成后将控制信号流水下去，这样流水的信号数量会很大，因此我采用的是分布式译码的方式，也就是在每一级对在该级的指令译码一次产生我所需要的控制信号即可，因此这样我会将控制器实例化4次。在控制器中除了单周期CPU里对应的控制信号以外，还需要加入转发的控制信号，我对Tuse和Tnew的计算也放进了控制器里。</p>
-<h2 id="模块搭建"><a href="#模块搭建" class="headerlink" title="模块搭建"></a>模块搭建</h2><h3 id="IM"><a href="#IM" class="headerlink" title="IM"></a>IM</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> IM(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">13</span>:<span class="number">2</span>] addr,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] out</span><br><span class="line">    );</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] im [<span class="number">0</span>:<span class="number">4095</span>];</span><br></pre></td></tr></table></figure></div>
-<h3 id="FD-reg"><a href="#FD-reg" class="headerlink" title="FD_reg"></a>FD_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> FD_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">	 <span class="keyword">input</span> reset,</span><br><span class="line">	 <span class="keyword">input</span> fd_enable,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] f_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] f_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] d_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] d_instr</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="GRF"><a href="#GRF" class="headerlink" title="GRF"></a>GRF</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> GRF(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a1,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a2,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a3,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] wd,</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> regwe,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] pc,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rd1,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rd2</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="STALL"><a href="#STALL" class="headerlink" title="STALL"></a>STALL</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> Stall(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] erd,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] mrd,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] wrd,</span><br><span class="line">	 <span class="keyword">input</span> e_regwe,</span><br><span class="line">	 <span class="keyword">input</span> m_regwe,</span><br><span class="line">	 <span class="keyword">input</span> w_regwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] rs_tuse,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] rt_tuse,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] e_tnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] m_tnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] w_tnew,</span><br><span class="line">	 <span class="keyword">output</span> pcstop,</span><br><span class="line">    <span class="keyword">output</span> stall</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="EXT"><a href="#EXT" class="headerlink" title="EXT"></a>EXT</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> EXT(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] opt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">15</span>:<span class="number">0</span>] imm,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] outimm</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="DE-reg"><a href="#DE-reg" class="headerlink" title="DE_reg"></a>DE_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> DE_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">	 <span class="keyword">input</span> clr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_rd1,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_rd2,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_imm,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] d_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_rd1,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_rd2,</span><br><span class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_imm,</span><br><span class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] e_grfwr</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="FWD"><a href="#FWD" class="headerlink" title="FWD"></a>FWD</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> FWD(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] mrd,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] wrd,</span><br><span class="line">    <span class="keyword">input</span> mregwe,</span><br><span class="line">    <span class="keyword">input</span> wregwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] mtnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] wtnew,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rs_slt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rt_slt</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="ALU"><a href="#ALU" class="headerlink" title="ALU"></a>ALU</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> ALU(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] int_a,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] int_b,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] aluopt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] out</span><br><span class="line">    );</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
-<h3 id="EM-reg"><a href="#EM-reg" class="headerlink" title="EM_reg"></a>EM_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> EM_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] e_grfwr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_alu,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_memwd,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] m_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_alu,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_memwd</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="MEM"><a href="#MEM" class="headerlink" title="MEM"></a>MEM</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> MEM(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> memwe,</span><br><span class="line">    <span class="keyword">input</span> loadwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">13</span>:<span class="number">2</span>] addr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] wrdata,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] pc,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rddata</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="MW-reg"><a href="#MW-reg" class="headerlink" title="MW_reg"></a>MW_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> MW_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] m_grfwr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_aludata,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_memdata,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] w_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_aludata,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_memdata</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h3 id="CONTROLLER"><a href="#CONTROLLER" class="headerlink" title="CONTROLLER"></a>CONTROLLER</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> CONTROLLER(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">2</span>:<span class="number">0</span>] phase,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] opt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] func,</span><br><span class="line">    <span class="keyword">output</span> regwe,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] regdst,</span><br><span class="line">    <span class="keyword">output</span> aluslt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">4</span>:<span class="number">0</span>] aluopt,</span><br><span class="line">    <span class="keyword">output</span> memwe,</span><br><span class="line">    <span class="keyword">output</span> loadwe,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] memreg,</span><br><span class="line">	 <span class="keyword">output</span> beq1,</span><br><span class="line">	 <span class="keyword">output</span> jal1,</span><br><span class="line">	 <span class="keyword">output</span> jr1,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] D_rs_Tuse,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] D_rt_Tuse,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] Tnew</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
-<li>基本指令测试（不含jal和jr）</li>
-</ol>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
-<ol start="2">
-<li>跳转测试</li>
-</ol>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x301c</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">jal </span>loop</span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">4</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">6</span>,$<span class="number">4</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
-<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。"><a href="#我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。" class="headerlink" title="我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。"></a>我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。</h2><p>例如以下测试代码：</br></p>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x0011</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">2</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">1</span>,$<span class="number">2</span>,loop</span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br></pre></td></tr></table></figure></div>
-
-<p>可以发现，因为lw的原因，beq在D级需要阻塞两个周期，所以其并非总能提高效率。</p>
-<h2 id="因为延迟槽的存在，对于-jal-等需要将指令地址写入寄存器的指令，要写回-PC-8，请思考为什么这样设计"><a href="#因为延迟槽的存在，对于-jal-等需要将指令地址写入寄存器的指令，要写回-PC-8，请思考为什么这样设计" class="headerlink" title="因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计"></a>因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计</h2><p>由于延时槽指的是跳转指令发生时，无论如何会进行下一条指令，所以对于jal 等需要将指令地址写入寄存器的指令来说，真正的下一条指令应该是当前pc值+8</p>
-<h2 id="我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如-DM-、-ALU-），请思考为什么？"><a href="#我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如-DM-、-ALU-），请思考为什么？" class="headerlink" title="我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？"></a>我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？</h2><p>这样可能会造成数据冲突。例如在E级进行转发的时候，当前的rd1值需要转发alu的计算结果，但这样转发后alu又会进行运算，最后得不到一个稳定的值。</p>
-<h2 id="我们为什么要使用-GPR-内部转发？该如何实现？"><a href="#我们为什么要使用-GPR-内部转发？该如何实现？" class="headerlink" title="我们为什么要使用 GPR 内部转发？该如何实现？"></a>我们为什么要使用 GPR 内部转发？该如何实现？</h2><p>因为在当指令传入W级后，真正要写入GRF的内部发生的时间应为下一个周期，而这时若不进行内部转发，在下一个周期就会损失掉这个要写入GRF的值，导致错误。</br>实现方法：<code>assign rd1 = (a1==a3&amp;&amp;regwe&amp;&amp;a1!=0)?wd:grf[a1];</code></p>
-<h2 id="我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？"><a href="#我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？" class="headerlink" title="我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？"></a>我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？</h2><p>主要的需求者为D级grf的两个读取数据，alu的两个计算数据以及mem的写入数据。可能来源于EM流水寄存器的alu输出，MW流水寄存器的写入数据，以及每个部级的pc值。</p>
-<h2 id="在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。"><a href="#在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。" class="headerlink" title="在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。"></a>在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。</h2><ul>
-<li>对于R型指令，因为其操作是grf[rt]&lt;-ALU(grf[rs],grf[rt]),因此我们其实只需对ALU进行扩展即可，其他例如冒险等都与现有的add与sub指令一样</li>
-<li>对于I型指令，其操作也更多和ALU相关，还有一些可能与MEM相关，因此可能需要在这两个地方进行扩展，同时可能还需要考虑M级对E级转发数据通路的扩展。</li>
-<li>对于跳转型指令，直接跳转应该已经被jr和jal所占，因此其他的挑战指令大多应该都涉及寄存器两个读取值之间的某些运算甚至有涉及MEM的操作，因此还需扩展这两个部件，除此之外，这些跳转可能不能再提前至D级，因此可能要增加阻塞信号，或者如果仍保持再D级判断，那么需要考虑更多的转发信号，对转发数据通路进行一定的修改。</li>
-</ul>
-<h2 id="确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。"><a href="#确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。" class="headerlink" title="确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。"></a>确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。</h2><p>我的译码方式是分布式译码，译码器的架构是控制信号驱动型，先通过操作码和功能码将指令译出，这是与逻辑，再通过或逻辑通过相应的指令或起来来实现控制信号的译出。这样的架构使得代码量易于压缩，但若控制器出错，相应的错误比较难以查出。</p>
-<h2 id="请详细描述你的测试方案及测试数据构造策略"><a href="#请详细描述你的测试方案及测试数据构造策略" class="headerlink" title="请详细描述你的测试方案及测试数据构造策略"></a>请详细描述你的测试方案及测试数据构造策略</h2><ul>
-<li>构造策略：针对基本指令，应尽可能将其每种情况考虑到，同时我们还应将不涉及转发和涉及转发的情况都考虑到，不要有该转发没转发或者不该转发转发了的情况产生。而对于跳转指令，除了跳转本身以外，我们也要考虑冒险的情况，涉及转发和不涉及转发的情况都应被考虑。</li>
-<li>测试方案：以下采用一个帮我查出bug的典型方案</li>
-</ul>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x3018</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">3</span>,$<span class="number">2</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">0</span>,<span class="number">8</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">0</span>,<span class="number">8</span></span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">5</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">4</span>,$<span class="number">6</span>,loop</span><br></pre></td></tr></table></figure></div>
-<p>在本方案里，首先对1号寄存器赋值，再存入内存并将值读出到31号寄存器里，再跳转，因为延时槽的原因，跳转的下一条指令add也会被执行，执行后跳转到下一条add指令，并向下执行，最后在beq指令由于4号寄存器与6号寄存器值相同，会再次跳转，并执行，最终结束程序。在该测试样例中，考虑了很多触及转发的情况，且对于基础指令和跳转指令均有，还考虑了跳转指令为程序最后一条指令（因此帮我查出一些错误）的情况，较为全面。</p>
+<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>lab0的实验难度并不算大，主要是让我们熟悉实验环境，回顾之前的知识，了解操作系统基本的概念和原理，并了解linux的基本使用。本人之前并未太多使用linux系统，只能使用一些基本的指令，对于编写脚本，编译代码等并不熟悉，在做完本次实验后，我才终于理解为什么都说程序员要想提高自己的效率一定要会使用linux，当使用多了linux系统后，也会真正体会到cli的魅力，可能它没有gui那么简单，那么直观，但是通过输入指令来控制电脑让我们进一步能体会到人与机器的交互。</p>
 ]]></content>
       <categories>
-        <category>计算机组成原理</category>
+        <category>OS(BUAA)</category>
       </categories>
       <tags>
-        <tag>BUAA</tag>
-        <tag>计算机组成原理</tag>
+        <tag>Linux</tag>
+        <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
@@ -674,8 +239,201 @@ endmodule
         <category>计算机组成原理</category>
       </categories>
       <tags>
-        <tag>BUAA</tag>
         <tag>计算机组成原理</tag>
+        <tag>BUAA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2025_BUAA_OO_Unit1</title>
+    <url>/2025/03/20/OO/oo_Unit1/</url>
+    <content><![CDATA[<p>第一单元的OO在紧张与刺激中落下帷幕，回顾第一单元，真是应了吴际老师上学期在OOPre的最后讲的“一定要好好理解文法分析，不然下学期的第一单元会很痛苦”。整个Unit1就是围绕文法展开，前前后后就是让我们展开表达式，在我们做好这个蛋糕后，再用化简优化去为它裱花点缀。</p>
+<h1 id="第一次作业"><a href="#第一次作业" class="headerlink" title="第一次作业"></a>第一次作业</h1><p>第一次作业较为简单，因为出现的是最基本的常数与幂函数，且括号最多一层，因此实现起来并不困难，只要把词法和语法分析做好，并能实现展开，第一次作业就基本成型。</p>
+<h2 id="1-1程序架构"><a href="#1-1程序架构" class="headerlink" title="1.1程序架构"></a>1.1程序架构</h2><p><strong>UML类图</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw1uml.png"
+                     
+                ></p>
+<p><strong>功能说明</strong>  </p>
+<ul>
+<li><code>Main</code>：程序入口  </li>
+<li><code>Expr</code>、<code>Term</code>、<code>Variable</code>、<code>Const</code>：表达式的基础结构  </li>
+<li><code>Symbol</code>：进行符号处理，保证每一个项的内部不会出现正号或负号，且每个项前最多有一个符号  </li>
+<li><code>Lexer</code>、<code>Parser</code>：进行语法和词法分析  </li>
+<li><code>Poly</code>：把项规范为形如$a*x^b$的形式  </li>
+<li><code>Operate</code>：进行运算，包括表达式幂的展开和项的展开</li>
+</ul>
+<h2 id="1-2代码复杂度"><a href="#1-2代码复杂度" class="headerlink" title="1.2代码复杂度"></a>1.2代码复杂度</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw1_complexity.png"
+                     
+                ></p>
+<p>可以发现，其中<code>Operate</code>、<code>Parse</code>、<code>Symbol</code>的复杂度比较高，其中有最大的圈复杂度甚至达到了16。我在这几个类里面所用到的条件判断语句和循环语句以及函数调用比较多，因此造成了圈复杂度比较高。拿<code>Symbol</code>类举例来说，虽然里面就只有两个方法，但针对字符串化简符号的逻辑是十分复杂的，尤其是项里面有子表达式的时候，因此涉及到很多判断和循环，造成圈复杂度很高，而这样的结果也说明了我这个类以及里面的方法其实可迭代性和可维护性并不好，因为化简符号不像词法和语法分析那样只需要添加一定的<code>token</code>和语法解析就能实现，在后续表达式逐渐变复杂后整个符号化简的逻辑可能会大变，而且遇上多层嵌套括号后复杂度可能会很高。<br>进一步分析，其实会发现我第一次作业的架构和”高内聚低耦合”似乎不太沾边，我后续作业是经过了重构的，因此后续完全没有回顾过我第一次作业。而当我重看第一次作业代码时，抛开写得shi不shi不谈，其实理解还是很容易理解的，但是整体看下来其实好像并不是在写面向对象编程，而是在写面向过程编程，很多类的耦合度过高，而有的类该自己干的事没干，不该自己干的事干了，甚至有的类干的事和自己的名字都没啥关系，比如<code>Poly</code>。因此我在第一次作业结束后发现在这样的代码基础上迭代十分困难，决定重构。</p>
+<h2 id="1-3化简优化"><a href="#1-3化简优化" class="headerlink" title="1.3化简优化"></a>1.3化简优化</h2><p>能把整个表达式正确展开后，其实本次作业的正确性我们已经可以拿满分了，但是估计性能分会很低。针对第一次作业，其实化简无非就是同类项合并，而判断能否合并也十分简单，只需要判断展开后每个项中x的幂次相等，最后如果所有项里有符号为正的，我们把它放在第一位即可省掉一个负号带来的长度，实现了这些后，性能分也可以拿满。</p>
+<h2 id="1-4Bug分析"><a href="#1-4Bug分析" class="headerlink" title="1.4Bug分析"></a>1.4Bug分析</h2><p>在互测中我出现了一些WA的错误，而错误的来源全是来自于我<code>Symbol</code>类中化简符号的方法出错（其逻辑真的很复杂，bug修复时针对这一个bug都修改了好多行），具体出错的原因是我把项里子表达式的第一个符号拿出来给了整个项，若是正号还好，但如果是负号，我整个项的符号就会取一次反，最终造成错误。<br>事实上，这个符号简化的方法完全是自己折腾自己，因为完全可以把符号放在语法分析里面一起，这样在解析完一个项时，它的符号也被解析出来，因此我后续重构的时候完全摒弃了这一个类。</p>
+<h1 id="第二次作业"><a href="#第二次作业" class="headerlink" title="第二次作业"></a>第二次作业</h1><p>第二次作业较第一次作业的难度陡然上升，引进了三角函数和自定义递推函数，同时允许多层嵌套括号。主要有两个难点，一个是如何正确地算出递推函数并代入表达式，一个是针对有三角函数的化简可以怎么做，如果不考虑化简的话，只需要解决递推函数这个难点即可。由于第一次作业我的架构很烂，层次不清淅，因此第二次作业我首先进行了重构。</p>
+<h2 id="2-1程序架构"><a href="#2-1程序架构" class="headerlink" title="2.1程序架构"></a>2.1程序架构</h2><p><strong>UML类图</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw2uml.png"
+                     
+                ></p>
+<p><strong>功能说明</strong>  </p>
+<ul>
+<li><code>Main</code>：程序入口  </li>
+<li><code>Expr</code>、<code>Term</code>、<code>Var</code>、<code>Const</code>、<code>Trigono</code>、<code>Func</code>：表达式基础结构  </li>
+<li><code>Parser</code>、<code>Lexer</code>、<code>Token</code>：语法词法解析  </li>
+<li><code>Funcrecur</code>：递推函数相关信息获取，并计算递推函数  </li>
+<li><code>Regofunc</code>：存储被解析出来的递推函数规则，供整个项目使用  </li>
+<li><code>Bracketdeal</code>：括号处理，寻找匹配的括号  </li>
+<li><code>Equandneg</code>：判断表达式是否相等或相反  </li>
+<li><code>Unit</code>：最终表达式中的最小单元，形如$a*x^b*{sin()}*{cos()}$  </li>
+<li><code>Entirety</code>：由多个<code>Unit</code>组成的单元</li>
+</ul>
+<h2 id="2-2代码复杂度"><a href="#2-2代码复杂度" class="headerlink" title="2.2代码复杂度"></a>2.2代码复杂度</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw2_complexity.png"
+                     
+                >  </p>
+<p>在本次项目中，复杂度较高的类为<code>Unit</code>类，其他类复杂度稍高可能是因为条件和循环语句稍多，例如<code>Lexer</code>和<code>Bracketdeal</code>类，而<code>Unit</code>类的复杂度是由于其里面涉及了很多方法，包括运算以及判断是否能合并等方法，涉及到的方法调用也较多，因此呈现了一个较高的复杂度。<br>此次作业我尽可能的满足了“高内聚低耦合”的想法，尽可能把一些特定功能单独抽象出来成为一个类，同时尽量保证每个类只干和自己相关的事。<br><strong>重构前后对比</strong><br>先抛开本次作业新增的三角函数和自定义递推函数不谈，其他部分我也和第一次作业有很大的差别。<br>首先是词法和语法解析，本次我单独设计了一个<code>Token</code>类，里面包含了字符串所包含的可能的字符类型，而不是在<code>Lexer</code>类里对字符串中的一个一个字符分析，整理来说可理解性和可迭代行会增强不少。我还在<code>Parser</code>里面确定了项的符号，直接抛弃了第一次作业中的<code>Symbol</code>类，且这样的方法几乎适用于往后的所有迭代。<br>其次我设计了<code>Entirety</code>和<code>Unit</code>两个类，最终的计算化简全都在这两个类中进行，而所有的表达式基础结构如<code>Expr</code>等都有一个<code>toentirety()</code>方法，方便之后的展开和化简，这样，我的代码在面临下一次迭代时可能不需要修改很多东西就能适应情景，而层次化的结构也比较清晰，这提高了整个项目的可维护性。  </p>
+<h2 id="2-3难点分析及化简优化"><a href="#2-3难点分析及化简优化" class="headerlink" title="2.3难点分析及化简优化"></a>2.3难点分析及化简优化</h2><p>前面说到，本次作业主要有两个难点：一个是递推函数，一个是三角函数化简。<br>针对递推函数，我采用字符串替换的方式，替换字符串后再对得到的字符串进行一次词法和语法分析并重复操作直到表达式中不含形如“f{n}(x)”的东西。要注意的是，在这里替换字符串的时候为了以防错误替换，可以先把第i个参数用“ai”替换，全部替换完后再将对应的“ai”替换为真正的实参。<br>针对三角函数的化简，其实难点在于如何判断两个三角函数是否相等或相反，也即三角函数内部的表达式是否相等或相反。这里我采用了一种比较暴力的方式，我想既然我们整个程序做的事情就是化简表达式，那我要判断两个表达式是否相等或相反，是不是可以把这两个表达式相加或相减，然后调用我们的程序其是否为零即可。综合各方面性能考虑，我最后决定只做$cos(0)$，$sin(0)$，以及正弦函数二倍角的化简，而且为了使最终结果的长度尽可能短，我在最后一步才化简，以防出现本来可以合并但在中途化简之后无法合并的情况。</p>
+<h2 id="2-4Bug分析"><a href="#2-4Bug分析" class="headerlink" title="2.4Bug分析"></a>2.4Bug分析</h2><p>此次作业我出现了一些RE和WA以及TLE的错误，其中最主要的是RE错误。RE的原因是我在做递推函数的字符串替换时，忽略了可能嵌套函数的情况，导致我用的逗号下标可能是嵌套函数里面的逗号的下标，最后替换的结果自然是错的，为了修复这个问题，我添加在<code>Token</code>中添加了<code>Comma</code>这一类型，这样就能准确找到属于当前函数的逗号的下标，从而正确替换字符串。<br>而WA和TLE的原因在于我在合并<code>Unit</code>时，需要判断每个三角函数的幂次是否相同，但是我的三角函数在<code>Unit</code>里是用<code>HashMap&lt;String,Integer&gt;</code>来存储的，我对幂次相同的判断直接用的等号，但是显然等号是不适用于<code>Integer</code>内容的判相等的，因此出现了错误，当我改用<code>Objects</code>的<code>equals</code>方法后，问题就解决了。</p>
+<h1 id="第三次作业"><a href="#第三次作业" class="headerlink" title="第三次作业"></a>第三次作业</h1><p>第三次作业添加了自定义普通函数和求导算子，自定义普通函数的处理方法和第二次作业的自定义递归函数的处理方法类似，而且更简单，只不过由于函数内部的因子多了自定义普通函数这一选项，在替换和解析的时候可能需要做一点改动。而关于求导，可以采用自下而上的方法，先把最基本的常数、幂函数和三角函数的求导实现，再实现项和表达式的求导。本次作业我在第二次作业的基础上进行迭代，添加的东西并不多。</p>
+<h2 id="3-1程序架构"><a href="#3-1程序架构" class="headerlink" title="3.1程序架构"></a>3.1程序架构</h2><p><strong>UML类图</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw3uml.png"
+                     
+                ></p>
+<p><strong>新增类和功能</strong>  </p>
+<ul>
+<li><code>Deriva</code>：表达式基础结构，表示求导因子  </li>
+<li><code>Funcparse</code>：新增解析普通函数功能  </li>
+<li><code>Regofunc</code>：新增了两个普通函数规则  </li>
+<li><code>Parser</code>、<code>Lexer</code>、<code>Token</code>：新增对求导因子的解析  </li>
+<li>各类基本单元：新增求导方法</li>
+</ul>
+<h2 id="3-2代码复杂度"><a href="#3-2代码复杂度" class="headerlink" title="3.2代码复杂度"></a>3.2代码复杂度</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw3_complexity.png"
+                     
+                >  </p>
+<p>本次复杂度和第二次作业类似，但由于我把读取字符串的行为放在了<code>Main</code>类里，而这次读取字符串需要读普通函数，因此条件语句可能会增多导致圈复杂度上升。  </p>
+<h2 id="3-3Bug分析"><a href="#3-3Bug分析" class="headerlink" title="3.3Bug分析"></a>3.3Bug分析</h2><p>本次作业出现了几个RE和WA的错误。<br>RE是由于我在解析递推函数的参数个数时是靠逗号的个数来计算的，而此次由于递推函数表达式中可以出现普通函数，因此很可能会得到错误的参数个数，针对此问题，我修改为只考察等号左边是否有逗号，这样可以省去对右边复杂的分析。<br>WA是由于我没有考虑嵌套求导的情况，我原本的<code>Deriva</code>类里有<code>toentirety()</code>和<code>derivative()</code>两个方法，但这两个方法完全一样，因此导致嵌套求导时该求多次导的表达式只求了一次导，针对该问题，我将<code>toentirety()</code>方法修改为求一次导，将<code>derivative()</code>方法修改为求两次导，这样便修复了Bug。  </p>
+<h1 id="TalkTalk"><a href="#TalkTalk" class="headerlink" title="TalkTalk"></a>TalkTalk</h1><h2 id="程序优缺点总结"><a href="#程序优缺点总结" class="headerlink" title="程序优缺点总结"></a>程序优缺点总结</h2><p>仅针对重构后的程序<del>（重构前的优点是写的复杂）</del><br><strong>优点</strong>  </p>
+<ul>
+<li>层次清晰，类设计合理，基本实现高内聚低耦合<br><strong>缺点</strong>  </li>
+<li>代码写得有点冗余，有些部分可能出现了好几次，这时应该把其抽象出来为一个方法  </li>
+<li>性能不够优秀，判断表达式相等或相反直接调用整个程序，在嵌套很深的时候会出现卡死的情况，可以考虑重写<code>Hashcode</code>来方便判断。  </li>
+<li>没有实现更多的化简，这也主要是由于对判相等方法性能的担忧，若修改了判想等方法，应该能实现更多化简。</li>
+</ul>
+<h2 id="新迭代情景"><a href="#新迭代情景" class="headerlink" title="新迭代情景"></a>新迭代情景</h2><p>加入指数函数以及自定义分段函数（自定义分段函数内的因子一定满足在某个确切的自定义分段范围内，比如常数因子，或者表达式（x^2-2*x+1）等）。<br>针对指数函数较好实现，只需新增一个实现接口<code>Factor</code>的类，并添加相应的求导方法即可。<br>针对自定义分段函数需要新增解析其规则的方法，而若因子为常数，只需判断其在哪个区间并代入相应函数表达式即可，对于含变量x的因子，可以新建一个方法（直接代值计算）去判断其属于哪个区间并代入相应函数表达式。</p>
+<h2 id="hack策略"><a href="#hack策略" class="headerlink" title="hack策略"></a>hack策略</h2><p>这三次作业我都成功hack到了同组的同学，尤其是第三次几乎将组内所有同学都hack了。我的策略是自己设计数据，从简到繁，且充分考虑特殊情况。拿第三次作业来说，我先从sin(0)^0这样的数据开始，然后到求导，设计一些可能出错的求导样例去验证大家求导实现得是否正确，最后添加函数，并考虑嵌套函数等情况。<br>可能有部分同学用评测机来进行该环节，单个人认为数据生成器生成的数据随机性过大，可能运行很久也没有一个有效的样例能hack到别人，而如果是生成了十分复杂的数据造成同学tle，可能又会因为cost的限制而难以修改到能够成功提交。但我认为评测机针对我们自己查自己bug还是十分重要的，尤其是针对强测环节，而这也是由于其生成数据的随机性。</p>
+<h2 id="心得体会"><a href="#心得体会" class="headerlink" title="心得体会"></a>心得体会</h2><h3 id="1）Don’t-be-reckless"><a href="#1）Don’t-be-reckless" class="headerlink" title="1）Don’t be reckless"></a>1）Don’t be reckless</h3><p>我们拿到一个题目或需求或想法时，不应一上来就开始敲键盘，这样不计后果的行为是十分危险的，没有经过充分的理解题目和需求，没有经过充分地思考，没有经过精心的设计，直接开始写代码很大概率会写出一个极难阅读、理解和维护的怪物。而且当你写着写着很可能会想起好像还有什么需求没有实现又去修改前面写的代码，这样在写的过程中不断的进行修改，写程序本应是伴随修改的，但应该是负责任的修改，是考虑过的修改，而不是鲁莽随意的修改。因此，在开始写代码前，我们应该对自己的架构有了一个基本的认知，清楚的知道自己的需求和目标是什么，这样才能使整个项目层次尽可能清晰，方便后续的阅读和修改。</p>
+<h3 id="2）be-careful"><a href="#2）be-careful" class="headerlink" title="2）be careful"></a>2）be careful</h3><p>谨慎，既在思考设计时，又在编写程序时，还在回顾修改时。在三个阶段都应该保持谨慎的心态，尽可能去思考自己的程序是否有什么情况还没有考虑到。我便是忽略了这一点，写完总是认为自己的程序应该没什么问题了，导致强测常会出一些错误。</p>
+<h3 id="3）be-stern"><a href="#3）be-stern" class="headerlink" title="3）be stern"></a>3）be stern</h3><p>这里我不是想说要认真的意思，我想表达的是我们可以逼自己一把，对自己狠一点，做一做自己不敢做的事，比如化简，做一做自己不想做的事，比如重构，做了这些，我们首先会积累到相应的经验，总结到方法，能提升自己的能力，还能进一步加强对架构的理解，理解某种架构为什么好，好在哪里。</p>
+<h3 id="4）be-exclamatory"><a href="#4）be-exclamatory" class="headerlink" title="4）be exclamatory"></a>4）be exclamatory</h3><p>我在unit1经常感叹别人的设计，别人的方法，无论是上机时发给我们的代码还是往届学长学姐们的博客以及讨论区大家的发言，很多时候我都会想起余华老师评价莫言老师那句“**，写得那么NB”。学习和运用这些架构和方法，也让我的代码变得更好，让我逐渐学会怎么写出优雅的代码，让我对项目设计有了更深的理解。我认为本单元交给我最重要的方法就是递归下降法，但交给我最重要的思想是架构设计的思想，什么时候该分一个类，类里面该干什么事，怎样降低不同类之间的耦合度，怎样让项目可维护性更好……我在上学期除了OOPre之外还修了一门java程序设计，那门课的大作业是写一个工作量为2000行代码的程序，我写了一个创新的贪吃蛇游戏，其实逻辑并不复杂，但由于涉及到GUI，仍然需要去设计相应的架构，设计不同的面板之间的关系，不同类中的方法，但我当时写得很杂，几乎是每一关就对应了一个类，很多该抽象出来的方法和类并没有抽象出来，导致代码非常冗余，且修改起来也十分头疼，当时为了修复一个很奇怪的bug找了半天对应的代码位置。所以我是真的十分感叹unit1中遇到的所有设计和方法，当然不能止于感叹，还要运用，化为自己的东西才有用。</p>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><ul>
+<li>可以介绍一下项目的度量分析的各类指标分别是什么，是由什么决定的，反映了什么，这样能让大家在度量分析后对自己的代码有更深的认识</li>
+<li>提交hack数据时可以返回给我们提交数据的相应cost，这样在cost超过限制时，我们能够好地去修改数据</li>
+</ul>
+]]></content>
+      <categories>
+        <category>面向对象(BUAA)</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>面向对象</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机组成原理P5</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P5/</url>
+    <content><![CDATA[<h1 id="流水线CPU设计文档"><a href="#流水线CPU设计文档" class="headerlink" title="流水线CPU设计文档"></a>流水线CPU设计文档</h1><p>本次课下要求我们使用<code>verilog</code>来搭建一个支持十条指令的流水线CPU。可以说难度与复杂度较之前几次都上升了不少，但理清思路将CPU运行步骤印在心里后，会发现复杂度也没那么大。</p>
+<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><p>流水线CPU的搭建是在单周期CPU之上的，所以其实其整个数据通路和单周期的CPU没有太大的区别，唯一不同的就是单周期一条指令只需一个周期，而我们搭建的流水线CPU需要5个周期，这也要求我们将数据进行流水，每一级在每个周期将相应数据传到下一级。</p>
+<h3 id="数据通路"><a href="#数据通路" class="headerlink" title="数据通路"></a>数据通路</h3><p>在此首先附上单周期的<code>logisim</code>图与流水线的数据通路图。</p>
+<ul>
+<li>单周期CPU<code>logisim</code>设计图：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
+                      alt="单周期CPUlogisim设计图"
+                ></li>
+<li>流水线数据通路图：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF.png"
+                     
+                ></li>
+</ul>
+<p>可以看到，若暂时不考虑冒险问题，流水线的数据通路和单周期的数据通路几乎一致，其只是将单周期的数据通路分为五个部级:F、D、E、M、W，相关部级所要做的工作根据名字一目了然。而在每个部级之间，我们加上一个流水寄存器用于传递和保存所要用的数据。什么数据需要传呢？这就要看我们下一级的需求了。但是可以知道的是，<code>pc</code>和相应的<code>instructioncode</code>是必须要一直流水下去的，其他按照需求流水即可，例如在E级还需要将ALU产生的结果等流水下去。</p>
+<h3 id="冒险"><a href="#冒险" class="headerlink" title="冒险"></a>冒险</h3><p>数据通路看起来是比较简单的，使用<code>verilog</code>搭建起来可能会有一定的复杂度，但我们整体的思路还算清晰。接下来扰乱我们思绪的就应该是关于冒险的处理了。流水线CPU可能会存在结构冒险、控制冒险和数据冒险三种冒险问题，但由于我们的CPU的im和mem并不是一个存储器，因此结构冒险的问题对于我们来说是不存在的，因此主要考虑剩下两种。</br><br>而我认为最重要的冒险其实是数据冒险，也就是前面一条指令要写入的寄存器和当前指令要读取的寄存器一样时，这时我们读取的数据可能不是真正的数据。其之所以重要是因为几乎每一条指令都会产生这样的冒险，因此首先来考虑它。</p>
+<h4 id="数据冒险"><a href="#数据冒险" class="headerlink" title="数据冒险"></a>数据冒险</h4><p>在这里，我采用的是教程里的A-T法来解决此问题。<br>A指的即是address，T指的即是time，在满足address和time的条件下，我们要做出相应操作来处理冒险。</p>
+<ul>
+<li>A条件：address相同</li>
+<li>T条件</li>
+<li><ul>
+<li>Tuse:指令位于D级的时候，再经过多少个时钟周期就必须要使用相应的数据</li>
+</ul>
+</li>
+<li><ul>
+<li>Tnew:位于某个流水级的某个指令，它经过多少个时钟周期可以算出结果并且存储到流水级寄存器里</br>在满足Tuse &gt; Tnew 且 Tnew &#x3D; 0时，我们可以将相关数据进行转发，而当Tuse &lt; Tnew时，我们需要让指令在D级阻塞一周期。</li>
+</ul>
+</li>
+</ul>
+<p>基本思路便是如此，满足A-T的条件，我们就将相应数据进行转发，不满足我们就阻塞一周期。而相应的数据也不会太复杂，其实我们仔细思考可以发现，有写入功能的指令他们写入的数据无非就是三种，一种是jal，它会写入下一条指令的地址，一种是ALU计算型，他们回写入ALU的计算结果，一种是lw，会写入MEM的读取值，况且再结合上阻塞会发现，如果我们当前指令是与lw产生冒险，那一定会阻塞到lw流水到M级或W级，而那时便可将MEM读取值转发，因此我们注意将下一条指令的地址以及ALU的结果流水下去即可。</br>还有一点需要注意的是对于一些不用相关数据的指令例如jr，我们不应把他们的Tuse设为0，而是应该设为一个尽可能大的数，不然会产生无谓的阻塞，使得运行周期加长。</p>
+<h4 id="控制冒险"><a href="#控制冒险" class="headerlink" title="控制冒险"></a>控制冒险</h4><p>控制冒险即是分支指令（如 beq ）的判断结果会影响接下来指令的执行的情况，例如beq需要判断rs和rt寄存器是否相等，而我们在单周期里是在ALU进行判断的，也就是说现在我们将在E级判断，但等判断结果出来后，F级已经又流水了两条指令了，而这时如果判断的结果是真，将会产生错误，为此，我们将beq的判断移至D级，但我们会发现F级仍会往下流水一条指令，所以这时加上延时槽便可解决这样的问题。</p>
+<h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><p>我们可以采用两种译码方式，一种是分布式译码，一种是集中式译码。集中式译码需要在某一级译码完成后将控制信号流水下去，这样流水的信号数量会很大，因此我采用的是分布式译码的方式，也就是在每一级对在该级的指令译码一次产生我所需要的控制信号即可，因此这样我会将控制器实例化4次。在控制器中除了单周期CPU里对应的控制信号以外，还需要加入转发的控制信号，我对Tuse和Tnew的计算也放进了控制器里。</p>
+<h2 id="模块搭建"><a href="#模块搭建" class="headerlink" title="模块搭建"></a>模块搭建</h2><h3 id="IM"><a href="#IM" class="headerlink" title="IM"></a>IM</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> IM(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">13</span>:<span class="number">2</span>] addr,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] out</span><br><span class="line">    );</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] im [<span class="number">0</span>:<span class="number">4095</span>];</span><br></pre></td></tr></table></figure></div>
+<h3 id="FD-reg"><a href="#FD-reg" class="headerlink" title="FD_reg"></a>FD_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> FD_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">	 <span class="keyword">input</span> reset,</span><br><span class="line">	 <span class="keyword">input</span> fd_enable,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] f_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] f_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] d_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] d_instr</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="GRF"><a href="#GRF" class="headerlink" title="GRF"></a>GRF</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> GRF(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a1,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a2,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] a3,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] wd,</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> regwe,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] pc,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rd1,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rd2</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="STALL"><a href="#STALL" class="headerlink" title="STALL"></a>STALL</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> Stall(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] erd,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] mrd,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] wrd,</span><br><span class="line">	 <span class="keyword">input</span> e_regwe,</span><br><span class="line">	 <span class="keyword">input</span> m_regwe,</span><br><span class="line">	 <span class="keyword">input</span> w_regwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] rs_tuse,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] rt_tuse,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] e_tnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] m_tnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] w_tnew,</span><br><span class="line">	 <span class="keyword">output</span> pcstop,</span><br><span class="line">    <span class="keyword">output</span> stall</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="EXT"><a href="#EXT" class="headerlink" title="EXT"></a>EXT</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> EXT(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] opt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">15</span>:<span class="number">0</span>] imm,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] outimm</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="DE-reg"><a href="#DE-reg" class="headerlink" title="DE_reg"></a>DE_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> DE_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">	 <span class="keyword">input</span> clr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_rd1,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_rd2,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] d_imm,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] d_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_rd1,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_rd2,</span><br><span class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] e_imm,</span><br><span class="line">	 <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] e_grfwr</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="FWD"><a href="#FWD" class="headerlink" title="FWD"></a>FWD</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> FWD(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rs,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] rt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] mrd,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] wrd,</span><br><span class="line">    <span class="keyword">input</span> mregwe,</span><br><span class="line">    <span class="keyword">input</span> wregwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] mtnew,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">1</span>:<span class="number">0</span>] wtnew,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rs_slt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] rt_slt</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="ALU"><a href="#ALU" class="headerlink" title="ALU"></a>ALU</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> ALU(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] int_a,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] int_b,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] aluopt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] out</span><br><span class="line">    );</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<h3 id="EM-reg"><a href="#EM-reg" class="headerlink" title="EM_reg"></a>EM_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> EM_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] e_grfwr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_alu,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] e_memwd,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] m_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_alu,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] m_memwd</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="MEM"><a href="#MEM" class="headerlink" title="MEM"></a>MEM</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> MEM(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> memwe,</span><br><span class="line">    <span class="keyword">input</span> loadwe,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">13</span>:<span class="number">2</span>] addr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] wrdata,</span><br><span class="line">	 <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] pc,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">31</span>:<span class="number">0</span>] rddata</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="MW-reg"><a href="#MW-reg" class="headerlink" title="MW_reg"></a>MW_reg</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> MW_reg(</span><br><span class="line">    <span class="keyword">input</span> clk,</span><br><span class="line">    <span class="keyword">input</span> reset,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_pc,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_instr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">4</span>:<span class="number">0</span>] m_grfwr,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_aludata,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">31</span>:<span class="number">0</span>] m_memdata,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_pc,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_instr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">4</span>:<span class="number">0</span>] w_grfwr,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_aludata,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] w_memdata</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h3 id="CONTROLLER"><a href="#CONTROLLER" class="headerlink" title="CONTROLLER"></a>CONTROLLER</h3><div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> CONTROLLER(</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">2</span>:<span class="number">0</span>] phase,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] opt,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">5</span>:<span class="number">0</span>] func,</span><br><span class="line">    <span class="keyword">output</span> regwe,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] regdst,</span><br><span class="line">    <span class="keyword">output</span> aluslt,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">4</span>:<span class="number">0</span>] aluopt,</span><br><span class="line">    <span class="keyword">output</span> memwe,</span><br><span class="line">    <span class="keyword">output</span> loadwe,</span><br><span class="line">    <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] memreg,</span><br><span class="line">	 <span class="keyword">output</span> beq1,</span><br><span class="line">	 <span class="keyword">output</span> jal1,</span><br><span class="line">	 <span class="keyword">output</span> jr1,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] D_rs_Tuse,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] D_rt_Tuse,</span><br><span class="line">	 <span class="keyword">output</span> [<span class="number">1</span>:<span class="number">0</span>] Tnew</span><br><span class="line">    );</span><br></pre></td></tr></table></figure></div>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
+<li>基本指令测试（不含jal和jr）</li>
+</ol>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>跳转测试</li>
+</ol>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x301c</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">jal </span>loop</span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">4</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">6</span>,$<span class="number">4</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。"><a href="#我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。" class="headerlink" title="我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。"></a>我们使用提前分支判断的方法尽早产生结果来减少因不确定而带来的开销，但实际上这种方法并非总能提高效率，请从流水线冒险的角度思考其原因并给出一个指令序列的例子。</h2><p>例如以下测试代码：</br></p>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x0011</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">2</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">1</span>,$<span class="number">2</span>,loop</span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">1</span>,$<span class="number">2</span></span><br></pre></td></tr></table></figure></div>
+
+<p>可以发现，因为lw的原因，beq在D级需要阻塞两个周期，所以其并非总能提高效率。</p>
+<h2 id="因为延迟槽的存在，对于-jal-等需要将指令地址写入寄存器的指令，要写回-PC-8，请思考为什么这样设计"><a href="#因为延迟槽的存在，对于-jal-等需要将指令地址写入寄存器的指令，要写回-PC-8，请思考为什么这样设计" class="headerlink" title="因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计"></a>因为延迟槽的存在，对于 jal 等需要将指令地址写入寄存器的指令，要写回 PC + 8，请思考为什么这样设计</h2><p>由于延时槽指的是跳转指令发生时，无论如何会进行下一条指令，所以对于jal 等需要将指令地址写入寄存器的指令来说，真正的下一条指令应该是当前pc值+8</p>
+<h2 id="我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如-DM-、-ALU-），请思考为什么？"><a href="#我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如-DM-、-ALU-），请思考为什么？" class="headerlink" title="我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？"></a>我们要求大家所有转发数据都来源于流水寄存器而不能是功能部件（如 DM 、 ALU ），请思考为什么？</h2><p>这样可能会造成数据冲突。例如在E级进行转发的时候，当前的rd1值需要转发alu的计算结果，但这样转发后alu又会进行运算，最后得不到一个稳定的值。</p>
+<h2 id="我们为什么要使用-GPR-内部转发？该如何实现？"><a href="#我们为什么要使用-GPR-内部转发？该如何实现？" class="headerlink" title="我们为什么要使用 GPR 内部转发？该如何实现？"></a>我们为什么要使用 GPR 内部转发？该如何实现？</h2><p>因为在当指令传入W级后，真正要写入GRF的内部发生的时间应为下一个周期，而这时若不进行内部转发，在下一个周期就会损失掉这个要写入GRF的值，导致错误。</br>实现方法：<code>assign rd1 = (a1==a3&amp;&amp;regwe&amp;&amp;a1!=0)?wd:grf[a1];</code></p>
+<h2 id="我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？"><a href="#我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？" class="headerlink" title="我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？"></a>我们转发时数据的需求者和供给者可能来源于哪些位置？共有哪些转发数据通路？</h2><p>主要的需求者为D级grf的两个读取数据，alu的两个计算数据以及mem的写入数据。可能来源于EM流水寄存器的alu输出，MW流水寄存器的写入数据，以及每个部级的pc值。</p>
+<h2 id="在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。"><a href="#在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。" class="headerlink" title="在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。"></a>在课上测试时，我们需要你现场实现新的指令，对于这些新的指令，你可能需要在原有的数据通路上做哪些扩展或修改？提示：你可以对指令进行分类，思考每一类指令可能修改或扩展哪些位置。</h2><ul>
+<li>对于R型指令，因为其操作是grf[rt]&lt;-ALU(grf[rs],grf[rt]),因此我们其实只需对ALU进行扩展即可，其他例如冒险等都与现有的add与sub指令一样</li>
+<li>对于I型指令，其操作也更多和ALU相关，还有一些可能与MEM相关，因此可能需要在这两个地方进行扩展，同时可能还需要考虑M级对E级转发数据通路的扩展。</li>
+<li>对于跳转型指令，直接跳转应该已经被jr和jal所占，因此其他的挑战指令大多应该都涉及寄存器两个读取值之间的某些运算甚至有涉及MEM的操作，因此还需扩展这两个部件，除此之外，这些跳转可能不能再提前至D级，因此可能要增加阻塞信号，或者如果仍保持再D级判断，那么需要考虑更多的转发信号，对转发数据通路进行一定的修改。</li>
+</ul>
+<h2 id="确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。"><a href="#确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。" class="headerlink" title="确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。"></a>确定你的译码方式，简要描述你的译码器架构，并思考该架构的优势以及不足。</h2><p>我的译码方式是分布式译码，译码器的架构是控制信号驱动型，先通过操作码和功能码将指令译出，这是与逻辑，再通过或逻辑通过相应的指令或起来来实现控制信号的译出。这样的架构使得代码量易于压缩，但若控制器出错，相应的错误比较难以查出。</p>
+<h2 id="请详细描述你的测试方案及测试数据构造策略"><a href="#请详细描述你的测试方案及测试数据构造策略" class="headerlink" title="请详细描述你的测试方案及测试数据构造策略"></a>请详细描述你的测试方案及测试数据构造策略</h2><ul>
+<li>构造策略：针对基本指令，应尽可能将其每种情况考虑到，同时我们还应将不涉及转发和涉及转发的情况都考虑到，不要有该转发没转发或者不该转发转发了的情况产生。而对于跳转指令，除了跳转本身以外，我们也要考虑冒险的情况，涉及转发和不涉及转发的情况都应被考虑。</li>
+<li>测试方案：以下采用一个帮我查出bug的典型方案</li>
+</ul>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x3018</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">3</span>,$<span class="number">2</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">0</span>,<span class="number">8</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">0</span>,<span class="number">8</span></span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">5</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">4</span>,$<span class="number">6</span>,loop</span><br></pre></td></tr></table></figure></div>
+<p>在本方案里，首先对1号寄存器赋值，再存入内存并将值读出到31号寄存器里，再跳转，因为延时槽的原因，跳转的下一条指令add也会被执行，执行后跳转到下一条add指令，并向下执行，最后在beq指令由于4号寄存器与6号寄存器值相同，会再次跳转，并执行，最终结束程序。在该测试样例中，考虑了很多触及转发的情况，且对于基础指令和跳转指令均有，还考虑了跳转指令为程序最后一条指令（因此帮我查出一些错误）的情况，较为全面。</p>
+]]></content>
+      <categories>
+        <category>计算机组成原理</category>
+      </categories>
+      <tags>
+        <tag>计算机组成原理</tag>
+        <tag>BUAA</tag>
       </tags>
   </entry>
   <entry>
@@ -739,8 +497,8 @@ endmodule
         <category>计算机组成原理</category>
       </categories>
       <tags>
-        <tag>BUAA</tag>
         <tag>计算机组成原理</tag>
+        <tag>BUAA</tag>
       </tags>
   </entry>
   <entry>
@@ -1006,8 +764,250 @@ endmodule
         <category>计算机组成原理</category>
       </categories>
       <tags>
-        <tag>BUAA</tag>
         <tag>计算机组成原理</tag>
+        <tag>BUAA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux学习笔记（指令篇）</title>
+    <url>/2025/02/13/linux/linux%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h1 id="Linux目录结构"><a href="#Linux目录结构" class="headerlink" title="Linux目录结构"></a>Linux目录结构</h1><p>在Linux系统中，目录结构与Windows系统类似，都是树形结构，不同的是，Windows系统可以有多个树，也即其能有很多个磁盘，但Linux系统只有一棵树，即所有文件和目录都放在根目录下。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/linux/linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png"
+                     
+                ><br>Linux系统中，以“&#x2F;”表示顶级目录即根目录，层次关系也通过“&#x2F;”表示</p>
+<h2 id="路径格式"><a href="#路径格式" class="headerlink" title="路径格式"></a>路径格式</h2><ul>
+<li>绝对路径：即以根目录“&#x2F;”开头</li>
+<li>相对路径：相对于当前工作目录下的路径，例如当前工作目录下有一个test目录，则其相对路径就是test</li>
+<li>特殊路径符：</li>
+<li><ul>
+<li>.:表示当前目录</li>
+</ul>
+</li>
+<li><ul>
+<li>..:表示上一级目录</li>
+</ul>
+</li>
+<li><ul>
+<li>~:表示HOME目录</li>
+</ul>
+</li>
+</ul>
+<h1 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h1><p>在Linux系统中，每一条命令都是一个可执行的程序，命令都按以下格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span>+(option)+(parameter)</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>command即指令名，如ls,cd,mkdir……</li>
+<li>option是选项，用来执行一些特定的操作</li>
+<li>parameter是相关参数，通常是文件或目录路径</li>
+</ul>
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span>+(-a -l -h)+(parameter)</span><br></pre></td></tr></table></figure></div>
+<p>ls命令的作用是查看相应的目录里的内容，如果不加参数，则默认展示当前工作目录的内容，加上参数则会展示指定目录的内容。<br>该指令有三个选项可选：</p>
+<ul>
+<li>-a 将该目录里的所有内容展示，包括隐藏内容</li>
+<li>-l 以列表的形式将目录里的内容展示，同时把文件或文件夹所属的用户，用户组，相关权限以及文件大小展示出来</li>
+<li>-h 必须结合-l使用，可以将文件大小显示的更加清晰</li>
+</ul>
+<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span>+(parameter)</span><br></pre></td></tr></table></figure></div>
+<p>cd命令的作用是切换工作目录到指定目录，如果不加参数，则默认切换到用户的HOME目录，一般是&#x2F;home&#x2F;username</p>
+<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
+<p>pwd命令的作用是展示当前工作目录</p>
+<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span>+(-p)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>mkdir命令的作用是创建新的目录，参数必填<br>-p选项表示自动创建不存在的父目录，这样可以创建一个当前目录下很多层的目录</p>
+<h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">touch</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>touch命令的作用是创建一个文件</p>
+<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>cat命令的作用是查看文件内容</p>
+<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">more+parameter</span><br></pre></td></tr></table></figure></div>
+<p>more命令的作用也是查看文件内容，但它会将内容非常多的文件一页一页的展示，通过空格翻页，按q退出查看</p>
+<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cp</span>+(-r)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>cp命令的作用是复制文件或文件夹，需要两个参数，第一个是要复制的文件或文件夹的路径，第二个是要复制去的地方，-r选项在复制文件夹的时候使用</p>
+<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mv</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>mv命令的作用是移动文件或文件夹，同样需要两个参数，第一个是要移动的文件或文件夹的路径，第二个是要移动去的地方，若目标不存在，则进行改名</p>
+<h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">rm</span>+(-r -f)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>rm命令的作用是删除文件或文件夹，参数必填，数量不限，-r选项表示删除文件夹，-f选项表示强制删除，一般在以root用户登录的情况下使用</p>
+<h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>which命令的作用是查看命令的程序文件存放在哪里，因此这里的参数是命令名</p>
+<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">find+起始路径+ -name/-size +<span class="string">&quot;被查找文件名&quot;</span>/<span class="string">&quot;+-NMGB&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>find命令的作用是搜索指定的文件，首先要指定起始路径，再选择是以文件名的方式搜索还是以文件大小的方式搜索，以文件名方式搜索需要填写文件名称，以文件大小搜索需要填写相应的文件大小范围，其中“+”代表大于，“-”代表小于。</p>
+<h2 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">grep+(-n)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>grep命令的作用是从一个文件中过滤相应的文件行，需要两个参数，第一个是过滤的关键字，第二个是文件的路径，-n选项可选，用来显示匹配的行的行号</p>
+<h2 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">wc</span>+(-c -m -l -w)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>wc命令的作用是统计文件的行数，单词数量，若不加选项，则会以行数、单词数、字节数的顺序显示相关数量，而其可选的四个选项意义如下：</p>
+<ul>
+<li>-c 统计字节数量</li>
+<li>-m 统计字符数量</li>
+<li>-l 统计行数</li>
+<li>-w 统计单词数</li>
+</ul>
+<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>echo命令的作用与printf函数类似，将指定内容输出到命令行里面，若内容过于复杂可以加上引号（有空格等特殊符号）</p>
+<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">tail</span>+(-f -num)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>tail命令的作用是拿来查看文件尾部内容，其中参数部分是文件的路径。选项意义：</p>
+<ul>
+<li>-f 代表持续追踪，可以用来查看文件变换</li>
+<li>-num 指定要查看的行数，若不带此选项，则默认查看尾部十行</li>
+</ul>
+<h1 id="进阶命令"><a href="#进阶命令" class="headerlink" title="进阶命令"></a>进阶命令</h1><h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">tree+(-a -d)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>tree命令的作用和ls命令类似，不过其可以根据文件目录生成文件树，参数部分是文件或目录的路径。<br>选项意义：</p>
+<ul>
+<li>-a 代表列出全部文件</li>
+<li>-d 只列出目录</li>
+</ul>
+<p><strong>tree命令可能需要安装之后才能使用，使用yum&#x2F;apt……安装即可</strong></p>
+<h2 id="diff命令"><a href="#diff命令" class="headerlink" title="diff命令"></a>diff命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">diff+(-b -B -q)+file1+file2</span><br></pre></td></tr></table></figure></div>
+<p>diff命令用于比较文件的差异。<br>选项意义：</p>
+<ul>
+<li>-b 不检查空白字符的不同</li>
+<li>-B 不检查空行</li>
+<li>-q 仅显示有无差异，不显示详细信息</li>
+</ul>
+<h2 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">sed+(-n -i -e)+<span class="string">&#x27;command&#x27;</span>+input</span><br></pre></td></tr></table></figure></div>
+<p>sed命令的作用是对文件进行处理，其可以将数据进行替换、删除、新增、选取等。相较于一般的命令形式，sed命令需要一个单独的“command”，而input即是输入文本。<br>“command”内容及作用：</p>
+<ul>
+<li>[行号]+a+[内容] 该命令的作用是在对应行号的行后新增一行，其内容即为所输入的内容。行号可以是数字，代表某一特定的行，也可以是“起始行，终止行”的形式，代表在所属范围的每一行后都新增内容为输入内容的一行，其中$代表最后一行，$-1代表倒数第二行，以此类推，如果忽略行号部分，则代表对每一行都进行操作。（后续command里的行号和该条相同）</li>
+<li>[行号]+c+[内容] 用输入的内容取代相应行</li>
+<li>[行号]+i+[内容] 在当前行的上面插入一行文本，内容为输入内容</li>
+<li>[行号]+d 删除相应行的内容</li>
+<li>[行号]+p 输出选择的内容，通常与-n选项搭配使用</li>
+<li>[行号]+s&#x2F;re&#x2F;string(&#x2F;g) 将re(正则表达式)匹配的内容替换为string，如果没有&#x2F;g，则只会将每一行匹配的第一个字符串替换为string，而加上&#x2F;g则表示在整行范围内替换。</li>
+</ul>
+<p>选项意义：</p>
+<ul>
+<li>-n sed默认将文件所有内容输出，而该选项可以使其只显示经过它处理的内容</li>
+<li>-i 直接修改读取的内容，而不是输出到屏幕，若没有该选项则原文件不会发生变化</li>
+<li>-e 允许在同一行里执行执行多条命令</li>
+</ul>
+<h2 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">awk+(-F -v -f)+<span class="string">&#x27;模式 &#123;操作&#125;&#x27;</span>+输入文件</span><br></pre></td></tr></table></figure></div>
+<p>awk是一个功能十分强大的文本处理工具，其可以进行数据提取、文本处理、模式匹配、报告生成和自动化任务等。要能够运用awk命令，我们要知道以下内容：</p>
+<ol>
+<li>模式是什么：模式可以是一个正则表达式，也可以是一个条件表达式，表示对于匹配或满足条件的行再进行操作，其也可以是空，这时就代表对所有行进行操作。还有一些特殊模式，比如<code>BEGIN</code>和<code>END</code>，后面紧跟一个操作，分别代表在处理任何输入之前执行的操作，处理完所有输入后执行的操作。</li>
+<li>字段和变量：awk需要用内置的变量来处理文本数据，有以下常用的变量:</li>
+</ol>
+<ul>
+<li>$0：表示当前行的完整内容</li>
+<li>$1，$2，$3……：表示当前行的第几个字段（由字段分隔符分隔）</li>
+<li>NF：表示当前行的字段数</li>
+<li>NR：表示当前行的行号</li>
+<li>FS：字段分隔符，默认为空格或制表符</li>
+<li>OFS：输出字段分隔符，默认为空格</li>
+<li>ORS：输出记录分隔符，默认为换行符</li>
+</ul>
+<p>选项意义：</p>
+<ul>
+<li>-F 指定字段分隔符</li>
+<li>-v 设置变量的初始值</li>
+<li>-f 从文件中读取awk脚本</li>
+</ul>
+<p>举些例子更好理解  </p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print&#125;&#x27;</span> filename <span class="comment">#打印文件中所有行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> filename <span class="comment">#打印文件中的第二列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/pattern/ &#123;print&#125;&#x27;</span> filename <span class="comment">#打印包含特定模式的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;NR&gt;=3 &amp;&amp; NR&lt;=5 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第三行到第五行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;&#123;print $1,$3&#125;&#x27;</span> filename <span class="comment">#以逗号为字段分隔符，再打印第一列和第三列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;$2&gt;10 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第二列大于10的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/ERROR/ &#123;count++&#125; END &#123;print &quot;Error count:&quot;, count&#125;&#x27;</span> log.txt</span><br><span class="line"><span class="comment">#统计文件里有ERROR的行数</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;BEGIN &#123;OFS=&quot;:&quot;&#125; &#123;print $1, $2, $3&#125;&#x27;</span> data.txt</span><br><span class="line"><span class="comment">#以逗号为字段分隔符，并以分号为输出字段分隔符将第一、二、三列输出</span></span><br></pre></td></tr></table></figure></div>
+<h1 id="一些特殊的符号"><a href="#一些特殊的符号" class="headerlink" title="一些特殊的符号"></a>一些特殊的符号</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><p>管道符符号：<code>|</code><br>作用：将左边命令的输出作为右边命令的输入，例如：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> a.txt | grep <span class="string">&quot;something&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h2><p>被反引号修饰（包围）的字符串会作为命令来执行，例如：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
+<p>输出结果为<code>pwd</code><br>但</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> `<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure></div>
+<p>输出结果则是当前工作目录</p>
+<h2 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h2><p>分为输入重定向符和输出重定向符。</p>
+<ul>
+<li>输入重定向符：<code>&lt;</code>，代表将右边的内容（文件……）作为输入传给左边的指令，例如现在有一个可执行文件out，需要传入一个参数，正常执行可以写为：</li>
+</ul>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out parameter</span><br></pre></td></tr></table></figure></div>
+<p>但若现在已经有一个文件a.txt含有了我们想要的输入参数，则可以通过输入重定向符来实现：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out &lt; a.txt</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>输出重定向符：将左边命令的结果写入右边的文件</li>
+<li><ul>
+<li>覆盖输出重定向符：<code>&gt;</code>，左边命令的结果将会覆盖文件原有的内容</li>
+</ul>
+</li>
+<li><ul>
+<li>追加输出重定向符：<code>&gt;&gt;</code>，左边命令的结果将会追加到文件的末尾，文件原有内容仍会保留</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux操作系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux中的vim编辑器</title>
+    <url>/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
+    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
+<li>命令模式</li>
+<li>输入模式</li>
+<li>底线命令模式</li>
+</ul>
+<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
+<li>i 在当前光标位置进入输入模式</li>
+<li>a 在当前光标之后进入输入模式</li>
+<li>I 在当前行开头进入输入模式</li>
+<li>A 在当前行结尾进入输入模式</li>
+<li>o 在当前光标下一行进入输入模式</li>
+<li>O 在当前光标上一行进入输入模式</li>
+<li>0 移动光标到当前行的开头</li>
+<li>$ 移动光标到当前行的结尾</li>
+<li>&#x2F; 搜索模式</li>
+<li><ul>
+<li>n 向下继续搜索</li>
+</ul>
+</li>
+<li><ul>
+<li>N 向上继续搜索</li>
+</ul>
+</li>
+<li>dd 删除光标所在行内容</li>
+<li>ndd 删除当前光标向下n行</li>
+<li>yy 复制当前行</li>
+<li>nyy 复制当前行和下面n行</li>
+<li>p 粘贴复制内容</li>
+<li>u 撤销修改</li>
+<li><code>ctrl</code>+r 反向撤销修改</li>
+<li>gg 跳到首行</li>
+<li>G 跳到末行</li>
+<li>dG 从当前行开始，向下全部删除</li>
+<li>dgg 从当前行开始，向上全部删除</li>
+<li>d$ 从当前光标开始，删除到本行结尾</li>
+<li>d0 从当前光标开始，删除到本行开头</li>
+</ul>
+<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
+<li>q！ 强制退出</li>
+<li>set nu 显示行号</li>
+<li>set nonu 不显示行号</li>
+<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux操作系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>操作系统</tag>
       </tags>
   </entry>
 </search>

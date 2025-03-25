@@ -13,7 +13,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://cdostan.github.io/2025/02/13/linux学习/"/>
+    <link rel="canonical" href="https://cdostan.github.io/2025/03/20/oo/oo_unit1/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -23,17 +23,17 @@
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux学习笔记（指令篇）">
-<meta property="og:url" content="https://cdostan.github.io/2025/02/13/linux%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:title" content="2025_BUAA_OO_Unit1">
+<meta property="og:url" content="https://cdostan.github.io/2025/03/20/OO/oo_Unit1/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
-<meta property="article:published_time" content="2025-02-13T12:02:30.000Z">
-<meta property="article:modified_time" content="2025-03-02T16:04:34.140Z">
+<meta property="article:published_time" content="2025-03-20T12:21:00.000Z">
+<meta property="article:modified_time" content="2025-03-25T02:15:44.410Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="面向对象">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdostan.github.io/images/redefine-og.webp">
     
@@ -47,7 +47,7 @@
     
     <title>
         
-            Linux学习笔记（指令篇） | CD&#39;s Blog
+            2025_BUAA_OO_Unit1 | CD&#39;s Blog
         
     </title>
 
@@ -623,7 +623,7 @@
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Linux学习笔记（指令篇）</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">2025_BUAA_OO_Unit1</h1>
 			</div>
 			
 		</div>
@@ -644,15 +644,15 @@
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2025-02-13 20:02:30</span>
-        <span class="mobile">2025-02-13 20:02:30</span>
+        <span class="desktop">2025-03-20 20:21</span>
+        <span class="mobile">2025-03-20 20:21</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-03-03 00:04:34</span>
-            <span class="mobile">2025-03-03 00:04:34</span>
+            <span class="desktop">2025-03-25 10:15:44</span>
+            <span class="mobile">2025-03-25 10:15:44</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -666,7 +666,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Linux%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">Linux操作系统</a>&nbsp;
+                            <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1-BUAA/">面向对象(BUAA)</a>&nbsp;
                         </li>
                     
                     
@@ -680,11 +680,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/Linux/">Linux</a>&nbsp;
+                        <a href="/tags/BUAA/">BUAA</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>&nbsp;
+                        | <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">面向对象</a>&nbsp;
                     </li>
                 
             </ul>
@@ -694,12 +694,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.8k Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.7k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>10 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>16 Mins</span>
         </span>
     
     
@@ -718,180 +718,99 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h1 id="Linux目录结构"><a href="#Linux目录结构" class="headerlink" title="Linux目录结构"></a>Linux目录结构</h1><p>在Linux系统中，目录结构与Windows系统类似，都是树形结构，不同的是，Windows系统可以有多个树，也即其能有很多个磁盘，但Linux系统只有一棵树，即所有文件和目录都放在根目录下。<br><img  
+			<p>第一单元的OO在紧张与刺激中落下帷幕，回顾第一单元，真是应了吴际老师上学期在OOPre的最后讲的“一定要好好理解文法分析，不然下学期的第一单元会很痛苦”。整个Unit1就是围绕文法展开，前前后后就是让我们展开表达式，在我们做好这个蛋糕后，再用化简优化去为它裱花点缀。</p>
+<h1 id="第一次作业"><a href="#第一次作业" class="headerlink" title="第一次作业"></a>第一次作业</h1><p>第一次作业较为简单，因为出现的是最基本的常数与幂函数，且括号最多一层，因此实现起来并不困难，只要把词法和语法分析做好，并能实现展开，第一次作业就基本成型。</p>
+<h2 id="1-1程序架构"><a href="#1-1程序架构" class="headerlink" title="1.1程序架构"></a>1.1程序架构</h2><p><strong>UML类图</strong><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/img/linux/linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png"
+                     data-src="/img/oo/unit1/hw1uml.png"
                      
-                ><br>Linux系统中，以“&#x2F;”表示顶级目录即根目录，层次关系也通过“&#x2F;”表示</p>
-<h2 id="路径格式"><a href="#路径格式" class="headerlink" title="路径格式"></a>路径格式</h2><ul>
-<li>绝对路径：即以根目录“&#x2F;”开头</li>
-<li>相对路径：相对于当前工作目录下的路径，例如当前工作目录下有一个test目录，则其相对路径就是test</li>
-<li>特殊路径符：</li>
-<li><ul>
-<li>.:表示当前目录</li>
-</ul>
-</li>
-<li><ul>
-<li>..:表示上一级目录</li>
-</ul>
-</li>
-<li><ul>
-<li>~:表示HOME目录</li>
-</ul>
-</li>
-</ul>
-<h1 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h1><p>在Linux系统中，每一条命令都是一个可执行的程序，命令都按以下格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">command</span>+(option)+(parameter)</span><br></pre></td></tr></table></figure></div>
+                ></p>
+<p><strong>功能说明</strong>  </p>
 <ul>
-<li>command即指令名，如ls,cd,mkdir……</li>
-<li>option是选项，用来执行一些特定的操作</li>
-<li>parameter是相关参数，通常是文件或目录路径</li>
+<li><code>Main</code>：程序入口  </li>
+<li><code>Expr</code>、<code>Term</code>、<code>Variable</code>、<code>Const</code>：表达式的基础结构  </li>
+<li><code>Symbol</code>：进行符号处理，保证每一个项的内部不会出现正号或负号，且每个项前最多有一个符号  </li>
+<li><code>Lexer</code>、<code>Parser</code>：进行语法和词法分析  </li>
+<li><code>Poly</code>：把项规范为形如$a*x^b$的形式  </li>
+<li><code>Operate</code>：进行运算，包括表达式幂的展开和项的展开</li>
 </ul>
-<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span>+(-a -l -h)+(parameter)</span><br></pre></td></tr></table></figure></div>
-<p>ls命令的作用是查看相应的目录里的内容，如果不加参数，则默认展示当前工作目录的内容，加上参数则会展示指定目录的内容。<br>该指令有三个选项可选：</p>
+<h2 id="1-2代码复杂度"><a href="#1-2代码复杂度" class="headerlink" title="1.2代码复杂度"></a>1.2代码复杂度</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw1_complexity.png"
+                     
+                ></p>
+<p>可以发现，其中<code>Operate</code>、<code>Parse</code>、<code>Symbol</code>的复杂度比较高，其中有最大的圈复杂度甚至达到了16。我在这几个类里面所用到的条件判断语句和循环语句以及函数调用比较多，因此造成了圈复杂度比较高。拿<code>Symbol</code>类举例来说，虽然里面就只有两个方法，但针对字符串化简符号的逻辑是十分复杂的，尤其是项里面有子表达式的时候，因此涉及到很多判断和循环，造成圈复杂度很高，而这样的结果也说明了我这个类以及里面的方法其实可迭代性和可维护性并不好，因为化简符号不像词法和语法分析那样只需要添加一定的<code>token</code>和语法解析就能实现，在后续表达式逐渐变复杂后整个符号化简的逻辑可能会大变，而且遇上多层嵌套括号后复杂度可能会很高。<br>进一步分析，其实会发现我第一次作业的架构和”高内聚低耦合”似乎不太沾边，我后续作业是经过了重构的，因此后续完全没有回顾过我第一次作业。而当我重看第一次作业代码时，抛开写得shi不shi不谈，其实理解还是很容易理解的，但是整体看下来其实好像并不是在写面向对象编程，而是在写面向过程编程，很多类的耦合度过高，而有的类该自己干的事没干，不该自己干的事干了，甚至有的类干的事和自己的名字都没啥关系，比如<code>Poly</code>。因此我在第一次作业结束后发现在这样的代码基础上迭代十分困难，决定重构。</p>
+<h2 id="1-3化简优化"><a href="#1-3化简优化" class="headerlink" title="1.3化简优化"></a>1.3化简优化</h2><p>能把整个表达式正确展开后，其实本次作业的正确性我们已经可以拿满分了，但是估计性能分会很低。针对第一次作业，其实化简无非就是同类项合并，而判断能否合并也十分简单，只需要判断展开后每个项中x的幂次相等，最后如果所有项里有符号为正的，我们把它放在第一位即可省掉一个负号带来的长度，实现了这些后，性能分也可以拿满。</p>
+<h2 id="1-4Bug分析"><a href="#1-4Bug分析" class="headerlink" title="1.4Bug分析"></a>1.4Bug分析</h2><p>在互测中我出现了一些WA的错误，而错误的来源全是来自于我<code>Symbol</code>类中化简符号的方法出错（其逻辑真的很复杂，bug修复时针对这一个bug都修改了好多行），具体出错的原因是我把项里子表达式的第一个符号拿出来给了整个项，若是正号还好，但如果是负号，我整个项的符号就会取一次反，最终造成错误。<br>事实上，这个符号简化的方法完全是自己折腾自己，因为完全可以把符号放在语法分析里面一起，这样在解析完一个项时，它的符号也被解析出来，因此我后续重构的时候完全摒弃了这一个类。</p>
+<h1 id="第二次作业"><a href="#第二次作业" class="headerlink" title="第二次作业"></a>第二次作业</h1><p>第二次作业较第一次作业的难度陡然上升，引进了三角函数和自定义递推函数，同时允许多层嵌套括号。主要有两个难点，一个是如何正确地算出递推函数并代入表达式，一个是针对有三角函数的化简可以怎么做，如果不考虑化简的话，只需要解决递推函数这个难点即可。由于第一次作业我的架构很烂，层次不清淅，因此第二次作业我首先进行了重构。</p>
+<h2 id="2-1程序架构"><a href="#2-1程序架构" class="headerlink" title="2.1程序架构"></a>2.1程序架构</h2><p><strong>UML类图</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw2uml.png"
+                     
+                ></p>
+<p><strong>功能说明</strong>  </p>
 <ul>
-<li>-a 将该目录里的所有内容展示，包括隐藏内容</li>
-<li>-l 以列表的形式将目录里的内容展示，同时把文件或文件夹所属的用户，用户组，相关权限以及文件大小展示出来</li>
-<li>-h 必须结合-l使用，可以将文件大小显示的更加清晰</li>
+<li><code>Main</code>：程序入口  </li>
+<li><code>Expr</code>、<code>Term</code>、<code>Var</code>、<code>Const</code>、<code>Trigono</code>、<code>Func</code>：表达式基础结构  </li>
+<li><code>Parser</code>、<code>Lexer</code>、<code>Token</code>：语法词法解析  </li>
+<li><code>Funcrecur</code>：递推函数相关信息获取，并计算递推函数  </li>
+<li><code>Regofunc</code>：存储被解析出来的递推函数规则，供整个项目使用  </li>
+<li><code>Bracketdeal</code>：括号处理，寻找匹配的括号  </li>
+<li><code>Equandneg</code>：判断表达式是否相等或相反  </li>
+<li><code>Unit</code>：最终表达式中的最小单元，形如$a*x^b*{sin()}*{cos()}$  </li>
+<li><code>Entirety</code>：由多个<code>Unit</code>组成的单元</li>
 </ul>
-<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>+(parameter)</span><br></pre></td></tr></table></figure></div>
-<p>cd命令的作用是切换工作目录到指定目录，如果不加参数，则默认切换到用户的HOME目录，一般是&#x2F;home&#x2F;username</p>
-<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
-<p>pwd命令的作用是展示当前工作目录</p>
-<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span>+(-p)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>mkdir命令的作用是创建新的目录，参数必填<br>-p选项表示自动创建不存在的父目录，这样可以创建一个当前目录下很多层的目录</p>
-<h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>touch命令的作用是创建一个文件</p>
-<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>cat命令的作用是查看文件内容</p>
-<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">more+parameter</span><br></pre></td></tr></table></figure></div>
-<p>more命令的作用也是查看文件内容，但它会将内容非常多的文件一页一页的展示，通过空格翻页，按q退出查看</p>
-<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span>+(-r)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>cp命令的作用是复制文件或文件夹，需要两个参数，第一个是要复制的文件或文件夹的路径，第二个是要复制去的地方，-r选项在复制文件夹的时候使用</p>
-<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>mv命令的作用是移动文件或文件夹，同样需要两个参数，第一个是要移动的文件或文件夹的路径，第二个是要移动去的地方，若目标不存在，则进行改名</p>
-<h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span>+(-r -f)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>rm命令的作用是删除文件或文件夹，参数必填，数量不限，-r选项表示删除文件夹，-f选项表示强制删除，一般在以root用户登录的情况下使用</p>
-<h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>which命令的作用是查看命令的程序文件存放在哪里，因此这里的参数是命令名</p>
-<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find+起始路径+ -name/-size +<span class="string">&quot;被查找文件名&quot;</span>/<span class="string">&quot;+-NMGB&quot;</span></span><br></pre></td></tr></table></figure></div>
-<p>find命令的作用是搜索指定的文件，首先要指定起始路径，再选择是以文件名的方式搜索还是以文件大小的方式搜索，以文件名方式搜索需要填写文件名称，以文件大小搜索需要填写相应的文件大小范围，其中“+”代表大于，“-”代表小于。</p>
-<h2 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep+(-n)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>grep命令的作用是从一个文件中过滤相应的文件行，需要两个参数，第一个是过滤的关键字，第二个是文件的路径，-n选项可选，用来显示匹配的行的行号</p>
-<h2 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">wc</span>+(-c -m -l -w)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>wc命令的作用是统计文件的行数，单词数量，若不加选项，则会以行数、单词数、字节数的顺序显示相关数量，而其可选的四个选项意义如下：</p>
+<h2 id="2-2代码复杂度"><a href="#2-2代码复杂度" class="headerlink" title="2.2代码复杂度"></a>2.2代码复杂度</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw2_complexity.png"
+                     
+                >  </p>
+<p>在本次项目中，复杂度较高的类为<code>Unit</code>类，其他类复杂度稍高可能是因为条件和循环语句稍多，例如<code>Lexer</code>和<code>Bracketdeal</code>类，而<code>Unit</code>类的复杂度是由于其里面涉及了很多方法，包括运算以及判断是否能合并等方法，涉及到的方法调用也较多，因此呈现了一个较高的复杂度。<br>此次作业我尽可能的满足了“高内聚低耦合”的想法，尽可能把一些特定功能单独抽象出来成为一个类，同时尽量保证每个类只干和自己相关的事。<br><strong>重构前后对比</strong><br>先抛开本次作业新增的三角函数和自定义递推函数不谈，其他部分我也和第一次作业有很大的差别。<br>首先是词法和语法解析，本次我单独设计了一个<code>Token</code>类，里面包含了字符串所包含的可能的字符类型，而不是在<code>Lexer</code>类里对字符串中的一个一个字符分析，整理来说可理解性和可迭代行会增强不少。我还在<code>Parser</code>里面确定了项的符号，直接抛弃了第一次作业中的<code>Symbol</code>类，且这样的方法几乎适用于往后的所有迭代。<br>其次我设计了<code>Entirety</code>和<code>Unit</code>两个类，最终的计算化简全都在这两个类中进行，而所有的表达式基础结构如<code>Expr</code>等都有一个<code>toentirety()</code>方法，方便之后的展开和化简，这样，我的代码在面临下一次迭代时可能不需要修改很多东西就能适应情景，而层次化的结构也比较清晰，这提高了整个项目的可维护性。  </p>
+<h2 id="2-3难点分析及化简优化"><a href="#2-3难点分析及化简优化" class="headerlink" title="2.3难点分析及化简优化"></a>2.3难点分析及化简优化</h2><p>前面说到，本次作业主要有两个难点：一个是递推函数，一个是三角函数化简。<br>针对递推函数，我采用字符串替换的方式，替换字符串后再对得到的字符串进行一次词法和语法分析并重复操作直到表达式中不含形如“f{n}(x)”的东西。要注意的是，在这里替换字符串的时候为了以防错误替换，可以先把第i个参数用“ai”替换，全部替换完后再将对应的“ai”替换为真正的实参。<br>针对三角函数的化简，其实难点在于如何判断两个三角函数是否相等或相反，也即三角函数内部的表达式是否相等或相反。这里我采用了一种比较暴力的方式，我想既然我们整个程序做的事情就是化简表达式，那我要判断两个表达式是否相等或相反，是不是可以把这两个表达式相加或相减，然后调用我们的程序其是否为零即可。综合各方面性能考虑，我最后决定只做$cos(0)$，$sin(0)$，以及正弦函数二倍角的化简，而且为了使最终结果的长度尽可能短，我在最后一步才化简，以防出现本来可以合并但在中途化简之后无法合并的情况。</p>
+<h2 id="2-4Bug分析"><a href="#2-4Bug分析" class="headerlink" title="2.4Bug分析"></a>2.4Bug分析</h2><p>此次作业我出现了一些RE和WA以及TLE的错误，其中最主要的是RE错误。RE的原因是我在做递推函数的字符串替换时，忽略了可能嵌套函数的情况，导致我用的逗号下标可能是嵌套函数里面的逗号的下标，最后替换的结果自然是错的，为了修复这个问题，我添加在<code>Token</code>中添加了<code>Comma</code>这一类型，这样就能准确找到属于当前函数的逗号的下标，从而正确替换字符串。<br>而WA和TLE的原因在于我在合并<code>Unit</code>时，需要判断每个三角函数的幂次是否相同，但是我的三角函数在<code>Unit</code>里是用<code>HashMap&lt;String,Integer&gt;</code>来存储的，我对幂次相同的判断直接用的等号，但是显然等号是不适用于<code>Integer</code>内容的判相等的，因此出现了错误，当我改用<code>Objects</code>的<code>equals</code>方法后，问题就解决了。</p>
+<h1 id="第三次作业"><a href="#第三次作业" class="headerlink" title="第三次作业"></a>第三次作业</h1><p>第三次作业添加了自定义普通函数和求导算子，自定义普通函数的处理方法和第二次作业的自定义递归函数的处理方法类似，而且更简单，只不过由于函数内部的因子多了自定义普通函数这一选项，在替换和解析的时候可能需要做一点改动。而关于求导，可以采用自下而上的方法，先把最基本的常数、幂函数和三角函数的求导实现，再实现项和表达式的求导。本次作业我在第二次作业的基础上进行迭代，添加的东西并不多。</p>
+<h2 id="3-1程序架构"><a href="#3-1程序架构" class="headerlink" title="3.1程序架构"></a>3.1程序架构</h2><p><strong>UML类图</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw3uml.png"
+                     
+                ></p>
+<p><strong>新增类和功能</strong>  </p>
 <ul>
-<li>-c 统计字节数量</li>
-<li>-m 统计字符数量</li>
-<li>-l 统计行数</li>
-<li>-w 统计单词数</li>
+<li><code>Deriva</code>：表达式基础结构，表示求导因子  </li>
+<li><code>Funcparse</code>：新增解析普通函数功能  </li>
+<li><code>Regofunc</code>：新增了两个普通函数规则  </li>
+<li><code>Parser</code>、<code>Lexer</code>、<code>Token</code>：新增对求导因子的解析  </li>
+<li>各类基本单元：新增求导方法</li>
 </ul>
-<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>echo命令的作用与printf函数类似，将指定内容输出到命令行里面，若内容过于复杂可以加上引号（有空格等特殊符号）</p>
-<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">tail</span>+(-f -num)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>tail命令的作用是拿来查看文件尾部内容，其中参数部分是文件的路径。选项意义：</p>
+<h2 id="3-2代码复杂度"><a href="#3-2代码复杂度" class="headerlink" title="3.2代码复杂度"></a>3.2代码复杂度</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/oo/unit1/hw3_complexity.png"
+                     
+                >  </p>
+<p>本次复杂度和第二次作业类似，但由于我把读取字符串的行为放在了<code>Main</code>类里，而这次读取字符串需要读普通函数，因此条件语句可能会增多导致圈复杂度上升。  </p>
+<h2 id="3-3Bug分析"><a href="#3-3Bug分析" class="headerlink" title="3.3Bug分析"></a>3.3Bug分析</h2><p>本次作业出现了几个RE和WA的错误。<br>RE是由于我在解析递推函数的参数个数时是靠逗号的个数来计算的，而此次由于递推函数表达式中可以出现普通函数，因此很可能会得到错误的参数个数，针对此问题，我修改为只考察等号左边是否有逗号，这样可以省去对右边复杂的分析。<br>WA是由于我没有考虑嵌套求导的情况，我原本的<code>Deriva</code>类里有<code>toentirety()</code>和<code>derivative()</code>两个方法，但这两个方法完全一样，因此导致嵌套求导时该求多次导的表达式只求了一次导，针对该问题，我将<code>toentirety()</code>方法修改为求一次导，将<code>derivative()</code>方法修改为求两次导，这样便修复了Bug。  </p>
+<h1 id="TalkTalk"><a href="#TalkTalk" class="headerlink" title="TalkTalk"></a>TalkTalk</h1><h2 id="程序优缺点总结"><a href="#程序优缺点总结" class="headerlink" title="程序优缺点总结"></a>程序优缺点总结</h2><p>仅针对重构后的程序<del>（重构前的优点是写的复杂）</del><br><strong>优点</strong>  </p>
 <ul>
-<li>-f 代表持续追踪，可以用来查看文件变换</li>
-<li>-num 指定要查看的行数，若不带此选项，则默认查看尾部十行</li>
+<li>层次清晰，类设计合理，基本实现高内聚低耦合<br><strong>缺点</strong>  </li>
+<li>代码写得有点冗余，有些部分可能出现了好几次，这时应该把其抽象出来为一个方法  </li>
+<li>性能不够优秀，判断表达式相等或相反直接调用整个程序，在嵌套很深的时候会出现卡死的情况，可以考虑重写<code>Hashcode</code>来方便判断。  </li>
+<li>没有实现更多的化简，这也主要是由于对判相等方法性能的担忧，若修改了判想等方法，应该能实现更多化简。</li>
 </ul>
-<h1 id="进阶命令"><a href="#进阶命令" class="headerlink" title="进阶命令"></a>进阶命令</h1><h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree+(-a -d)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>tree命令的作用和ls命令类似，不过其可以根据文件目录生成文件树，参数部分是文件或目录的路径。<br>选项意义：</p>
-<ul>
-<li>-a 代表列出全部文件</li>
-<li>-d 只列出目录</li>
-</ul>
-<p><strong>tree命令可能需要安装之后才能使用，使用yum&#x2F;apt……安装即可</strong></p>
-<h2 id="diff命令"><a href="#diff命令" class="headerlink" title="diff命令"></a>diff命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff+(-b -B -q)+file1+file2</span><br></pre></td></tr></table></figure></div>
-<p>diff命令用于比较文件的差异。<br>选项意义：</p>
-<ul>
-<li>-b 不检查空白字符的不同</li>
-<li>-B 不检查空行</li>
-<li>-q 仅显示有无差异，不显示详细信息</li>
-</ul>
-<h2 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed+(-n -i -e)+<span class="string">&#x27;command&#x27;</span>+input</span><br></pre></td></tr></table></figure></div>
-<p>sed命令的作用是对文件进行处理，其可以将数据进行替换、删除、新增、选取等。相较于一般的命令形式，sed命令需要一个单独的“command”，而input即是输入文本。<br>“command”内容及作用：</p>
-<ul>
-<li>[行号]+a+[内容] 该命令的作用是在对应行号的行后新增一行，其内容即为所输入的内容。行号可以是数字，代表某一特定的行，也可以是“起始行，终止行”的形式，代表在所属范围的每一行后都新增内容为输入内容的一行，其中$代表最后一行，$-1代表倒数第二行，以此类推，如果忽略行号部分，则代表对每一行都进行操作。（后续command里的行号和该条相同）</li>
-<li>[行号]+c+[内容] 用输入的内容取代相应行</li>
-<li>[行号]+i+[内容] 在当前行的上面插入一行文本，内容为输入内容</li>
-<li>[行号]+d 删除相应行的内容</li>
-<li>[行号]+p 输出选择的内容，通常与-n选项搭配使用</li>
-<li>[行号]+s&#x2F;re&#x2F;string(&#x2F;g) 将re(正则表达式)匹配的内容替换为string，如果没有&#x2F;g，则只会将每一行匹配的第一个字符串替换为string，而加上&#x2F;g则表示在整行范围内替换。</li>
-</ul>
-<p>选项意义：</p>
-<ul>
-<li>-n sed默认将文件所有内容输出，而该选项可以使其只显示经过它处理的内容</li>
-<li>-i 直接修改读取的内容，而不是输出到屏幕，若没有该选项则原文件不会发生变化</li>
-<li>-e 允许在同一行里执行执行多条命令</li>
-</ul>
-<h2 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk+(-F -v -f)+<span class="string">&#x27;模式 &#123;操作&#125;&#x27;</span>+输入文件</span><br></pre></td></tr></table></figure></div>
-<p>awk是一个功能十分强大的文本处理工具，其可以进行数据提取、文本处理、模式匹配、报告生成和自动化任务等。要能够运用awk命令，我们要知道以下内容：</p>
-<ol>
-<li>模式是什么：模式可以是一个正则表达式，也可以是一个条件表达式，表示对于匹配或满足条件的行再进行操作，其也可以是空，这时就代表对所有行进行操作。还有一些特殊模式，比如<code>BEGIN</code>和<code>END</code>，后面紧跟一个操作，分别代表在处理任何输入之前执行的操作，处理完所有输入后执行的操作。</li>
-<li>字段和变量：awk需要用内置的变量来处理文本数据，有以下常用的变量:</li>
-</ol>
-<ul>
-<li>$0：表示当前行的完整内容</li>
-<li>$1，$2，$3……：表示当前行的第几个字段（由字段分隔符分隔）</li>
-<li>NF：表示当前行的字段数</li>
-<li>NR：表示当前行的行号</li>
-<li>FS：字段分隔符，默认为空格或制表符</li>
-<li>OFS：输出字段分隔符，默认为空格</li>
-<li>ORS：输出记录分隔符，默认为换行符</li>
-</ul>
-<p>选项意义：</p>
-<ul>
-<li>-F 指定字段分隔符</li>
-<li>-v 设置变量的初始值</li>
-<li>-f 从文件中读取awk脚本</li>
-</ul>
-<p>举些例子更好理解  </p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print&#125;&#x27;</span> filename <span class="comment">#打印文件中所有行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> filename <span class="comment">#打印文件中的第二列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/pattern/ &#123;print&#125;&#x27;</span> filename <span class="comment">#打印包含特定模式的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;NR&gt;=3 &amp;&amp; NR&lt;=5 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第三行到第五行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;&#123;print $1,$3&#125;&#x27;</span> filename <span class="comment">#以逗号为字段分隔符，再打印第一列和第三列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;$2&gt;10 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第二列大于10的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/ERROR/ &#123;count++&#125; END &#123;print &quot;Error count:&quot;, count&#125;&#x27;</span> log.txt</span><br><span class="line"><span class="comment">#统计文件里有ERROR的行数</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;BEGIN &#123;OFS=&quot;:&quot;&#125; &#123;print $1, $2, $3&#125;&#x27;</span> data.txt</span><br><span class="line"><span class="comment">#以逗号为字段分隔符，并以分号为输出字段分隔符将第一、二、三列输出</span></span><br></pre></td></tr></table></figure></div>
-<h1 id="一些特殊的符号"><a href="#一些特殊的符号" class="headerlink" title="一些特殊的符号"></a>一些特殊的符号</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><p>管道符符号：<code>|</code><br>作用：将左边命令的输出作为右边命令的输入，例如：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> a.txt | grep <span class="string">&quot;something&quot;</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h2><p>被反引号修饰（包围）的字符串会作为命令来执行，例如：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
-<p>输出结果为<code>pwd</code><br>但</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> `<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure></div>
-<p>输出结果则是当前工作目录</p>
-<h2 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h2><p>分为输入重定向符和输出重定向符。</p>
-<ul>
-<li>输入重定向符：<code>&lt;</code>，代表将右边的内容（文件……）作为输入传给左边的指令，例如现在有一个可执行文件out，需要传入一个参数，正常执行可以写为：</li>
-</ul>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./out parameter</span><br></pre></td></tr></table></figure></div>
-<p>但若现在已经有一个文件a.txt含有了我们想要的输入参数，则可以通过输入重定向符来实现：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./out &lt; a.txt</span><br></pre></td></tr></table></figure></div>
-<ul>
-<li>输出重定向符：将左边命令的结果写入右边的文件</li>
-<li><ul>
-<li>覆盖输出重定向符：<code>&gt;</code>，左边命令的结果将会覆盖文件原有的内容</li>
-</ul>
-</li>
-<li><ul>
-<li>追加输出重定向符：<code>&gt;&gt;</code>，左边命令的结果将会追加到文件的末尾，文件原有内容仍会保留</li>
-</ul>
-</li>
+<h2 id="新迭代情景"><a href="#新迭代情景" class="headerlink" title="新迭代情景"></a>新迭代情景</h2><p>加入指数函数以及自定义分段函数（自定义分段函数内的因子一定满足在某个确切的自定义分段范围内，比如常数因子，或者表达式（x^2-2*x+1）等）。<br>针对指数函数较好实现，只需新增一个实现接口<code>Factor</code>的类，并添加相应的求导方法即可。<br>针对自定义分段函数需要新增解析其规则的方法，而若因子为常数，只需判断其在哪个区间并代入相应函数表达式即可，对于含变量x的因子，可以新建一个方法（直接代值计算）去判断其属于哪个区间并代入相应函数表达式。</p>
+<h2 id="hack策略"><a href="#hack策略" class="headerlink" title="hack策略"></a>hack策略</h2><p>这三次作业我都成功hack到了同组的同学，尤其是第三次几乎将组内所有同学都hack了。我的策略是自己设计数据，从简到繁，且充分考虑特殊情况。拿第三次作业来说，我先从sin(0)^0这样的数据开始，然后到求导，设计一些可能出错的求导样例去验证大家求导实现得是否正确，最后添加函数，并考虑嵌套函数等情况。<br>可能有部分同学用评测机来进行该环节，单个人认为数据生成器生成的数据随机性过大，可能运行很久也没有一个有效的样例能hack到别人，而如果是生成了十分复杂的数据造成同学tle，可能又会因为cost的限制而难以修改到能够成功提交。但我认为评测机针对我们自己查自己bug还是十分重要的，尤其是针对强测环节，而这也是由于其生成数据的随机性。</p>
+<h2 id="心得体会"><a href="#心得体会" class="headerlink" title="心得体会"></a>心得体会</h2><h3 id="1）Don’t-be-reckless"><a href="#1）Don’t-be-reckless" class="headerlink" title="1）Don’t be reckless"></a>1）Don’t be reckless</h3><p>我们拿到一个题目或需求或想法时，不应一上来就开始敲键盘，这样不计后果的行为是十分危险的，没有经过充分的理解题目和需求，没有经过充分地思考，没有经过精心的设计，直接开始写代码很大概率会写出一个极难阅读、理解和维护的怪物。而且当你写着写着很可能会想起好像还有什么需求没有实现又去修改前面写的代码，这样在写的过程中不断的进行修改，写程序本应是伴随修改的，但应该是负责任的修改，是考虑过的修改，而不是鲁莽随意的修改。因此，在开始写代码前，我们应该对自己的架构有了一个基本的认知，清楚的知道自己的需求和目标是什么，这样才能使整个项目层次尽可能清晰，方便后续的阅读和修改。</p>
+<h3 id="2）be-careful"><a href="#2）be-careful" class="headerlink" title="2）be careful"></a>2）be careful</h3><p>谨慎，既在思考设计时，又在编写程序时，还在回顾修改时。在三个阶段都应该保持谨慎的心态，尽可能去思考自己的程序是否有什么情况还没有考虑到。我便是忽略了这一点，写完总是认为自己的程序应该没什么问题了，导致强测常会出一些错误。</p>
+<h3 id="3）be-stern"><a href="#3）be-stern" class="headerlink" title="3）be stern"></a>3）be stern</h3><p>这里我不是想说要认真的意思，我想表达的是我们可以逼自己一把，对自己狠一点，做一做自己不敢做的事，比如化简，做一做自己不想做的事，比如重构，做了这些，我们首先会积累到相应的经验，总结到方法，能提升自己的能力，还能进一步加强对架构的理解，理解某种架构为什么好，好在哪里。</p>
+<h3 id="4）be-exclamatory"><a href="#4）be-exclamatory" class="headerlink" title="4）be exclamatory"></a>4）be exclamatory</h3><p>我在unit1经常感叹别人的设计，别人的方法，无论是上机时发给我们的代码还是往届学长学姐们的博客以及讨论区大家的发言，很多时候我都会想起余华老师评价莫言老师那句“**，写得那么NB”。学习和运用这些架构和方法，也让我的代码变得更好，让我逐渐学会怎么写出优雅的代码，让我对项目设计有了更深的理解。我认为本单元交给我最重要的方法就是递归下降法，但交给我最重要的思想是架构设计的思想，什么时候该分一个类，类里面该干什么事，怎样降低不同类之间的耦合度，怎样让项目可维护性更好……我在上学期除了OOPre之外还修了一门java程序设计，那门课的大作业是写一个工作量为2000行代码的程序，我写了一个创新的贪吃蛇游戏，其实逻辑并不复杂，但由于涉及到GUI，仍然需要去设计相应的架构，设计不同的面板之间的关系，不同类中的方法，但我当时写得很杂，几乎是每一关就对应了一个类，很多该抽象出来的方法和类并没有抽象出来，导致代码非常冗余，且修改起来也十分头疼，当时为了修复一个很奇怪的bug找了半天对应的代码位置。所以我是真的十分感叹unit1中遇到的所有设计和方法，当然不能止于感叹，还要运用，化为自己的东西才有用。</p>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><ul>
+<li>可以介绍一下项目的度量分析的各类指标分别是什么，是由什么决定的，反映了什么，这样能让大家在度量分析后对自己的代码有更深的认识</li>
+<li>提交hack数据时可以返回给我们提交数据的相应cost，这样在cost超过限制时，我们能够好地去修改数据</li>
 </ul>
 
 		</div>
@@ -900,18 +819,18 @@
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> Linux学习笔记（指令篇）</li>
+        <li><strong>Title:</strong> 2025_BUAA_OO_Unit1</li>
         <li><strong>Author:</strong> Cdostan</li>
         <li><strong>Created at
-                :</strong> 2025-02-13 20:02:30</li>
+                :</strong> 2025-03-20 20:21:00</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-03-03 00:04:34
+                    :</strong> 2025-03-25 10:15:44
             </li>
         
         <li>
-            <strong>Link:</strong> https://cdostan.github.io/2025/02/13/linux学习/
+            <strong>Link:</strong> https://cdostan.github.io/2025/03/20/OO/oo_Unit1/
         </li>
         <li>
             <strong>
@@ -933,11 +852,11 @@
 		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
 			
 			<li class="tag-item mx-0.5">
-				<a href="/tags/Linux/">#Linux</a>&nbsp;
+				<a href="/tags/BUAA/">#BUAA</a>&nbsp;
 			</li>
 			
 			<li class="tag-item mx-0.5">
-				<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>&nbsp;
+				<a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">#面向对象</a>&nbsp;
 			</li>
 			
 		</ul>
@@ -948,23 +867,11 @@
 		
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
-			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="prev" rel="prev" href="/2025/03/09/vim%E7%BC%96%E8%BE%91%E5%99%A8/">
-					<span class="left arrow-icon flex justify-center items-center">
-						<i class="fa-solid fa-chevron-left"></i>
-					</span>
-					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">linux中的vim编辑器</span>
-						<span class="post-nav-item">Prev posts</span>
-					</span>
-				</a>
-			</div>
-			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P7/">
+				<a class="next" rel="next" href="/2025/03/12/OS/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">计算机组成原理P7</span>
+						<span class="post-nav-title-item">BUAA操作系统lab0</span>
 						<span class="post-nav-item">Next posts</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -1028,8 +935,8 @@
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
-		<div class="page-title">Linux学习笔记（指令篇）</div>
-		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Linux目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">路径格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">命令格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">ls命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">cd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwd%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">pwd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir%E5%91%BD%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#touch%E5%91%BD%E4%BB%A4"><span class="nav-number">3.5.</span> <span class="nav-text">touch命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cat%E5%91%BD%E4%BB%A4"><span class="nav-number">3.6.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#more%E5%91%BD%E4%BB%A4"><span class="nav-number">3.7.</span> <span class="nav-text">more命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp%E5%91%BD%E4%BB%A4"><span class="nav-number">3.8.</span> <span class="nav-text">cp命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv%E5%91%BD%E4%BB%A4"><span class="nav-number">3.9.</span> <span class="nav-text">mv命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rm%E5%91%BD%E4%BB%A4"><span class="nav-number">3.10.</span> <span class="nav-text">rm命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#which%E5%91%BD%E4%BB%A4"><span class="nav-number">3.11.</span> <span class="nav-text">which命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find%E5%91%BD%E4%BB%A4"><span class="nav-number">3.12.</span> <span class="nav-text">find命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep%E5%91%BD%E4%BB%A4"><span class="nav-number">3.13.</span> <span class="nav-text">grep命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wc%E5%91%BD%E4%BB%A4"><span class="nav-number">3.14.</span> <span class="nav-text">wc命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#echo%E5%91%BD%E4%BB%A4"><span class="nav-number">3.15.</span> <span class="nav-text">echo命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tail%E5%91%BD%E4%BB%A4"><span class="nav-number">3.16.</span> <span class="nav-text">tail命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">进阶命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tree%E5%91%BD%E4%BB%A4"><span class="nav-number">4.1.</span> <span class="nav-text">tree命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff%E5%91%BD%E4%BB%A4"><span class="nav-number">4.2.</span> <span class="nav-text">diff命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed%E5%91%BD%E4%BB%A4"><span class="nav-number">4.3.</span> <span class="nav-text">sed命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#awk%E5%91%BD%E4%BB%A4"><span class="nav-number">4.4.</span> <span class="nav-text">awk命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E7%9A%84%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.</span> <span class="nav-text">一些特殊的符号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E7%AC%A6"><span class="nav-number">5.1.</span> <span class="nav-text">管道符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%BC%95%E5%8F%B7"><span class="nav-number">5.2.</span> <span class="nav-text">反引号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E7%AC%A6"><span class="nav-number">5.3.</span> <span class="nav-text">重定向符</span></a></li></ol></li></ol>
+		<div class="page-title">2025_BUAA_OO_Unit1</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">1.</span> <span class="nav-text">第一次作业</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">1.1程序架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2%E4%BB%A3%E7%A0%81%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">1.2.</span> <span class="nav-text">1.2代码复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3%E5%8C%96%E7%AE%80%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">1.3化简优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4Bug%E5%88%86%E6%9E%90"><span class="nav-number">1.4.</span> <span class="nav-text">1.4Bug分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">2.</span> <span class="nav-text">第二次作业</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">2.1程序架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2%E4%BB%A3%E7%A0%81%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">2.2.</span> <span class="nav-text">2.2代码复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3%E9%9A%BE%E7%82%B9%E5%88%86%E6%9E%90%E5%8F%8A%E5%8C%96%E7%AE%80%E4%BC%98%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">2.3难点分析及化简优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4Bug%E5%88%86%E6%9E%90"><span class="nav-number">2.4.</span> <span class="nav-text">2.4Bug分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AC%A1%E4%BD%9C%E4%B8%9A"><span class="nav-number">3.</span> <span class="nav-text">第三次作业</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">3.1程序架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2%E4%BB%A3%E7%A0%81%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">3.2.</span> <span class="nav-text">3.2代码复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3Bug%E5%88%86%E6%9E%90"><span class="nav-number">3.3.</span> <span class="nav-text">3.3Bug分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TalkTalk"><span class="nav-number">4.</span> <span class="nav-text">TalkTalk</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E4%BC%98%E7%BC%BA%E7%82%B9%E6%80%BB%E7%BB%93"><span class="nav-number">4.1.</span> <span class="nav-text">程序优缺点总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E8%BF%AD%E4%BB%A3%E6%83%85%E6%99%AF"><span class="nav-number">4.2.</span> <span class="nav-text">新迭代情景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hack%E7%AD%96%E7%95%A5"><span class="nav-number">4.3.</span> <span class="nav-text">hack策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%83%E5%BE%97%E4%BD%93%E4%BC%9A"><span class="nav-number">4.4.</span> <span class="nav-text">心得体会</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89Don%E2%80%99t-be-reckless"><span class="nav-number">4.4.1.</span> <span class="nav-text">1）Don’t be reckless</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89be-careful"><span class="nav-number">4.4.2.</span> <span class="nav-text">2）be careful</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89be-stern"><span class="nav-number">4.4.3.</span> <span class="nav-text">3）be stern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89be-exclamatory"><span class="nav-number">4.4.4.</span> <span class="nav-text">4）be exclamatory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E8%AE%AE"><span class="nav-number">4.5.</span> <span class="nav-text">建议</span></a></li></ol></li></ol>
 
 	</div>
 </div>

@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-03-25T06:23:00.000Z">
-<meta property="article:modified_time" content="2025-03-25T08:27:51.623Z">
+<meta property="article:modified_time" content="2025-03-25T08:31:18.355Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="操作系统">
@@ -651,8 +651,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-03-25 16:27:51</span>
-            <span class="mobile">2025-03-25 16:27:51</span>
+            <span class="desktop">2025-03-25 16:31:18</span>
+            <span class="mobile">2025-03-25 16:31:18</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -737,48 +737,48 @@ int main()&#123;
 <p>使用原生工具链gcc正常编译出可执行文件，即”gcc hello.c”后，通过file查看文件类型，结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/%5Cimg%5Cos%5Clab1%5Cx86file.png"
+                     data-src="/img/os/lab1/x86file.png"
                      
                 ><br>可以发现其是一个64位的x86-64架构的ELF可执行文件，同时用readelf查看其信息，结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\x86elf.png"
+                     data-src="/img/os/lab1/x86elf.png"
                      
                 ><br>再运用gcc的-c选项只编译不链接并使用objdump进行反汇编后，相应结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\x86dump.png"
+                     data-src="/img/os/lab1/x86dump.png"
                      
                 ><br>可见其中的指令全是x86指令集架构中的指令。<br>再使用MIPS交叉编译工具链，用mips-linux-gnu-gcc编译出可执行文件，通过file查看文件类型，结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\mipsfile.png"
+                     data-src="/img/os/lab1/mipsfile.png"
                      
                 ><br>其是一个32位的mips架构的ELF可执行文件，使用readelf查看其信息，结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\mipself.png"
+                     data-src="/img/os/lab1/mipself.png"
                      
                 ><br>再只对其编译不链接并使用objdump进行反汇编，结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\mipsdump.png"
+                     data-src="/img/os/lab1/mipsdump.png"
                      
                 ><br>其指令全是mips指令集架构中的指令。  </p>
 <h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><strong>也许你会发现我们编写的readelf程序是不能解析readelf 文件本身的，而我们刚才介绍的系统工具readelf 则可以解析，这是为什么呢？</strong><br>首先查看Makefile：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\makefile.png"
+                     data-src="/img/os/lab1/makefile.png"
                      
                 ><br>可以发现，制作readelf和hello的语句选项并不相同，制作hello时多了”-m32”、”-static”、”-g”三个选项，指定了目标文件是32位架构，且其为静态链接。再分别查看hello和readelf的文件头：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\helloelf.png"
+                     data-src="/img/os/lab1/helloelf.png"
                      
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:\hexo_program\source\img\os\lab1\elfelf.png"
+                     data-src="/img/os/lab1/elfelf.png"
                      
                 ><br>可以发现hello确实是32位架构，而readelf是64位架构，而我们整个实验是在mips32位架构下进行的，所以我们自己写的readelf可以解析hello而不能解析自己  </p>
 <h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><strong>在理论课上我们了解到，MIPS体系结构上电时，启动入口地址为0xBFC00000（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？</strong><br>我们的整个实验是在QEMU模拟器上运行的，在运行第一行代码之前，我们已经拥有了一个正常的程序运行环境，已经可以访问内存了，我们还设置好了相应节的位置和程序入口，因此可以直接通过访问内存来正确跳转到内核入口。  </p>
@@ -805,7 +805,7 @@ int main()&#123;
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-03-25 16:27:51
+                    :</strong> 2025-03-25 16:31:18
             </li>
         
         <li>

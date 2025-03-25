@@ -1,92 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>计算机组成原理P3(Logisim)</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/P3-Logisim/</url>
-    <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
-<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>
-<h2 id="模块需求"><a href="#模块需求" class="headerlink" title="模块需求"></a>模块需求</h2><p>根据工作流程，我们可以看到其实CPU工作总的来说就是一个状态的不断转移，在每个状态中做相应的操作。<br/>进一步看，每个状态完全由PC来决定，所以状态转移其实只涉及PC的算术运算，将PC的算术运算电路与PC寄存器相连就能实现状态转移。<br/>而操作部分其实就完完全全是组合逻辑电路，但操作部分是很庞大的系统，我们需要对其进行细分实现更小的模块。根据工作流程中的操作分析，我们可以看到在这一部分我们应该需要一个解析指令的模块，一个寄存器堆，一个算术运算模块，一个数据存储器。但由于指令的不同，执行的相关操作也不同，例如对于add与sub，一个在算术运算模块中需要执行加法操作，一个需要执行减法操作，因此我们需要相应的控制信号来控制每个操作模块的具体操作（相应的控制信号有寄存器堆写信号，数据存储器写信号，数据存储器读信号，指令相关位数选择信号，算术运算模块操作数选择信号，算术运算模块选项信号，寄存器堆数据输入选择信号），而这些控制信号便是由相应的指令来得出的，因此还需要一个控制器。</p>
-<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.28.36.png"
-                     
-                ></p>
-<h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
-                     
-                ></p>
-<h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/cpu.png"
-                     
-                ></p>
-<hr>
-<h2 id="易遗漏或出错的地方"><a href="#易遗漏或出错的地方" class="headerlink" title="易遗漏或出错的地方"></a>易遗漏或出错的地方</h2><ul>
-<li>在对beq指令做考虑的时候，<del>需要对PC与立即数的4倍相加</del>，我们要意识到这时PC首先应该自增再与立即数的4倍相加，这才是正确的操作。</li>
-<li>若当前指令为I型指令，由于算术运算模块对数据位数的限制，<del>我们用一个位拓展器将立即数扩展到32位就行了</del>，对于不同的I型指令，立即数的扩展方式是不同的，例如对于ori要对立即数进行无符号扩展，对于lw要对立即数进行有符号扩展，因此我们需要加一个选择信号去对立即数进行何种扩展方式做出说明。（幸运的是该次CPU设计只涉及ori一个需要对立即数进行无符号扩展的指令，因此将ori信号作为选择信号即可，若后续增加指令，加上一个或电路即可）</li>
-</ul>
-<hr>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>测试中尽可能使每条指令的每种情况都覆盖，并且由最基本的指令开始构造测试（不需要其他指令就可以检验覆盖率的指令为最基本的），因此，从ori与lui开始构造，并通过他们几条指令让寄存器的值不全为0，是得能对后续指令做检验。<br/>根据以上指导思想设计的MIPS测试程序如下：</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,0x1011</span><br><span class="line">ori $2,$1,0x0111</span><br><span class="line">ori $11,$0,2</span><br><span class="line">lui $3,0</span><br><span class="line">lui $3,0x0111</span><br><span class="line">lui $3,0xffff</span><br><span class="line">ori $4,$3,0xffff</span><br><span class="line">lui $3,0x0111</span><br><span class="line">add $5,$3,$0</span><br><span class="line">add $5,$4,$0</span><br><span class="line">add $5,$3,$1</span><br><span class="line">add $5,$3,$4</span><br><span class="line">add $5,$4,$4</span><br><span class="line">add $5,$5,$5</span><br><span class="line">loop3:add $11,$11,$4</span><br><span class="line">beq $11,$0,loop4</span><br><span class="line">sub $6,$3,$0</span><br><span class="line">sub $6,$4,$0</span><br><span class="line">sub $6,$3,$1</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">ori $7,$0,1</span><br><span class="line">sub $8,$4,$7</span><br><span class="line">sub $6,$4,$8</span><br><span class="line">sub $6,$6,$6</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">loop3:sw $5,4($1)</span><br><span class="line">sw $6,4($2)</span><br><span class="line">nop</span><br><span class="line">lw $9,4($1)</span><br><span class="line">lw $10,4($2)</span><br><span class="line">beq $5,$10,loop1</span><br><span class="line">beq $5,$9,loop2</span><br><span class="line">loop1:sw $10,8($2)</span><br><span class="line">loop2:beq $6,$10,loop3</span><br><span class="line">loop4:sw $9,12($2)</span><br></pre></td></tr></table></figure></div>
-<h1 id="单周期CPU思考题"><a href="#单周期CPU思考题" class="headerlink" title="单周期CPU思考题"></a>单周期CPU思考题</h1><h2 id="单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"><a href="#单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？" class="headerlink" title="单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"></a>单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？</h2><h3 id="状态转移功能"><a href="#状态转移功能" class="headerlink" title="状态转移功能"></a>状态转移功能</h3><ul>
-<li>NPC模块</li>
-<li><ul>
-<li>NPC模块当中，需要判断下一个PC的值，如果当前指令不是beq指令，则PC相对于当前值加4便得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器，否则在加4的基础上，与当前获得的立即数的4倍相加得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="状态存储功能"><a href="#状态存储功能" class="headerlink" title="状态存储功能"></a>状态存储功能</h3><ul>
-<li>PC存储器</li>
-<li><ul>
-<li>PC存储器存储当前周期PC的值，并以该值指导后续工作电路的所有操作。</li>
-</ul>
-</li>
-<li>GRF模块</li>
-<li><ul>
-<li>在Controller根据当前PC的值读出对应的指令后，GRF根据指令做出相关操作，并决定是否在内部某个存储器存入新的值。</li>
-</ul>
-</li>
-<li>DM模块</li>
-<li><ul>
-<li>在Controller根据当前PC的值读出对应的指令后，DM根据指令做出相关操作，并决定是否在内部某个空间写入新的值。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出"><a href="#模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出" class="headerlink" title="模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出"></a>模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出</h2><ul>
-<li>IM模块为指令存储器，由于在CPU执行操作的时候是从相应的地址空间里读取该周期使用的指令，不会对指令作出修改，也就是针对指令只需实现读的操作，因此使用ROM来实现IM模块是合理的。</li>
-<li>DM模块为数据存储器，是在相应的地址空间存储数据，在指令不同时，可以从相应的地址空间读取数据，也可以将新的数据写入相应的地址空间，因此需要同时做到读和写的操作，因此使用RAM可以实现且最为方便。</li>
-<li>GRF是通用寄存器组，里面放置了三十二个寄存器用于读取和写入数据，且搭建的是单周期CPU，因此在每个周期最多对里面的一个寄存器写入新数据（该新数据将在下一个时钟上沿存入寄存器），因此使用三十二个寄存器的组合来实现GRF是合理的。</li>
-</ul>
-<hr>
-<h2 id="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"><a href="#在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路" class="headerlink" title="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"></a>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路</h2><h3 id="beq指令操作模块"><a href="#beq指令操作模块" class="headerlink" title="beq指令操作模块"></a>beq指令操作模块</h3><ul>
-<li>该模块是实现beq操作的模块，因为针对beq指令，最终所需要操作改变的数并不是寄存器里的值或者内存空间的值，而是PC的值，因此需要将其单独拿出来进行一个操作。该模块由原本的（PC+4）与当前立即数的四倍相加的一个运算电路再加上由beq信号和alu模块判断相等信号的与作为选择信号的多路选择器构成，若当前两个寄存器的值相等且beq信号为1，那么下一个PC将为经过运算电路得到的值，否则就为（PC+4）。</li>
-</ul>
-<hr>
-<h2 id="实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？"><a href="#实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？" class="headerlink" title="实现 nop 空指令，我们并不需要将它加入控制信号真值表，为什么？"></a>实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</h2><ul>
-<li>nop指令为空指令，如若该周期CPU执行该条指令，则不会发生任何操作（除了PC自增）。不将nop指令加入控制信号真值表说明在计算相应控制信号的值时，我们不需考虑nop指令的影响，也即当当前指令为nop时，所有控制信号的值均为0。这时，首先考虑beq指令操作部分，由于此时beq信号为0，因此下一个PC的值只是当前PC的值的简单自增，不受影响；而针对其他指令操作部分，我们关心的仅是这些操作部分会不会在nop指令期间影响寄存器的值或者内存空间里存储的值，这都与写操作有关，但nop指令期间寄存器写信号和数据存储器写信号均为0，因此不会执行写操作，所以二者内部的值都不会改变。</li>
-</ul>
-<hr>
-<h2 id="阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"><a href="#阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。" class="headerlink" title="阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"></a>阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</h2><p>测试样例的数据针对其给出的几条指令（<code>ori</code>, <code>lui</code>, <code>add</code>, <code>sw</code>, <code>lw</code>, <code>beq</code>）已经较强，每个指令的覆盖率都较高，但仍在一些方面存在不足，下面列出不足之处：</p>
-<ul>
-<li><code>add</code>进行了正数和正数，正数和负数，负数和负数的操作，但未进行0与正负数的操作，不能确保CPU是否会在至少有一个数为0时出差错。</li>
-<li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机组成原理</category>
-      </categories>
-      <tags>
-        <tag>计算机组成原理</tag>
-        <tag>BUAA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUAA操作系统lab0</title>
     <url>/2025/03/12/OS/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
     <content><![CDATA[<h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><strong>执行命令cat Modified.txt，观察其结果和第一次执行 add 命令之前的 status 是否一样，并思考原因</strong><br>这两次的结果是不一样的。第一次将<code>git status</code>命令结果重定向至<code>Untracked.txt</code>文件中时，这时的<code>README.txt</code>文件还未被放入暂存区，所以状态是未被追踪，而第二次进行类似操作时，<code>README.txt</code>文件已被放入暂存区，所以状态应该是已修改。</p>
@@ -129,117 +43,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机组成原理P4</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P4/</url>
-    <content><![CDATA[<h1 id="单周期CPU设计草稿（verilog"><a href="#单周期CPU设计草稿（verilog" class="headerlink" title="单周期CPU设计草稿（verilog)"></a>单周期CPU设计草稿（verilog)</h1><p>本次课下需要我们通过verilog来设计一个支持10条指令的单周期CPU。由于在上周我们已经通过logisim搭建了一个单周期CPU，所以本次的任务其实简单来说就是通过一个硬件描述语言去描述搭建好的电路。<br>我们还是先来简单捋一下构建思路。</p>
-<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><ul>
-<li>工作流程：每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作，并判断下一个周期的PC的取值。</li>
-<li>模块需求：我们希望在编写verilog的时候能像在logisim里一样使用不同的模块，并在最后使用这些模块来构成整个CPU。而通过相应的指令和流程，我们可以编写以下几个模块：im（指令存储器），grf（寄存器堆），alu（算术运算模块），dm（数据存储器），controller（控制器）以及最顶层的模块mips。</li>
-</ul>
-<p>（附上单周期CPUlogisim搭建图）<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
-                     
-                ></p>
-<h2 id="模块分析"><a href="#模块分析" class="headerlink" title="模块分析"></a>模块分析</h2><ul>
-<li><ul>
-<li>mips：作为最顶层的模块，这个模块也即CPU本身，它包含了其他的子模块，在这个模块当中，只需要定义相关的信号将子模块联系起来，除此之外其唯一需要做的就是计算下一个pc的值，因此该模块中应有一个pc的计算部分。图示如下：<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/mips.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>im：指令存储器模块，需要一个地址信号输入，并输出指令编码。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/im.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>grf：寄存器堆模块，需要三个地址信号，一个写入数据，一个写入数据使能信号，时钟和复位信号。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/grf.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>alu：算术运算模块，在这个模块本人设计了与或加减左移及相等6种运算，需要两个运算数输入，一个操作选择信号，一个结果输出，为了方便并再加一个等于输出信号（判断输入的两数是否相等）<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/alu.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>dm：数据存储器模块，需要时钟和复位信号，写使能和读使能信号，地址和写入数据信号，并输出一个读出的数据。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/dm.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>controller：控制器模块，输入仍然是指令的操作码和功能码，输出包括了该电路中所有的控制信号。但本次增加了两条跳转指令，分别是jal和jr，因此在确定控制信号时还要考虑进这两条指令。简单分析即可知，由于这两条都是跳转指令，所以数据存储器既不写数据也不读数据即可，但对于jal来说，需要对31号寄存器存入下一条指令的地址，因此grf的写入地址应为31，写入数据为下一条指令的地址，对于jr来说就简单了，寄存器堆也不用写数据，因此将其写使能信号置零即可。<br/>jal:regwe-&gt;1,memwe-&gt;0,loadwe-&gt;0<br/>jr:regwe-&gt;0,memwe-&gt;0,loadwe-&gt;0<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
-                     
-                ><br/>由于grf写入地址现在有三种情况，下一个pc的值也有三种情况，因此我们还得在上一次控制信号的基础上再加上两个控制信号，但这两个控制信号直接由jal和jr来当即可，也即当目前指令为jal（jr）时，jal（jr）置1.</li>
-</ul>
-</li>
-</ul>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
-<li>基本指令测试（不含jal和jr）</li>
-</ol>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
-<ol start="2">
-<li>jal与jr测试</li>
-</ol>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,1</span><br><span class="line">ori $31,$0,0x3014</span><br><span class="line">loop:add $2,$1,$1</span><br><span class="line">jr $ra</span><br><span class="line">add $3,$2,$0</span><br><span class="line">add $4,$3,$2</span><br><span class="line">jal loop</span><br><span class="line">ori $5,$4,$0</span><br></pre></td></tr></table></figure></div>
-<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？"><a href="#根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？" class="headerlink" title="根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？"></a>根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？</h2><p>addr信号是从alu的输出中得来的。我们自行写的dm当中，一个地址可以存储一个字，但在MIPS里，地址是字对齐的，也即存一个字的地址都是4的倍数，因此实际上dm对应的地址是真正的地址除以4，dm地址有10位，也就对应aluout的第11到第2位。</p>
-<h2 id="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"><a href="#思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣" class="headerlink" title="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"></a>思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣</h2><ol>
-<li>指令对应控制信号<br>代码示例（在此仅给出ori指令相关代码作为示例）：</li>
-</ol>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">module controller(</span><br><span class="line">	//信号定义</span><br><span class="line">	)</span><br><span class="line">	always @(*) begin</span><br><span class="line">	if(ori == 1)begin</span><br><span class="line">	regwe=1;</span><br><span class="line">	aluopt=&#x27;b001</span><br><span class="line">	ori=1;</span><br><span class="line">	end</span><br><span class="line">	//其余指令判断相关控制信号</span><br><span class="line">	end</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure></div>
-<ol start="2">
-<li>控制信号对应指令<br>代码示例：</li>
-</ol>
-<pre><code>module controller(
-	//信号定义
-	)
-	always @(*)begin
-	regwe = add | sub | ori | lw | lui | jal;
-	regdst = add | sub ;
-	//其余信号
-endmodule
-</code></pre>
-<ul>
-<li>第二种方式代码量可能更小，第一种方式更为直观，且在运行时出错的话较容易定位到问题</li>
-</ul>
-<h2 id="请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系"><a href="#请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系" class="headerlink" title="请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系"></a>请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系</h2><p>在同步复位下，clk信号的优先级高于reset信号，要等到每一个时钟周期上升沿到来时才能进行复位；而异步复位下，reset信号的优先级高于clk信号，只要reset为高电平，便可进行复位，无需考虑时钟的限制。</p>
-<h2 id="请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的"><a href="#请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的" class="headerlink" title="请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的"></a>请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的</h2><ul>
-<li>add：If the addition results in 32-bit 2’s complement arithmetic overflow, the destination register is not modified and an Integer Overflow exception occurs</li>
-<li>addu：The term “unsigned” in the instruction name is a misnomer; this operation is 32-bit modulo arithmetic that does not trap on overflow. This instruction is appropriate for unsigned arithmetic, such as address arithmetic, or integer arithmetic environments that ignore overflow, such as C language arithmetic<br>根据以上解释可知，addu其实是一种32位的模运算，就算溢出了也不会有影响，取其模值即可，而add如果溢出，也不会修改目标寄存器的值，但会抛出一个溢出异常，因此在不考虑溢出的情况下，目标寄存器的值其实也是32位模运算下的值，所以二者等价，同理对addi与addiu</li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机组成原理</category>
-      </categories>
-      <tags>
-        <tag>计算机组成原理</tag>
         <tag>BUAA</tag>
       </tags>
   </entry>
@@ -350,6 +153,531 @@ endmodule
       </tags>
   </entry>
   <entry>
+    <title>linux中的vim编辑器</title>
+    <url>/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
+    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
+<li>命令模式</li>
+<li>输入模式</li>
+<li>底线命令模式</li>
+</ul>
+<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
+<li>i 在当前光标位置进入输入模式</li>
+<li>a 在当前光标之后进入输入模式</li>
+<li>I 在当前行开头进入输入模式</li>
+<li>A 在当前行结尾进入输入模式</li>
+<li>o 在当前光标下一行进入输入模式</li>
+<li>O 在当前光标上一行进入输入模式</li>
+<li>0 移动光标到当前行的开头</li>
+<li>$ 移动光标到当前行的结尾</li>
+<li>&#x2F; 搜索模式</li>
+<li><ul>
+<li>n 向下继续搜索</li>
+</ul>
+</li>
+<li><ul>
+<li>N 向上继续搜索</li>
+</ul>
+</li>
+<li>dd 删除光标所在行内容</li>
+<li>ndd 删除当前光标向下n行</li>
+<li>yy 复制当前行</li>
+<li>nyy 复制当前行和下面n行</li>
+<li>p 粘贴复制内容</li>
+<li>u 撤销修改</li>
+<li><code>ctrl</code>+r 反向撤销修改</li>
+<li>gg 跳到首行</li>
+<li>G 跳到末行</li>
+<li>dG 从当前行开始，向下全部删除</li>
+<li>dgg 从当前行开始，向上全部删除</li>
+<li>d$ 从当前光标开始，删除到本行结尾</li>
+<li>d0 从当前光标开始，删除到本行开头</li>
+</ul>
+<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
+<li>q！ 强制退出</li>
+<li>set nu 显示行号</li>
+<li>set nonu 不显示行号</li>
+<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux操作系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux学习笔记（指令篇）</title>
+    <url>/2025/02/13/linux/linux%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h1 id="Linux目录结构"><a href="#Linux目录结构" class="headerlink" title="Linux目录结构"></a>Linux目录结构</h1><p>在Linux系统中，目录结构与Windows系统类似，都是树形结构，不同的是，Windows系统可以有多个树，也即其能有很多个磁盘，但Linux系统只有一棵树，即所有文件和目录都放在根目录下。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/linux/linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png"
+                     
+                ><br>Linux系统中，以“&#x2F;”表示顶级目录即根目录，层次关系也通过“&#x2F;”表示</p>
+<h2 id="路径格式"><a href="#路径格式" class="headerlink" title="路径格式"></a>路径格式</h2><ul>
+<li>绝对路径：即以根目录“&#x2F;”开头</li>
+<li>相对路径：相对于当前工作目录下的路径，例如当前工作目录下有一个test目录，则其相对路径就是test</li>
+<li>特殊路径符：</li>
+<li><ul>
+<li>.:表示当前目录</li>
+</ul>
+</li>
+<li><ul>
+<li>..:表示上一级目录</li>
+</ul>
+</li>
+<li><ul>
+<li>~:表示HOME目录</li>
+</ul>
+</li>
+</ul>
+<h1 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h1><p>在Linux系统中，每一条命令都是一个可执行的程序，命令都按以下格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span>+(option)+(parameter)</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>command即指令名，如ls,cd,mkdir……</li>
+<li>option是选项，用来执行一些特定的操作</li>
+<li>parameter是相关参数，通常是文件或目录路径</li>
+</ul>
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span>+(-a -l -h)+(parameter)</span><br></pre></td></tr></table></figure></div>
+<p>ls命令的作用是查看相应的目录里的内容，如果不加参数，则默认展示当前工作目录的内容，加上参数则会展示指定目录的内容。<br>该指令有三个选项可选：</p>
+<ul>
+<li>-a 将该目录里的所有内容展示，包括隐藏内容</li>
+<li>-l 以列表的形式将目录里的内容展示，同时把文件或文件夹所属的用户，用户组，相关权限以及文件大小展示出来</li>
+<li>-h 必须结合-l使用，可以将文件大小显示的更加清晰</li>
+</ul>
+<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span>+(parameter)</span><br></pre></td></tr></table></figure></div>
+<p>cd命令的作用是切换工作目录到指定目录，如果不加参数，则默认切换到用户的HOME目录，一般是&#x2F;home&#x2F;username</p>
+<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
+<p>pwd命令的作用是展示当前工作目录</p>
+<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span>+(-p)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>mkdir命令的作用是创建新的目录，参数必填<br>-p选项表示自动创建不存在的父目录，这样可以创建一个当前目录下很多层的目录</p>
+<h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">touch</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>touch命令的作用是创建一个文件</p>
+<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>cat命令的作用是查看文件内容</p>
+<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">more+parameter</span><br></pre></td></tr></table></figure></div>
+<p>more命令的作用也是查看文件内容，但它会将内容非常多的文件一页一页的展示，通过空格翻页，按q退出查看</p>
+<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cp</span>+(-r)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>cp命令的作用是复制文件或文件夹，需要两个参数，第一个是要复制的文件或文件夹的路径，第二个是要复制去的地方，-r选项在复制文件夹的时候使用</p>
+<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mv</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>mv命令的作用是移动文件或文件夹，同样需要两个参数，第一个是要移动的文件或文件夹的路径，第二个是要移动去的地方，若目标不存在，则进行改名</p>
+<h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">rm</span>+(-r -f)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>rm命令的作用是删除文件或文件夹，参数必填，数量不限，-r选项表示删除文件夹，-f选项表示强制删除，一般在以root用户登录的情况下使用</p>
+<h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>which命令的作用是查看命令的程序文件存放在哪里，因此这里的参数是命令名</p>
+<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">find+起始路径+ -name/-size +<span class="string">&quot;被查找文件名&quot;</span>/<span class="string">&quot;+-NMGB&quot;</span></span><br></pre></td></tr></table></figure></div>
+<p>find命令的作用是搜索指定的文件，首先要指定起始路径，再选择是以文件名的方式搜索还是以文件大小的方式搜索，以文件名方式搜索需要填写文件名称，以文件大小搜索需要填写相应的文件大小范围，其中“+”代表大于，“-”代表小于。</p>
+<h2 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">grep+(-n)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>grep命令的作用是从一个文件中过滤相应的文件行，需要两个参数，第一个是过滤的关键字，第二个是文件的路径，-n选项可选，用来显示匹配的行的行号</p>
+<h2 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">wc</span>+(-c -m -l -w)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>wc命令的作用是统计文件的行数，单词数量，若不加选项，则会以行数、单词数、字节数的顺序显示相关数量，而其可选的四个选项意义如下：</p>
+<ul>
+<li>-c 统计字节数量</li>
+<li>-m 统计字符数量</li>
+<li>-l 统计行数</li>
+<li>-w 统计单词数</li>
+</ul>
+<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span>+parameter</span><br></pre></td></tr></table></figure></div>
+<p>echo命令的作用与printf函数类似，将指定内容输出到命令行里面，若内容过于复杂可以加上引号（有空格等特殊符号）</p>
+<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">tail</span>+(-f -num)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>tail命令的作用是拿来查看文件尾部内容，其中参数部分是文件的路径。选项意义：</p>
+<ul>
+<li>-f 代表持续追踪，可以用来查看文件变换</li>
+<li>-num 指定要查看的行数，若不带此选项，则默认查看尾部十行</li>
+</ul>
+<h1 id="进阶命令"><a href="#进阶命令" class="headerlink" title="进阶命令"></a>进阶命令</h1><h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">tree+(-a -d)+parameter</span><br></pre></td></tr></table></figure></div>
+<p>tree命令的作用和ls命令类似，不过其可以根据文件目录生成文件树，参数部分是文件或目录的路径。<br>选项意义：</p>
+<ul>
+<li>-a 代表列出全部文件</li>
+<li>-d 只列出目录</li>
+</ul>
+<p><strong>tree命令可能需要安装之后才能使用，使用yum&#x2F;apt……安装即可</strong></p>
+<h2 id="diff命令"><a href="#diff命令" class="headerlink" title="diff命令"></a>diff命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">diff+(-b -B -q)+file1+file2</span><br></pre></td></tr></table></figure></div>
+<p>diff命令用于比较文件的差异。<br>选项意义：</p>
+<ul>
+<li>-b 不检查空白字符的不同</li>
+<li>-B 不检查空行</li>
+<li>-q 仅显示有无差异，不显示详细信息</li>
+</ul>
+<h2 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">sed+(-n -i -e)+<span class="string">&#x27;command&#x27;</span>+input</span><br></pre></td></tr></table></figure></div>
+<p>sed命令的作用是对文件进行处理，其可以将数据进行替换、删除、新增、选取等。相较于一般的命令形式，sed命令需要一个单独的“command”，而input即是输入文本。<br>“command”内容及作用：</p>
+<ul>
+<li>[行号]+a+[内容] 该命令的作用是在对应行号的行后新增一行，其内容即为所输入的内容。行号可以是数字，代表某一特定的行，也可以是“起始行，终止行”的形式，代表在所属范围的每一行后都新增内容为输入内容的一行，其中$代表最后一行，$-1代表倒数第二行，以此类推，如果忽略行号部分，则代表对每一行都进行操作。（后续command里的行号和该条相同）</li>
+<li>[行号]+c+[内容] 用输入的内容取代相应行</li>
+<li>[行号]+i+[内容] 在当前行的上面插入一行文本，内容为输入内容</li>
+<li>[行号]+d 删除相应行的内容</li>
+<li>[行号]+p 输出选择的内容，通常与-n选项搭配使用</li>
+<li>[行号]+s&#x2F;re&#x2F;string(&#x2F;g) 将re(正则表达式)匹配的内容替换为string，如果没有&#x2F;g，则只会将每一行匹配的第一个字符串替换为string，而加上&#x2F;g则表示在整行范围内替换。</li>
+</ul>
+<p>选项意义：</p>
+<ul>
+<li>-n sed默认将文件所有内容输出，而该选项可以使其只显示经过它处理的内容</li>
+<li>-i 直接修改读取的内容，而不是输出到屏幕，若没有该选项则原文件不会发生变化</li>
+<li>-e 允许在同一行里执行执行多条命令</li>
+</ul>
+<h2 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h2><p>格式：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">awk+(-F -v -f)+<span class="string">&#x27;模式 &#123;操作&#125;&#x27;</span>+输入文件</span><br></pre></td></tr></table></figure></div>
+<p>awk是一个功能十分强大的文本处理工具，其可以进行数据提取、文本处理、模式匹配、报告生成和自动化任务等。要能够运用awk命令，我们要知道以下内容：</p>
+<ol>
+<li>模式是什么：模式可以是一个正则表达式，也可以是一个条件表达式，表示对于匹配或满足条件的行再进行操作，其也可以是空，这时就代表对所有行进行操作。还有一些特殊模式，比如<code>BEGIN</code>和<code>END</code>，后面紧跟一个操作，分别代表在处理任何输入之前执行的操作，处理完所有输入后执行的操作。</li>
+<li>字段和变量：awk需要用内置的变量来处理文本数据，有以下常用的变量:</li>
+</ol>
+<ul>
+<li>$0：表示当前行的完整内容</li>
+<li>$1，$2，$3……：表示当前行的第几个字段（由字段分隔符分隔）</li>
+<li>NF：表示当前行的字段数</li>
+<li>NR：表示当前行的行号</li>
+<li>FS：字段分隔符，默认为空格或制表符</li>
+<li>OFS：输出字段分隔符，默认为空格</li>
+<li>ORS：输出记录分隔符，默认为换行符</li>
+</ul>
+<p>选项意义：</p>
+<ul>
+<li>-F 指定字段分隔符</li>
+<li>-v 设置变量的初始值</li>
+<li>-f 从文件中读取awk脚本</li>
+</ul>
+<p>举些例子更好理解  </p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print&#125;&#x27;</span> filename <span class="comment">#打印文件中所有行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> filename <span class="comment">#打印文件中的第二列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/pattern/ &#123;print&#125;&#x27;</span> filename <span class="comment">#打印包含特定模式的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;NR&gt;=3 &amp;&amp; NR&lt;=5 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第三行到第五行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;&#123;print $1,$3&#125;&#x27;</span> filename <span class="comment">#以逗号为字段分隔符，再打印第一列和第三列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;$2&gt;10 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第二列大于10的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/ERROR/ &#123;count++&#125; END &#123;print &quot;Error count:&quot;, count&#125;&#x27;</span> log.txt</span><br><span class="line"><span class="comment">#统计文件里有ERROR的行数</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;BEGIN &#123;OFS=&quot;:&quot;&#125; &#123;print $1, $2, $3&#125;&#x27;</span> data.txt</span><br><span class="line"><span class="comment">#以逗号为字段分隔符，并以分号为输出字段分隔符将第一、二、三列输出</span></span><br></pre></td></tr></table></figure></div>
+<h1 id="一些特殊的符号"><a href="#一些特殊的符号" class="headerlink" title="一些特殊的符号"></a>一些特殊的符号</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><p>管道符符号：<code>|</code><br>作用：将左边命令的输出作为右边命令的输入，例如：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> a.txt | grep <span class="string">&quot;something&quot;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h2><p>被反引号修饰（包围）的字符串会作为命令来执行，例如：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
+<p>输出结果为<code>pwd</code><br>但</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> `<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure></div>
+<p>输出结果则是当前工作目录</p>
+<h2 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h2><p>分为输入重定向符和输出重定向符。</p>
+<ul>
+<li>输入重定向符：<code>&lt;</code>，代表将右边的内容（文件……）作为输入传给左边的指令，例如现在有一个可执行文件out，需要传入一个参数，正常执行可以写为：</li>
+</ul>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out parameter</span><br></pre></td></tr></table></figure></div>
+<p>但若现在已经有一个文件a.txt含有了我们想要的输入参数，则可以通过输入重定向符来实现：</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out &lt; a.txt</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>输出重定向符：将左边命令的结果写入右边的文件</li>
+<li><ul>
+<li>覆盖输出重定向符：<code>&gt;</code>，左边命令的结果将会覆盖文件原有的内容</li>
+</ul>
+</li>
+<li><ul>
+<li>追加输出重定向符：<code>&gt;&gt;</code>，左边命令的结果将会追加到文件的末尾，文件原有内容仍会保留</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux操作系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA操作系统lab1</title>
+    <url>/2025/03/25/OS/Lab1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab1实验报告"><a href="#Lab1实验报告" class="headerlink" title="Lab1实验报告"></a>Lab1实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><strong>尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS交叉编译工具链（带有mips-linux-gnu- 前缀，如 mips-linux-gnu-gcc、mips-linux-gnu-ld），重复其中的编译和解析过程，观察相应的结果，并解释其中向objdump传入的参数的含义</strong><br>objdump是一个强大的二进制文件分析工具，常用于反汇编和查看目标文件的详细信息，常用的参数有以下几个：  </p>
+<ul>
+<li>-d：反汇编可执行段  </li>
+<li>-D：反汇编所有段</li>
+<li>-S：在反汇编代码中混合显示源代码</li>
+<li>-j：指定要反汇编的段</li>
+<li>-g：显示调试信息</li>
+<li>-f：显示文件头信息，包括文件类型、架构、字节序等</li>
+</ul>
+<p>在过程中，我使用最多的是-D和-S选项，用来将目标文件反汇编出来。<br>我在使用原生x86工具链和MIPS交叉编译工具链并观察相应结果时发现，它们最大的差异就是相应架构的不同，x86工具链适用于x86架构，而MIPS工具链适用于MIPS架构。<br>比如，我编写了一个简单的C程序，如下：  </p>
+<pre><code class="language-C">#include&lt;stdio.h&gt;
+int main()&#123;
+  printf(&quot;Hello,World!\n&quot;);
+  return 0;
+&#125;
+</code></pre>
+<p>使用原生工具链gcc正常编译出可执行文件，即”gcc hello.c”后，通过file查看文件类型，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\x86file.png"
+                     
+                ><br>可以发现其是一个64位的x86-64架构的ELF可执行文件，同时用readelf查看其信息，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\x86elf.png"
+                     
+                ><br>再运用gcc的-c选项只编译不链接并使用objdump进行反汇编后，相应结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\x86dump.png"
+                     
+                ><br>可见其中的指令全是x86指令集架构中的指令。<br>再使用MIPS交叉编译工具链，用mips-linux-gnu-gcc编译出可执行文件，通过file查看文件类型，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\mipsfile.png"
+                     
+                ><br>其是一个32位的mips架构的ELF可执行文件，使用readelf查看其信息，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\mipself.png"
+                     
+                ><br>再只对其编译不链接并使用objdump进行反汇编，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\mipsdump.png"
+                     
+                ><br>其指令全是mips指令集架构中的指令。  </p>
+<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><strong>也许你会发现我们编写的readelf程序是不能解析readelf 文件本身的，而我们刚才介绍的系统工具readelf 则可以解析，这是为什么呢？</strong><br>首先查看Makefile：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\makefile.png"
+                     
+                ><br>可以发现，制作readelf和hello的语句选项并不相同，制作hello时多了”-m32”、”-static”、”-g”三个选项，指定了目标文件是32位架构，且其为静态链接。再分别查看hello和readelf的文件头：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\helloelf.png"
+                     
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="D:\hexo_program\source\img\os\lab1\elfelf.png"
+                     
+                ><br>可以发现hello确实是32位架构，而readelf是64位架构，而我们整个实验是在mips32位架构下进行的，所以我们自己写的readelf可以解析hello而不能解析自己  </p>
+<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><strong>在理论课上我们了解到，MIPS体系结构上电时，启动入口地址为0xBFC00000（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？</strong><br>我们的整个实验是在QEMU模拟器上运行的，在运行第一行代码之前，我们已经拥有了一个正常的程序运行环境，已经可以访问内存了，我们还设置好了相应节的位置和程序入口，因此可以直接通过访问内存来正确跳转到内核入口。  </p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人觉得本次实验由于有很多理论上较为晦涩的东西，因此在啃实验指导书的时候十分痛苦，但真正到跳板机上做实验的时候很多东西并没有用到，相应的难度降低了不少，但还是有一些困难的，个人总结下来有如下：  </p>
+<ul>
+<li>ELF相关数据结构的定义的认识与理解</li>
+<li>如何用指针去访问节和段</li>
+<li>链接的逻辑</li>
+<li>print的实现逻辑</li>
+<li>MIPS内存如何布局</li>
+</ul>
+<h1 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h1><p>在Lab1中，我学习了操作系统是如何启动的，其启动过程是一个十分纠结的过程，好在实验所用qemu模拟器省去了那纠结的过程，我还了解到ELF格式的相关定义，以及内存的布局，链接器的工作原理等，这些东西对一向对底层硬件和软件不怎么感冒的我来说理解起来有一定的难度，就算完成了实验之后仍然觉得这些过程、原理和结构异常复杂，因为所完成的实验几乎没有怎么涉及到这些过程。最具挑战性的是最后对printf函数功能的实现，这个部分也花费了我很多时间，一来是相关注释的提示太模糊，二是我最初的想法和注释的想法大相径庭，实现的角度很不一样，导致我在耗费了大量时间去揣测注释的意思，最后又因为语法等原因进行了一定时间的debug，但在看到输出和期望输出相同的那一瞬间，我还是发自内心的开心，并理解到其实现逻辑的合理性。</p>
+]]></content>
+      <categories>
+        <category>OS(BUAA)</category>
+      </categories>
+      <tags>
+        <tag>操作系统</tag>
+        <tag>BUAA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机组成原理P3(Logisim)</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/P3-Logisim/</url>
+    <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>
+<h2 id="模块需求"><a href="#模块需求" class="headerlink" title="模块需求"></a>模块需求</h2><p>根据工作流程，我们可以看到其实CPU工作总的来说就是一个状态的不断转移，在每个状态中做相应的操作。<br/>进一步看，每个状态完全由PC来决定，所以状态转移其实只涉及PC的算术运算，将PC的算术运算电路与PC寄存器相连就能实现状态转移。<br/>而操作部分其实就完完全全是组合逻辑电路，但操作部分是很庞大的系统，我们需要对其进行细分实现更小的模块。根据工作流程中的操作分析，我们可以看到在这一部分我们应该需要一个解析指令的模块，一个寄存器堆，一个算术运算模块，一个数据存储器。但由于指令的不同，执行的相关操作也不同，例如对于add与sub，一个在算术运算模块中需要执行加法操作，一个需要执行减法操作，因此我们需要相应的控制信号来控制每个操作模块的具体操作（相应的控制信号有寄存器堆写信号，数据存储器写信号，数据存储器读信号，指令相关位数选择信号，算术运算模块操作数选择信号，算术运算模块选项信号，寄存器堆数据输入选择信号），而这些控制信号便是由相应的指令来得出的，因此还需要一个控制器。</p>
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.28.36.png"
+                     
+                ></p>
+<h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
+                     
+                ></p>
+<h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/cpu.png"
+                     
+                ></p>
+<hr>
+<h2 id="易遗漏或出错的地方"><a href="#易遗漏或出错的地方" class="headerlink" title="易遗漏或出错的地方"></a>易遗漏或出错的地方</h2><ul>
+<li>在对beq指令做考虑的时候，<del>需要对PC与立即数的4倍相加</del>，我们要意识到这时PC首先应该自增再与立即数的4倍相加，这才是正确的操作。</li>
+<li>若当前指令为I型指令，由于算术运算模块对数据位数的限制，<del>我们用一个位拓展器将立即数扩展到32位就行了</del>，对于不同的I型指令，立即数的扩展方式是不同的，例如对于ori要对立即数进行无符号扩展，对于lw要对立即数进行有符号扩展，因此我们需要加一个选择信号去对立即数进行何种扩展方式做出说明。（幸运的是该次CPU设计只涉及ori一个需要对立即数进行无符号扩展的指令，因此将ori信号作为选择信号即可，若后续增加指令，加上一个或电路即可）</li>
+</ul>
+<hr>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>测试中尽可能使每条指令的每种情况都覆盖，并且由最基本的指令开始构造测试（不需要其他指令就可以检验覆盖率的指令为最基本的），因此，从ori与lui开始构造，并通过他们几条指令让寄存器的值不全为0，是得能对后续指令做检验。<br/>根据以上指导思想设计的MIPS测试程序如下：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,0x1011</span><br><span class="line">ori $2,$1,0x0111</span><br><span class="line">ori $11,$0,2</span><br><span class="line">lui $3,0</span><br><span class="line">lui $3,0x0111</span><br><span class="line">lui $3,0xffff</span><br><span class="line">ori $4,$3,0xffff</span><br><span class="line">lui $3,0x0111</span><br><span class="line">add $5,$3,$0</span><br><span class="line">add $5,$4,$0</span><br><span class="line">add $5,$3,$1</span><br><span class="line">add $5,$3,$4</span><br><span class="line">add $5,$4,$4</span><br><span class="line">add $5,$5,$5</span><br><span class="line">loop3:add $11,$11,$4</span><br><span class="line">beq $11,$0,loop4</span><br><span class="line">sub $6,$3,$0</span><br><span class="line">sub $6,$4,$0</span><br><span class="line">sub $6,$3,$1</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">ori $7,$0,1</span><br><span class="line">sub $8,$4,$7</span><br><span class="line">sub $6,$4,$8</span><br><span class="line">sub $6,$6,$6</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">loop3:sw $5,4($1)</span><br><span class="line">sw $6,4($2)</span><br><span class="line">nop</span><br><span class="line">lw $9,4($1)</span><br><span class="line">lw $10,4($2)</span><br><span class="line">beq $5,$10,loop1</span><br><span class="line">beq $5,$9,loop2</span><br><span class="line">loop1:sw $10,8($2)</span><br><span class="line">loop2:beq $6,$10,loop3</span><br><span class="line">loop4:sw $9,12($2)</span><br></pre></td></tr></table></figure></div>
+<h1 id="单周期CPU思考题"><a href="#单周期CPU思考题" class="headerlink" title="单周期CPU思考题"></a>单周期CPU思考题</h1><h2 id="单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"><a href="#单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？" class="headerlink" title="单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"></a>单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？</h2><h3 id="状态转移功能"><a href="#状态转移功能" class="headerlink" title="状态转移功能"></a>状态转移功能</h3><ul>
+<li>NPC模块</li>
+<li><ul>
+<li>NPC模块当中，需要判断下一个PC的值，如果当前指令不是beq指令，则PC相对于当前值加4便得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器，否则在加4的基础上，与当前获得的立即数的4倍相加得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="状态存储功能"><a href="#状态存储功能" class="headerlink" title="状态存储功能"></a>状态存储功能</h3><ul>
+<li>PC存储器</li>
+<li><ul>
+<li>PC存储器存储当前周期PC的值，并以该值指导后续工作电路的所有操作。</li>
+</ul>
+</li>
+<li>GRF模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，GRF根据指令做出相关操作，并决定是否在内部某个存储器存入新的值。</li>
+</ul>
+</li>
+<li>DM模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，DM根据指令做出相关操作，并决定是否在内部某个空间写入新的值。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出"><a href="#模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出" class="headerlink" title="模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出"></a>模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出</h2><ul>
+<li>IM模块为指令存储器，由于在CPU执行操作的时候是从相应的地址空间里读取该周期使用的指令，不会对指令作出修改，也就是针对指令只需实现读的操作，因此使用ROM来实现IM模块是合理的。</li>
+<li>DM模块为数据存储器，是在相应的地址空间存储数据，在指令不同时，可以从相应的地址空间读取数据，也可以将新的数据写入相应的地址空间，因此需要同时做到读和写的操作，因此使用RAM可以实现且最为方便。</li>
+<li>GRF是通用寄存器组，里面放置了三十二个寄存器用于读取和写入数据，且搭建的是单周期CPU，因此在每个周期最多对里面的一个寄存器写入新数据（该新数据将在下一个时钟上沿存入寄存器），因此使用三十二个寄存器的组合来实现GRF是合理的。</li>
+</ul>
+<hr>
+<h2 id="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"><a href="#在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路" class="headerlink" title="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"></a>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路</h2><h3 id="beq指令操作模块"><a href="#beq指令操作模块" class="headerlink" title="beq指令操作模块"></a>beq指令操作模块</h3><ul>
+<li>该模块是实现beq操作的模块，因为针对beq指令，最终所需要操作改变的数并不是寄存器里的值或者内存空间的值，而是PC的值，因此需要将其单独拿出来进行一个操作。该模块由原本的（PC+4）与当前立即数的四倍相加的一个运算电路再加上由beq信号和alu模块判断相等信号的与作为选择信号的多路选择器构成，若当前两个寄存器的值相等且beq信号为1，那么下一个PC将为经过运算电路得到的值，否则就为（PC+4）。</li>
+</ul>
+<hr>
+<h2 id="实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？"><a href="#实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？" class="headerlink" title="实现 nop 空指令，我们并不需要将它加入控制信号真值表，为什么？"></a>实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</h2><ul>
+<li>nop指令为空指令，如若该周期CPU执行该条指令，则不会发生任何操作（除了PC自增）。不将nop指令加入控制信号真值表说明在计算相应控制信号的值时，我们不需考虑nop指令的影响，也即当当前指令为nop时，所有控制信号的值均为0。这时，首先考虑beq指令操作部分，由于此时beq信号为0，因此下一个PC的值只是当前PC的值的简单自增，不受影响；而针对其他指令操作部分，我们关心的仅是这些操作部分会不会在nop指令期间影响寄存器的值或者内存空间里存储的值，这都与写操作有关，但nop指令期间寄存器写信号和数据存储器写信号均为0，因此不会执行写操作，所以二者内部的值都不会改变。</li>
+</ul>
+<hr>
+<h2 id="阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"><a href="#阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。" class="headerlink" title="阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"></a>阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</h2><p>测试样例的数据针对其给出的几条指令（<code>ori</code>, <code>lui</code>, <code>add</code>, <code>sw</code>, <code>lw</code>, <code>beq</code>）已经较强，每个指令的覆盖率都较高，但仍在一些方面存在不足，下面列出不足之处：</p>
+<ul>
+<li><code>add</code>进行了正数和正数，正数和负数，负数和负数的操作，但未进行0与正负数的操作，不能确保CPU是否会在至少有一个数为0时出差错。</li>
+<li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机组成原理</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>计算机组成原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机组成原理P4</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P4/</url>
+    <content><![CDATA[<h1 id="单周期CPU设计草稿（verilog"><a href="#单周期CPU设计草稿（verilog" class="headerlink" title="单周期CPU设计草稿（verilog)"></a>单周期CPU设计草稿（verilog)</h1><p>本次课下需要我们通过verilog来设计一个支持10条指令的单周期CPU。由于在上周我们已经通过logisim搭建了一个单周期CPU，所以本次的任务其实简单来说就是通过一个硬件描述语言去描述搭建好的电路。<br>我们还是先来简单捋一下构建思路。</p>
+<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><ul>
+<li>工作流程：每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作，并判断下一个周期的PC的取值。</li>
+<li>模块需求：我们希望在编写verilog的时候能像在logisim里一样使用不同的模块，并在最后使用这些模块来构成整个CPU。而通过相应的指令和流程，我们可以编写以下几个模块：im（指令存储器），grf（寄存器堆），alu（算术运算模块），dm（数据存储器），controller（控制器）以及最顶层的模块mips。</li>
+</ul>
+<p>（附上单周期CPUlogisim搭建图）<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
+                     
+                ></p>
+<h2 id="模块分析"><a href="#模块分析" class="headerlink" title="模块分析"></a>模块分析</h2><ul>
+<li><ul>
+<li>mips：作为最顶层的模块，这个模块也即CPU本身，它包含了其他的子模块，在这个模块当中，只需要定义相关的信号将子模块联系起来，除此之外其唯一需要做的就是计算下一个pc的值，因此该模块中应有一个pc的计算部分。图示如下：<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/mips.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>im：指令存储器模块，需要一个地址信号输入，并输出指令编码。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/im.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>grf：寄存器堆模块，需要三个地址信号，一个写入数据，一个写入数据使能信号，时钟和复位信号。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/grf.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>alu：算术运算模块，在这个模块本人设计了与或加减左移及相等6种运算，需要两个运算数输入，一个操作选择信号，一个结果输出，为了方便并再加一个等于输出信号（判断输入的两数是否相等）<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/alu.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>dm：数据存储器模块，需要时钟和复位信号，写使能和读使能信号，地址和写入数据信号，并输出一个读出的数据。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/dm.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>controller：控制器模块，输入仍然是指令的操作码和功能码，输出包括了该电路中所有的控制信号。但本次增加了两条跳转指令，分别是jal和jr，因此在确定控制信号时还要考虑进这两条指令。简单分析即可知，由于这两条都是跳转指令，所以数据存储器既不写数据也不读数据即可，但对于jal来说，需要对31号寄存器存入下一条指令的地址，因此grf的写入地址应为31，写入数据为下一条指令的地址，对于jr来说就简单了，寄存器堆也不用写数据，因此将其写使能信号置零即可。<br/>jal:regwe-&gt;1,memwe-&gt;0,loadwe-&gt;0<br/>jr:regwe-&gt;0,memwe-&gt;0,loadwe-&gt;0<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
+                     
+                ><br/>由于grf写入地址现在有三种情况，下一个pc的值也有三种情况，因此我们还得在上一次控制信号的基础上再加上两个控制信号，但这两个控制信号直接由jal和jr来当即可，也即当目前指令为jal（jr）时，jal（jr）置1.</li>
+</ul>
+</li>
+</ul>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
+<li>基本指令测试（不含jal和jr）</li>
+</ol>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>jal与jr测试</li>
+</ol>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,1</span><br><span class="line">ori $31,$0,0x3014</span><br><span class="line">loop:add $2,$1,$1</span><br><span class="line">jr $ra</span><br><span class="line">add $3,$2,$0</span><br><span class="line">add $4,$3,$2</span><br><span class="line">jal loop</span><br><span class="line">ori $5,$4,$0</span><br></pre></td></tr></table></figure></div>
+<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？"><a href="#根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？" class="headerlink" title="根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？"></a>根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？</h2><p>addr信号是从alu的输出中得来的。我们自行写的dm当中，一个地址可以存储一个字，但在MIPS里，地址是字对齐的，也即存一个字的地址都是4的倍数，因此实际上dm对应的地址是真正的地址除以4，dm地址有10位，也就对应aluout的第11到第2位。</p>
+<h2 id="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"><a href="#思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣" class="headerlink" title="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"></a>思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣</h2><ol>
+<li>指令对应控制信号<br>代码示例（在此仅给出ori指令相关代码作为示例）：</li>
+</ol>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">module controller(</span><br><span class="line">	//信号定义</span><br><span class="line">	)</span><br><span class="line">	always @(*) begin</span><br><span class="line">	if(ori == 1)begin</span><br><span class="line">	regwe=1;</span><br><span class="line">	aluopt=&#x27;b001</span><br><span class="line">	ori=1;</span><br><span class="line">	end</span><br><span class="line">	//其余指令判断相关控制信号</span><br><span class="line">	end</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>控制信号对应指令<br>代码示例：</li>
+</ol>
+<pre><code>module controller(
+	//信号定义
+	)
+	always @(*)begin
+	regwe = add | sub | ori | lw | lui | jal;
+	regdst = add | sub ;
+	//其余信号
+endmodule
+</code></pre>
+<ul>
+<li>第二种方式代码量可能更小，第一种方式更为直观，且在运行时出错的话较容易定位到问题</li>
+</ul>
+<h2 id="请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系"><a href="#请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系" class="headerlink" title="请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系"></a>请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系</h2><p>在同步复位下，clk信号的优先级高于reset信号，要等到每一个时钟周期上升沿到来时才能进行复位；而异步复位下，reset信号的优先级高于clk信号，只要reset为高电平，便可进行复位，无需考虑时钟的限制。</p>
+<h2 id="请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的"><a href="#请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的" class="headerlink" title="请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的"></a>请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的</h2><ul>
+<li>add：If the addition results in 32-bit 2’s complement arithmetic overflow, the destination register is not modified and an Integer Overflow exception occurs</li>
+<li>addu：The term “unsigned” in the instruction name is a misnomer; this operation is 32-bit modulo arithmetic that does not trap on overflow. This instruction is appropriate for unsigned arithmetic, such as address arithmetic, or integer arithmetic environments that ignore overflow, such as C language arithmetic<br>根据以上解释可知，addu其实是一种32位的模运算，就算溢出了也不会有影响，取其模值即可，而add如果溢出，也不会修改目标寄存器的值，但会抛出一个溢出异常，因此在不考虑溢出的情况下，目标寄存器的值其实也是32位模运算下的值，所以二者等价，同理对addi与addiu</li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机组成原理</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>计算机组成原理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算机组成原理P5</title>
     <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P5/</url>
     <content><![CDATA[<h1 id="流水线CPU设计文档"><a href="#流水线CPU设计文档" class="headerlink" title="流水线CPU设计文档"></a>流水线CPU设计文档</h1><p>本次课下要求我们使用<code>verilog</code>来搭建一个支持十条指令的流水线CPU。可以说难度与复杂度较之前几次都上升了不少，但理清思路将CPU运行步骤印在心里后，会发现复杂度也没那么大。</p>
@@ -432,8 +760,8 @@ endmodule
         <category>计算机组成原理</category>
       </categories>
       <tags>
-        <tag>计算机组成原理</tag>
         <tag>BUAA</tag>
+        <tag>计算机组成原理</tag>
       </tags>
   </entry>
   <entry>
@@ -497,8 +825,8 @@ endmodule
         <category>计算机组成原理</category>
       </categories>
       <tags>
-        <tag>计算机组成原理</tag>
         <tag>BUAA</tag>
+        <tag>计算机组成原理</tag>
       </tags>
   </entry>
   <entry>
@@ -764,250 +1092,8 @@ endmodule
         <category>计算机组成原理</category>
       </categories>
       <tags>
-        <tag>计算机组成原理</tag>
         <tag>BUAA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux学习笔记（指令篇）</title>
-    <url>/2025/02/13/linux/linux%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1 id="Linux目录结构"><a href="#Linux目录结构" class="headerlink" title="Linux目录结构"></a>Linux目录结构</h1><p>在Linux系统中，目录结构与Windows系统类似，都是树形结构，不同的是，Windows系统可以有多个树，也即其能有很多个磁盘，但Linux系统只有一棵树，即所有文件和目录都放在根目录下。<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/linux/linux%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png"
-                     
-                ><br>Linux系统中，以“&#x2F;”表示顶级目录即根目录，层次关系也通过“&#x2F;”表示</p>
-<h2 id="路径格式"><a href="#路径格式" class="headerlink" title="路径格式"></a>路径格式</h2><ul>
-<li>绝对路径：即以根目录“&#x2F;”开头</li>
-<li>相对路径：相对于当前工作目录下的路径，例如当前工作目录下有一个test目录，则其相对路径就是test</li>
-<li>特殊路径符：</li>
-<li><ul>
-<li>.:表示当前目录</li>
-</ul>
-</li>
-<li><ul>
-<li>..:表示上一级目录</li>
-</ul>
-</li>
-<li><ul>
-<li>~:表示HOME目录</li>
-</ul>
-</li>
-</ul>
-<h1 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h1><p>在Linux系统中，每一条命令都是一个可执行的程序，命令都按以下格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">command</span>+(option)+(parameter)</span><br></pre></td></tr></table></figure></div>
-<ul>
-<li>command即指令名，如ls,cd,mkdir……</li>
-<li>option是选项，用来执行一些特定的操作</li>
-<li>parameter是相关参数，通常是文件或目录路径</li>
-</ul>
-<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span>+(-a -l -h)+(parameter)</span><br></pre></td></tr></table></figure></div>
-<p>ls命令的作用是查看相应的目录里的内容，如果不加参数，则默认展示当前工作目录的内容，加上参数则会展示指定目录的内容。<br>该指令有三个选项可选：</p>
-<ul>
-<li>-a 将该目录里的所有内容展示，包括隐藏内容</li>
-<li>-l 以列表的形式将目录里的内容展示，同时把文件或文件夹所属的用户，用户组，相关权限以及文件大小展示出来</li>
-<li>-h 必须结合-l使用，可以将文件大小显示的更加清晰</li>
-</ul>
-<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span>+(parameter)</span><br></pre></td></tr></table></figure></div>
-<p>cd命令的作用是切换工作目录到指定目录，如果不加参数，则默认切换到用户的HOME目录，一般是&#x2F;home&#x2F;username</p>
-<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
-<p>pwd命令的作用是展示当前工作目录</p>
-<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span>+(-p)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>mkdir命令的作用是创建新的目录，参数必填<br>-p选项表示自动创建不存在的父目录，这样可以创建一个当前目录下很多层的目录</p>
-<h2 id="touch命令"><a href="#touch命令" class="headerlink" title="touch命令"></a>touch命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">touch</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>touch命令的作用是创建一个文件</p>
-<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>cat命令的作用是查看文件内容</p>
-<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">more+parameter</span><br></pre></td></tr></table></figure></div>
-<p>more命令的作用也是查看文件内容，但它会将内容非常多的文件一页一页的展示，通过空格翻页，按q退出查看</p>
-<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cp</span>+(-r)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>cp命令的作用是复制文件或文件夹，需要两个参数，第一个是要复制的文件或文件夹的路径，第二个是要复制去的地方，-r选项在复制文件夹的时候使用</p>
-<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mv</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>mv命令的作用是移动文件或文件夹，同样需要两个参数，第一个是要移动的文件或文件夹的路径，第二个是要移动去的地方，若目标不存在，则进行改名</p>
-<h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">rm</span>+(-r -f)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>rm命令的作用是删除文件或文件夹，参数必填，数量不限，-r选项表示删除文件夹，-f选项表示强制删除，一般在以root用户登录的情况下使用</p>
-<h2 id="which命令"><a href="#which命令" class="headerlink" title="which命令"></a>which命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>which命令的作用是查看命令的程序文件存放在哪里，因此这里的参数是命令名</p>
-<h2 id="find命令"><a href="#find命令" class="headerlink" title="find命令"></a>find命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">find+起始路径+ -name/-size +<span class="string">&quot;被查找文件名&quot;</span>/<span class="string">&quot;+-NMGB&quot;</span></span><br></pre></td></tr></table></figure></div>
-<p>find命令的作用是搜索指定的文件，首先要指定起始路径，再选择是以文件名的方式搜索还是以文件大小的方式搜索，以文件名方式搜索需要填写文件名称，以文件大小搜索需要填写相应的文件大小范围，其中“+”代表大于，“-”代表小于。</p>
-<h2 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">grep+(-n)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>grep命令的作用是从一个文件中过滤相应的文件行，需要两个参数，第一个是过滤的关键字，第二个是文件的路径，-n选项可选，用来显示匹配的行的行号</p>
-<h2 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">wc</span>+(-c -m -l -w)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>wc命令的作用是统计文件的行数，单词数量，若不加选项，则会以行数、单词数、字节数的顺序显示相关数量，而其可选的四个选项意义如下：</p>
-<ul>
-<li>-c 统计字节数量</li>
-<li>-m 统计字符数量</li>
-<li>-l 统计行数</li>
-<li>-w 统计单词数</li>
-</ul>
-<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span>+parameter</span><br></pre></td></tr></table></figure></div>
-<p>echo命令的作用与printf函数类似，将指定内容输出到命令行里面，若内容过于复杂可以加上引号（有空格等特殊符号）</p>
-<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">tail</span>+(-f -num)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>tail命令的作用是拿来查看文件尾部内容，其中参数部分是文件的路径。选项意义：</p>
-<ul>
-<li>-f 代表持续追踪，可以用来查看文件变换</li>
-<li>-num 指定要查看的行数，若不带此选项，则默认查看尾部十行</li>
-</ul>
-<h1 id="进阶命令"><a href="#进阶命令" class="headerlink" title="进阶命令"></a>进阶命令</h1><h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">tree+(-a -d)+parameter</span><br></pre></td></tr></table></figure></div>
-<p>tree命令的作用和ls命令类似，不过其可以根据文件目录生成文件树，参数部分是文件或目录的路径。<br>选项意义：</p>
-<ul>
-<li>-a 代表列出全部文件</li>
-<li>-d 只列出目录</li>
-</ul>
-<p><strong>tree命令可能需要安装之后才能使用，使用yum&#x2F;apt……安装即可</strong></p>
-<h2 id="diff命令"><a href="#diff命令" class="headerlink" title="diff命令"></a>diff命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">diff+(-b -B -q)+file1+file2</span><br></pre></td></tr></table></figure></div>
-<p>diff命令用于比较文件的差异。<br>选项意义：</p>
-<ul>
-<li>-b 不检查空白字符的不同</li>
-<li>-B 不检查空行</li>
-<li>-q 仅显示有无差异，不显示详细信息</li>
-</ul>
-<h2 id="sed命令"><a href="#sed命令" class="headerlink" title="sed命令"></a>sed命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">sed+(-n -i -e)+<span class="string">&#x27;command&#x27;</span>+input</span><br></pre></td></tr></table></figure></div>
-<p>sed命令的作用是对文件进行处理，其可以将数据进行替换、删除、新增、选取等。相较于一般的命令形式，sed命令需要一个单独的“command”，而input即是输入文本。<br>“command”内容及作用：</p>
-<ul>
-<li>[行号]+a+[内容] 该命令的作用是在对应行号的行后新增一行，其内容即为所输入的内容。行号可以是数字，代表某一特定的行，也可以是“起始行，终止行”的形式，代表在所属范围的每一行后都新增内容为输入内容的一行，其中$代表最后一行，$-1代表倒数第二行，以此类推，如果忽略行号部分，则代表对每一行都进行操作。（后续command里的行号和该条相同）</li>
-<li>[行号]+c+[内容] 用输入的内容取代相应行</li>
-<li>[行号]+i+[内容] 在当前行的上面插入一行文本，内容为输入内容</li>
-<li>[行号]+d 删除相应行的内容</li>
-<li>[行号]+p 输出选择的内容，通常与-n选项搭配使用</li>
-<li>[行号]+s&#x2F;re&#x2F;string(&#x2F;g) 将re(正则表达式)匹配的内容替换为string，如果没有&#x2F;g，则只会将每一行匹配的第一个字符串替换为string，而加上&#x2F;g则表示在整行范围内替换。</li>
-</ul>
-<p>选项意义：</p>
-<ul>
-<li>-n sed默认将文件所有内容输出，而该选项可以使其只显示经过它处理的内容</li>
-<li>-i 直接修改读取的内容，而不是输出到屏幕，若没有该选项则原文件不会发生变化</li>
-<li>-e 允许在同一行里执行执行多条命令</li>
-</ul>
-<h2 id="awk命令"><a href="#awk命令" class="headerlink" title="awk命令"></a>awk命令</h2><p>格式：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">awk+(-F -v -f)+<span class="string">&#x27;模式 &#123;操作&#125;&#x27;</span>+输入文件</span><br></pre></td></tr></table></figure></div>
-<p>awk是一个功能十分强大的文本处理工具，其可以进行数据提取、文本处理、模式匹配、报告生成和自动化任务等。要能够运用awk命令，我们要知道以下内容：</p>
-<ol>
-<li>模式是什么：模式可以是一个正则表达式，也可以是一个条件表达式，表示对于匹配或满足条件的行再进行操作，其也可以是空，这时就代表对所有行进行操作。还有一些特殊模式，比如<code>BEGIN</code>和<code>END</code>，后面紧跟一个操作，分别代表在处理任何输入之前执行的操作，处理完所有输入后执行的操作。</li>
-<li>字段和变量：awk需要用内置的变量来处理文本数据，有以下常用的变量:</li>
-</ol>
-<ul>
-<li>$0：表示当前行的完整内容</li>
-<li>$1，$2，$3……：表示当前行的第几个字段（由字段分隔符分隔）</li>
-<li>NF：表示当前行的字段数</li>
-<li>NR：表示当前行的行号</li>
-<li>FS：字段分隔符，默认为空格或制表符</li>
-<li>OFS：输出字段分隔符，默认为空格</li>
-<li>ORS：输出记录分隔符，默认为换行符</li>
-</ul>
-<p>选项意义：</p>
-<ul>
-<li>-F 指定字段分隔符</li>
-<li>-v 设置变量的初始值</li>
-<li>-f 从文件中读取awk脚本</li>
-</ul>
-<p>举些例子更好理解  </p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print&#125;&#x27;</span> filename <span class="comment">#打印文件中所有行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> filename <span class="comment">#打印文件中的第二列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/pattern/ &#123;print&#125;&#x27;</span> filename <span class="comment">#打印包含特定模式的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;NR&gt;=3 &amp;&amp; NR&lt;=5 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第三行到第五行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;&#123;print $1,$3&#125;&#x27;</span> filename <span class="comment">#以逗号为字段分隔符，再打印第一列和第三列</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;$2&gt;10 &#123;print&#125;&#x27;</span> filename <span class="comment">#打印第二列大于10的行</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk <span class="string">&#x27;/ERROR/ &#123;count++&#125; END &#123;print &quot;Error count:&quot;, count&#125;&#x27;</span> log.txt</span><br><span class="line"><span class="comment">#统计文件里有ERROR的行数</span></span><br><span class="line"><span class="comment">#------------------------------------------------------------------------------</span></span><br><span class="line">awk -F, <span class="string">&#x27;BEGIN &#123;OFS=&quot;:&quot;&#125; &#123;print $1, $2, $3&#125;&#x27;</span> data.txt</span><br><span class="line"><span class="comment">#以逗号为字段分隔符，并以分号为输出字段分隔符将第一、二、三列输出</span></span><br></pre></td></tr></table></figure></div>
-<h1 id="一些特殊的符号"><a href="#一些特殊的符号" class="headerlink" title="一些特殊的符号"></a>一些特殊的符号</h1><h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h2><p>管道符符号：<code>|</code><br>作用：将左边命令的输出作为右边命令的输入，例如：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> a.txt | grep <span class="string">&quot;something&quot;</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="反引号"><a href="#反引号" class="headerlink" title="反引号"></a>反引号</h2><p>被反引号修饰（包围）的字符串会作为命令来执行，例如：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure></div>
-<p>输出结果为<code>pwd</code><br>但</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> `<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure></div>
-<p>输出结果则是当前工作目录</p>
-<h2 id="重定向符"><a href="#重定向符" class="headerlink" title="重定向符"></a>重定向符</h2><p>分为输入重定向符和输出重定向符。</p>
-<ul>
-<li>输入重定向符：<code>&lt;</code>，代表将右边的内容（文件……）作为输入传给左边的指令，例如现在有一个可执行文件out，需要传入一个参数，正常执行可以写为：</li>
-</ul>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out parameter</span><br></pre></td></tr></table></figure></div>
-<p>但若现在已经有一个文件a.txt含有了我们想要的输入参数，则可以通过输入重定向符来实现：</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="code"><pre><span class="line">./out &lt; a.txt</span><br></pre></td></tr></table></figure></div>
-<ul>
-<li>输出重定向符：将左边命令的结果写入右边的文件</li>
-<li><ul>
-<li>覆盖输出重定向符：<code>&gt;</code>，左边命令的结果将会覆盖文件原有的内容</li>
-</ul>
-</li>
-<li><ul>
-<li>追加输出重定向符：<code>&gt;&gt;</code>，左边命令的结果将会追加到文件的末尾，文件原有内容仍会保留</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux操作系统</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>linux中的vim编辑器</title>
-    <url>/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
-    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
-<li>命令模式</li>
-<li>输入模式</li>
-<li>底线命令模式</li>
-</ul>
-<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
-<li>i 在当前光标位置进入输入模式</li>
-<li>a 在当前光标之后进入输入模式</li>
-<li>I 在当前行开头进入输入模式</li>
-<li>A 在当前行结尾进入输入模式</li>
-<li>o 在当前光标下一行进入输入模式</li>
-<li>O 在当前光标上一行进入输入模式</li>
-<li>0 移动光标到当前行的开头</li>
-<li>$ 移动光标到当前行的结尾</li>
-<li>&#x2F; 搜索模式</li>
-<li><ul>
-<li>n 向下继续搜索</li>
-</ul>
-</li>
-<li><ul>
-<li>N 向上继续搜索</li>
-</ul>
-</li>
-<li>dd 删除光标所在行内容</li>
-<li>ndd 删除当前光标向下n行</li>
-<li>yy 复制当前行</li>
-<li>nyy 复制当前行和下面n行</li>
-<li>p 粘贴复制内容</li>
-<li>u 撤销修改</li>
-<li><code>ctrl</code>+r 反向撤销修改</li>
-<li>gg 跳到首行</li>
-<li>G 跳到末行</li>
-<li>dG 从当前行开始，向下全部删除</li>
-<li>dgg 从当前行开始，向上全部删除</li>
-<li>d$ 从当前光标开始，删除到本行结尾</li>
-<li>d0 从当前光标开始，删除到本行开头</li>
-</ul>
-<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
-<li>q！ 强制退出</li>
-<li>set nu 显示行号</li>
-<li>set nonu 不显示行号</li>
-<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux操作系统</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>操作系统</tag>
+        <tag>计算机组成原理</tag>
       </tags>
   </entry>
 </search>

@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-04-14T02:05:00.000Z">
-<meta property="article:modified_time" content="2025-04-15T14:16:08.357Z">
+<meta property="article:modified_time" content="2025-04-15T14:22:01.122Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="面向对象">
 <meta property="article:tag" content="BUAA">
@@ -651,8 +651,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-04-15 22:16:08</span>
-            <span class="mobile">2025-04-15 22:16:08</span>
+            <span class="desktop">2025-04-15 22:22:01</span>
+            <span class="mobile">2025-04-15 22:22:01</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -723,8 +723,8 @@
 <h2 id="1-1-调度设计"><a href="#1-1-调度设计" class="headerlink" title="1.1 调度设计"></a>1.1 调度设计</h2><p>本次作业每个乘客均指定了电梯，因此在调度上可以有两种思想，一种是采用中央调度器，另一种是每个电梯有自己的调度器，通过自己的请求队列来进行调度。由于我的设计是有分配线程存在的，也即当其拿到了一个请求后，在能竞争资源的情况下，会马上将请求分配给对应的电梯，因此我采用的是第二种思想。因此我的调度器其实是电梯线程内部的一个设计，直接在线程内工作，使用电梯请求队列这一资源，这一资源是原子性的，因此能够保证线程安全。  </p>
 <p><strong>调度策略</strong><br>有关单部电梯调度，已经有很多算法，比如LOOK算法，ALS算法，SATF算法等，但由于三次作业都加入了乘客的优先级这一因素，因此直接使用这些算法并不能很好的考虑到这一因素，可能会导致最终的性能不理想。因此我设计了自己的调度算法。  </p>
 <p>我的调度算法是基于SATF算法设计的，同时将LOOK算法和ALS策略考虑的因素也纳入进来。SATF算法是通过对每一个要素分配一个权重，最后根据标准化数据和权重计算每个请求的得分，将得分最高的请求纳入自己的接送队列。针对这三次作业，显然要为乘客的优先级这一因素分配权重，但这还不够，参考LOOK算法和ALS策略后，我将请求离电梯的距离以及相对方向也考虑进来，并为这三个要素分配权重。怎么分配权重又是一个问题，如果简单的为这三个要素指定权重，可能不够严谨，怎样做最严谨呢？根据已有数据来进行分析，采用熵权法计算出每一个要素的权重，这样应该是计算权重最严谨的方法了，但可惜的是似乎并没有这样一份数据包含了乘客的优先级，况且请求离电梯的距离以及相对方向这两个因素是动态的，而不是静态的，因此使用熵权法来计算权重是不现实的，因此我采用层次分析法来计算权重，这样既能保证一定的严谨性，又能保证一定的合理性。  </p>
-<p>判断矩阵如下：<br>$\begin{pmatrix}1 &amp; 1 &amp; \frac{1}{2} \1 &amp; 1 &amp; \frac{1}{2} \2 &amp; 2 &amp; 1\end{pmatrix}$</p>
-<p>在根据经验得到判断矩阵后，我计算出了三个因素对应的权重，分别是相对方向：0.5，请求离电梯距离：0.25，优先级：0.25（似乎和直接分配权重没啥区别（流汗））。计算好权重后，就可以计算每个请求的得分了，具体来说，假设请求离电梯的距离为$distance$，优先级为$priority$,相对方向为$direction$，那么其得分为：<br>$score &#x3D; 0.5 \times direction + 0.25 \times \frac{(10 - distance)}{10} + 0.25 \times \frac{\sqrt{priority}}{10}$<br>电梯运行时，每次从自己的请求队列中选择一个得分最高的请求，若电梯未满，如果电梯为空，则将其放入电梯的接送队列，若电梯非空，则需请求得分大于0.5时才会将其放入电梯接送队列。这样设计能够满足优先级的考虑，同时时间上也会优于LOOK算法，也避免了电梯反复横跳的情况，防止其非正常耗电。</p>
+<p>判断矩阵如下：<br>$$<br>\begin{pmatrix}<br>1 &amp; 1 &amp; \frac{1}{2} \<br>1 &amp; 1 &amp; \frac{1}{2} \<br>2 &amp; 2 &amp; 1<br>\end{pmatrix}<br>$$</p>
+<p>在根据经验得到判断矩阵后，我计算出了三个因素对应的权重，分别是相对方向：0.5，请求离电梯距离：0.25，优先级：0.25（似乎和直接分配权重没啥区别（流汗））。计算好权重后，就可以计算每个请求的得分了，具体来说，假设请求离电梯的距离为 $distance$ ，优先级为 $priority$ ,相对方向为 $direction$ ，那么其得分为：<br>$score &#x3D; 0.5 \times direction + 0.25 \times \frac{(10 - distance)}{10} + 0.25 \times \frac{\sqrt{priority}}{10}$<br>电梯运行时，每次从自己的请求队列中选择一个得分最高的请求，若电梯未满，如果电梯为空，则将其放入电梯的接送队列，若电梯非空，则需请求得分大于0.5时才会将其放入电梯接送队列。这样设计能够满足优先级的考虑，同时时间上也会优于LOOK算法，也避免了电梯反复横跳的情况，防止其非正常耗电。</p>
 <h2 id="1-2-线程安全"><a href="#1-2-线程安全" class="headerlink" title="1.2 线程安全"></a>1.2 线程安全</h2><p>本次作业我参考了课上上机的实现，也就是一个输入线程，一个分配线程和六个电梯线程。</p>
 <ul>
 <li>输入线程：负责获取输入并将相关请求存入总的请求队列里，相当于生产者的作用</li>
@@ -832,7 +832,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-04-15 22:16:08
+                    :</strong> 2025-04-15 22:22:01
             </li>
         
         <li>

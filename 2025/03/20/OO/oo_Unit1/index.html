@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-03-20T12:21:00.000Z">
-<meta property="article:modified_time" content="2025-04-15T14:16:29.155Z">
+<meta property="article:modified_time" content="2025-04-15T14:20:20.120Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="面向对象">
 <meta property="article:tag" content="BUAA">
@@ -651,8 +651,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-04-15 22:16:29</span>
-            <span class="mobile">2025-04-15 22:16:29</span>
+            <span class="desktop">2025-04-15 22:20:20</span>
+            <span class="mobile">2025-04-15 22:20:20</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -732,7 +732,7 @@
 <li><code>Expr</code>、<code>Term</code>、<code>Variable</code>、<code>Const</code>：表达式的基础结构  </li>
 <li><code>Symbol</code>：进行符号处理，保证每一个项的内部不会出现正号或负号，且每个项前最多有一个符号  </li>
 <li><code>Lexer</code>、<code>Parser</code>：进行语法和词法分析  </li>
-<li><code>Poly</code>：把项规范为形如$a*x^b$的形式  </li>
+<li><code>Poly</code>：把项规范为形如 $a*x^b$ 的形式  </li>
 <li><code>Operate</code>：进行运算，包括表达式幂的展开和项的展开</li>
 </ul>
 <h2 id="1-2代码复杂度"><a href="#1-2代码复杂度" class="headerlink" title="1.2代码复杂度"></a>1.2代码复杂度</h2><p><img  
@@ -760,7 +760,7 @@
 <li><code>Regofunc</code>：存储被解析出来的递推函数规则，供整个项目使用  </li>
 <li><code>Bracketdeal</code>：括号处理，寻找匹配的括号  </li>
 <li><code>Equandneg</code>：判断表达式是否相等或相反  </li>
-<li><code>Unit</code>：最终表达式中的最小单元，形如$a*x^b*{sin()}*{cos()}$  </li>
+<li><code>Unit</code>：最终表达式中的最小单元，形如 $a*x^b*{sin()}*{cos()}$  </li>
 <li><code>Entirety</code>：由多个<code>Unit</code>组成的单元</li>
 </ul>
 <h2 id="2-2代码复杂度"><a href="#2-2代码复杂度" class="headerlink" title="2.2代码复杂度"></a>2.2代码复杂度</h2><p><img  
@@ -770,7 +770,7 @@
                      
                 >  </p>
 <p>在本次项目中，复杂度较高的类为<code>Unit</code>类，其他类复杂度稍高可能是因为条件和循环语句稍多，例如<code>Lexer</code>和<code>Bracketdeal</code>类，而<code>Unit</code>类的复杂度是由于其里面涉及了很多方法，包括运算以及判断是否能合并等方法，涉及到的方法调用也较多，因此呈现了一个较高的复杂度。<br>此次作业我尽可能的满足了“高内聚低耦合”的想法，尽可能把一些特定功能单独抽象出来成为一个类，同时尽量保证每个类只干和自己相关的事。<br><strong>重构前后对比</strong><br>先抛开本次作业新增的三角函数和自定义递推函数不谈，其他部分我也和第一次作业有很大的差别。<br>首先是词法和语法解析，本次我单独设计了一个<code>Token</code>类，里面包含了字符串所包含的可能的字符类型，而不是在<code>Lexer</code>类里对字符串中的一个一个字符分析，整理来说可理解性和可迭代行会增强不少。我还在<code>Parser</code>里面确定了项的符号，直接抛弃了第一次作业中的<code>Symbol</code>类，且这样的方法几乎适用于往后的所有迭代。<br>其次我设计了<code>Entirety</code>和<code>Unit</code>两个类，最终的计算化简全都在这两个类中进行，而所有的表达式基础结构如<code>Expr</code>等都有一个<code>toentirety()</code>方法，方便之后的展开和化简，这样，我的代码在面临下一次迭代时可能不需要修改很多东西就能适应情景，而层次化的结构也比较清晰，这提高了整个项目的可维护性。  </p>
-<h2 id="2-3难点分析及化简优化"><a href="#2-3难点分析及化简优化" class="headerlink" title="2.3难点分析及化简优化"></a>2.3难点分析及化简优化</h2><p>前面说到，本次作业主要有两个难点：一个是递推函数，一个是三角函数化简。<br>针对递推函数，我采用字符串替换的方式，替换字符串后再对得到的字符串进行一次词法和语法分析并重复操作直到表达式中不含形如“f{n}(x)”的东西。要注意的是，在这里替换字符串的时候为了以防错误替换，可以先把第i个参数用“ai”替换，全部替换完后再将对应的“ai”替换为真正的实参。<br>针对三角函数的化简，其实难点在于如何判断两个三角函数是否相等或相反，也即三角函数内部的表达式是否相等或相反。这里我采用了一种比较暴力的方式，我想既然我们整个程序做的事情就是化简表达式，那我要判断两个表达式是否相等或相反，是不是可以把这两个表达式相加或相减，然后调用我们的程序其是否为零即可。综合各方面性能考虑，我最后决定只做$cos(0)$，$sin(0)$，以及正弦函数二倍角的化简，而且为了使最终结果的长度尽可能短，我在最后一步才化简，以防出现本来可以合并但在中途化简之后无法合并的情况。</p>
+<h2 id="2-3难点分析及化简优化"><a href="#2-3难点分析及化简优化" class="headerlink" title="2.3难点分析及化简优化"></a>2.3难点分析及化简优化</h2><p>前面说到，本次作业主要有两个难点：一个是递推函数，一个是三角函数化简。<br>针对递推函数，我采用字符串替换的方式，替换字符串后再对得到的字符串进行一次词法和语法分析并重复操作直到表达式中不含形如“f{n}(x)”的东西。要注意的是，在这里替换字符串的时候为了以防错误替换，可以先把第i个参数用“ai”替换，全部替换完后再将对应的“ai”替换为真正的实参。<br>针对三角函数的化简，其实难点在于如何判断两个三角函数是否相等或相反，也即三角函数内部的表达式是否相等或相反。这里我采用了一种比较暴力的方式，我想既然我们整个程序做的事情就是化简表达式，那我要判断两个表达式是否相等或相反，是不是可以把这两个表达式相加或相减，然后调用我们的程序其是否为零即可。综合各方面性能考虑，我最后决定只做 $cos(0)$ ， $sin(0)$ ，以及正弦函数二倍角的化简，而且为了使最终结果的长度尽可能短，我在最后一步才化简，以防出现本来可以合并但在中途化简之后无法合并的情况。</p>
 <h2 id="2-4Bug分析"><a href="#2-4Bug分析" class="headerlink" title="2.4Bug分析"></a>2.4Bug分析</h2><p>此次作业我出现了一些RE和WA以及TLE的错误，其中最主要的是RE错误。RE的原因是我在做递推函数的字符串替换时，忽略了可能嵌套函数的情况，导致我用的逗号下标可能是嵌套函数里面的逗号的下标，最后替换的结果自然是错的，为了修复这个问题，我添加在<code>Token</code>中添加了<code>Comma</code>这一类型，这样就能准确找到属于当前函数的逗号的下标，从而正确替换字符串。<br>而WA和TLE的原因在于我在合并<code>Unit</code>时，需要判断每个三角函数的幂次是否相同，但是我的三角函数在<code>Unit</code>里是用<code>HashMap&lt;String,Integer&gt;</code>来存储的，我对幂次相同的判断直接用的等号，但是显然等号是不适用于<code>Integer</code>内容的判相等的，因此出现了错误，当我改用<code>Objects</code>的<code>equals</code>方法后，问题就解决了。</p>
 <h1 id="第三次作业"><a href="#第三次作业" class="headerlink" title="第三次作业"></a>第三次作业</h1><p>第三次作业添加了自定义普通函数和求导算子，自定义普通函数的处理方法和第二次作业的自定义递归函数的处理方法类似，而且更简单，只不过由于函数内部的因子多了自定义普通函数这一选项，在替换和解析的时候可能需要做一点改动。而关于求导，可以采用自下而上的方法，先把最基本的常数、幂函数和三角函数的求导实现，再实现项和表达式的求导。本次作业我在第二次作业的基础上进行迭代，添加的东西并不多。</p>
 <h2 id="3-1程序架构"><a href="#3-1程序架构" class="headerlink" title="3.1程序架构"></a>3.1程序架构</h2><p><strong>UML类图</strong><br><img  
@@ -826,7 +826,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-04-15 22:16:29
+                    :</strong> 2025-04-15 22:20:20
             </li>
         
         <li>

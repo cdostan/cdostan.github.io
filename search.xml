@@ -107,6 +107,91 @@
       </tags>
   </entry>
   <entry>
+    <title>BUAA操作系统lab1</title>
+    <url>/2025/03/25/OS/Lab1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab1实验报告"><a href="#Lab1实验报告" class="headerlink" title="Lab1实验报告"></a>Lab1实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-1-1"><a href="#Thinking-1-1" class="headerlink" title="Thinking 1.1"></a>Thinking 1.1</h3><p><strong>尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS交叉编译工具链（带有mips-linux-gnu- 前缀，如 mips-linux-gnu-gcc、mips-linux-gnu-ld），重复其中的编译和解析过程，观察相应的结果，并解释其中向objdump传入的参数的含义</strong><br>objdump是一个强大的二进制文件分析工具，常用于反汇编和查看目标文件的详细信息，常用的参数有以下几个：  </p>
+<ul>
+<li>-d：反汇编可执行段  </li>
+<li>-D：反汇编所有段</li>
+<li>-S：在反汇编代码中混合显示源代码</li>
+<li>-j：指定要反汇编的段</li>
+<li>-g：显示调试信息</li>
+<li>-f：显示文件头信息，包括文件类型、架构、字节序等</li>
+</ul>
+<p>在过程中，我使用最多的是-D和-S选项，用来将目标文件反汇编出来。<br>我在使用原生x86工具链和MIPS交叉编译工具链并观察相应结果时发现，它们最大的差异就是相应架构的不同，x86工具链适用于x86架构，而MIPS工具链适用于MIPS架构。<br>比如，我编写了一个简单的C程序，如下：  </p>
+<pre><code class="language-C">#include&lt;stdio.h&gt;
+int main()&#123;
+  printf(&quot;Hello,World!\n&quot;);
+  return 0;
+&#125;
+</code></pre>
+<p>使用原生工具链gcc正常编译出可执行文件，即”gcc hello.c”后，通过file查看文件类型，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/x86file.png"
+                     
+                ><br>可以发现其是一个64位的x86-64架构的ELF可执行文件，同时用readelf查看其信息，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/x86elf.png"
+                     
+                ><br>再运用gcc的-c选项只编译不链接并使用objdump进行反汇编后，相应结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/x86dump.png"
+                     
+                ><br>可见其中的指令全是x86指令集架构中的指令。<br>再使用MIPS交叉编译工具链，用mips-linux-gnu-gcc编译出可执行文件，通过file查看文件类型，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/mipsfile.png"
+                     
+                ><br>其是一个32位的mips架构的ELF可执行文件，使用readelf查看其信息，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/mipself.png"
+                     
+                ><br>再只对其编译不链接并使用objdump进行反汇编，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/mipsdump.png"
+                     
+                ><br>其指令全是mips指令集架构中的指令。  </p>
+<h3 id="Thinking-1-2"><a href="#Thinking-1-2" class="headerlink" title="Thinking 1.2"></a>Thinking 1.2</h3><p><strong>也许你会发现我们编写的readelf程序是不能解析readelf 文件本身的，而我们刚才介绍的系统工具readelf 则可以解析，这是为什么呢？</strong><br>首先查看Makefile：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/makefile.png"
+                     
+                ><br>可以发现，制作readelf和hello的语句选项并不相同，制作hello时多了”-m32”、”-static”、”-g”三个选项，指定了目标文件是32位架构，且其为静态链接。再分别查看hello和readelf的文件头：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/helloelf.png"
+                     
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/elfelf.png"
+                     
+                ><br>可以发现hello确实是32位架构，而readelf是64位架构，而我们整个实验是在mips32位架构下进行的，所以我们自己写的readelf可以解析hello而不能解析自己  </p>
+<h3 id="Thinking-1-3"><a href="#Thinking-1-3" class="headerlink" title="Thinking 1.3"></a>Thinking 1.3</h3><p><strong>在理论课上我们了解到，MIPS体系结构上电时，启动入口地址为0xBFC00000（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？</strong><br>我们的整个实验是在QEMU模拟器上运行的，在运行第一行代码之前，我们已经拥有了一个正常的程序运行环境，已经可以访问内存了，我们还设置好了相应节的位置和程序入口，因此可以直接通过访问内存来正确跳转到内核入口。  </p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人觉得本次实验由于有很多理论上较为晦涩的东西，因此在啃实验指导书的时候十分痛苦，但真正到跳板机上做实验的时候很多东西并没有用到，相应的难度降低了不少，但还是有一些困难的，个人总结下来有如下：  </p>
+<ul>
+<li>ELF相关数据结构的定义的认识与理解</li>
+<li>如何用指针去访问节和段</li>
+<li>链接的逻辑</li>
+<li>print的实现逻辑</li>
+<li>MIPS内存如何布局</li>
+</ul>
+<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab1中，我学习了操作系统是如何启动的，其启动过程是一个十分纠结的过程，好在实验所用qemu模拟器省去了那纠结的过程，我还了解到ELF格式的相关定义，以及内存的布局，链接器的工作原理等，这些东西对一向对底层硬件和软件不怎么感冒的我来说理解起来有一定的难度，就算完成了实验之后仍然觉得这些过程、原理和结构异常复杂，因为所完成的实验几乎没有怎么涉及到这些过程。最具挑战性的是最后对printf函数功能的实现，这个部分也花费了我很多时间，一来是相关注释的提示太模糊，二是我最初的想法和注释的想法大相径庭，实现的角度很不一样，导致我在耗费了大量时间去揣测注释的意思，最后又因为语法等原因进行了一定时间的debug，但在看到输出和期望输出相同的那一瞬间，我还是发自内心的开心，并理解到其实现逻辑的合理性。</p>
+]]></content>
+      <categories>
+        <category>OS(BUAA)</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2025_BUAA_OO_Unit2</title>
     <url>/2025/04/14/OO/oo_Unit2/</url>
     <content><![CDATA[<p>OO第二单元的主题是多线程编程，旨在通过生活中的常见例子来让我们理解并掌握多线程编程思想，同时能够编写代码正确实现多线程的同步和互斥，解决线程安全和线程交互问题。<br>本单元围绕电梯调度这个生活中极为常见的例子开展三次作业，在满足正确性的情况下，我们还需对电梯整体调度进行设计尽可能优化性能。<br>我完成这三次作业的过程不能用轻松来形容，线程安全和线程交互中出现的问题总是让我头疼，甚至一度认为 <del>多线程编程极不安全</del> ，但其实仔细思考后会发现线程安全和线程交互的问题都是可以通过设计来解决的，只不过针对于不同的架构和方案，相应的解决方案的复杂程度可能不同。整体来说，三次作业的完成是痛苦的，但收获也是丰富的。</p>
@@ -403,63 +488,8 @@
         <category>Linux操作系统</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>linux中的vim编辑器</title>
-    <url>/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
-    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
-<li>命令模式</li>
-<li>输入模式</li>
-<li>底线命令模式</li>
-</ul>
-<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
-<li>i 在当前光标位置进入输入模式</li>
-<li>a 在当前光标之后进入输入模式</li>
-<li>I 在当前行开头进入输入模式</li>
-<li>A 在当前行结尾进入输入模式</li>
-<li>o 在当前光标下一行进入输入模式</li>
-<li>O 在当前光标上一行进入输入模式</li>
-<li>0 移动光标到当前行的开头</li>
-<li>$ 移动光标到当前行的结尾</li>
-<li>&#x2F; 搜索模式</li>
-<li><ul>
-<li>n 向下继续搜索</li>
-</ul>
-</li>
-<li><ul>
-<li>N 向上继续搜索</li>
-</ul>
-</li>
-<li>dd 删除光标所在行内容</li>
-<li>ndd 删除当前光标向下n行</li>
-<li>yy 复制当前行</li>
-<li>nyy 复制当前行和下面n行</li>
-<li>p 粘贴复制内容</li>
-<li>u 撤销修改</li>
-<li><code>ctrl</code>+r 反向撤销修改</li>
-<li>gg 跳到首行</li>
-<li>G 跳到末行</li>
-<li>dG 从当前行开始，向下全部删除</li>
-<li>dgg 从当前行开始，向上全部删除</li>
-<li>d$ 从当前光标开始，删除到本行结尾</li>
-<li>d0 从当前光标开始，删除到本行开头</li>
-</ul>
-<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
-<li>q！ 强制退出</li>
-<li>set nu 显示行号</li>
-<li>set nonu 不显示行号</li>
-<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux操作系统</category>
-      </categories>
-      <tags>
         <tag>Linux</tag>
-        <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
@@ -504,93 +534,8 @@
       </categories>
       <tags>
         <tag>BUAA</tag>
+        <tag>操作系统</tag>
         <tag>Linux</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA操作系统lab1</title>
-    <url>/2025/03/25/OS/Lab1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
-    <content><![CDATA[<h1 id="Lab1实验报告"><a href="#Lab1实验报告" class="headerlink" title="Lab1实验报告"></a>Lab1实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-1-1"><a href="#Thinking-1-1" class="headerlink" title="Thinking 1.1"></a>Thinking 1.1</h3><p><strong>尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS交叉编译工具链（带有mips-linux-gnu- 前缀，如 mips-linux-gnu-gcc、mips-linux-gnu-ld），重复其中的编译和解析过程，观察相应的结果，并解释其中向objdump传入的参数的含义</strong><br>objdump是一个强大的二进制文件分析工具，常用于反汇编和查看目标文件的详细信息，常用的参数有以下几个：  </p>
-<ul>
-<li>-d：反汇编可执行段  </li>
-<li>-D：反汇编所有段</li>
-<li>-S：在反汇编代码中混合显示源代码</li>
-<li>-j：指定要反汇编的段</li>
-<li>-g：显示调试信息</li>
-<li>-f：显示文件头信息，包括文件类型、架构、字节序等</li>
-</ul>
-<p>在过程中，我使用最多的是-D和-S选项，用来将目标文件反汇编出来。<br>我在使用原生x86工具链和MIPS交叉编译工具链并观察相应结果时发现，它们最大的差异就是相应架构的不同，x86工具链适用于x86架构，而MIPS工具链适用于MIPS架构。<br>比如，我编写了一个简单的C程序，如下：  </p>
-<pre><code class="language-C">#include&lt;stdio.h&gt;
-int main()&#123;
-  printf(&quot;Hello,World!\n&quot;);
-  return 0;
-&#125;
-</code></pre>
-<p>使用原生工具链gcc正常编译出可执行文件，即”gcc hello.c”后，通过file查看文件类型，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/x86file.png"
-                     
-                ><br>可以发现其是一个64位的x86-64架构的ELF可执行文件，同时用readelf查看其信息，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/x86elf.png"
-                     
-                ><br>再运用gcc的-c选项只编译不链接并使用objdump进行反汇编后，相应结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/x86dump.png"
-                     
-                ><br>可见其中的指令全是x86指令集架构中的指令。<br>再使用MIPS交叉编译工具链，用mips-linux-gnu-gcc编译出可执行文件，通过file查看文件类型，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/mipsfile.png"
-                     
-                ><br>其是一个32位的mips架构的ELF可执行文件，使用readelf查看其信息，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/mipself.png"
-                     
-                ><br>再只对其编译不链接并使用objdump进行反汇编，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/mipsdump.png"
-                     
-                ><br>其指令全是mips指令集架构中的指令。  </p>
-<h3 id="Thinking-1-2"><a href="#Thinking-1-2" class="headerlink" title="Thinking 1.2"></a>Thinking 1.2</h3><p><strong>也许你会发现我们编写的readelf程序是不能解析readelf 文件本身的，而我们刚才介绍的系统工具readelf 则可以解析，这是为什么呢？</strong><br>首先查看Makefile：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/makefile.png"
-                     
-                ><br>可以发现，制作readelf和hello的语句选项并不相同，制作hello时多了”-m32”、”-static”、”-g”三个选项，指定了目标文件是32位架构，且其为静态链接。再分别查看hello和readelf的文件头：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/helloelf.png"
-                     
-                ><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/elfelf.png"
-                     
-                ><br>可以发现hello确实是32位架构，而readelf是64位架构，而我们整个实验是在mips32位架构下进行的，所以我们自己写的readelf可以解析hello而不能解析自己  </p>
-<h3 id="Thinking-1-3"><a href="#Thinking-1-3" class="headerlink" title="Thinking 1.3"></a>Thinking 1.3</h3><p><strong>在理论课上我们了解到，MIPS体系结构上电时，启动入口地址为0xBFC00000（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？</strong><br>我们的整个实验是在QEMU模拟器上运行的，在运行第一行代码之前，我们已经拥有了一个正常的程序运行环境，已经可以访问内存了，我们还设置好了相应节的位置和程序入口，因此可以直接通过访问内存来正确跳转到内核入口。  </p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人觉得本次实验由于有很多理论上较为晦涩的东西，因此在啃实验指导书的时候十分痛苦，但真正到跳板机上做实验的时候很多东西并没有用到，相应的难度降低了不少，但还是有一些困难的，个人总结下来有如下：  </p>
-<ul>
-<li>ELF相关数据结构的定义的认识与理解</li>
-<li>如何用指针去访问节和段</li>
-<li>链接的逻辑</li>
-<li>print的实现逻辑</li>
-<li>MIPS内存如何布局</li>
-</ul>
-<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab1中，我学习了操作系统是如何启动的，其启动过程是一个十分纠结的过程，好在实验所用qemu模拟器省去了那纠结的过程，我还了解到ELF格式的相关定义，以及内存的布局，链接器的工作原理等，这些东西对一向对底层硬件和软件不怎么感冒的我来说理解起来有一定的难度，就算完成了实验之后仍然觉得这些过程、原理和结构异常复杂，因为所完成的实验几乎没有怎么涉及到这些过程。最具挑战性的是最后对printf函数功能的实现，这个部分也花费了我很多时间，一来是相关注释的提示太模糊，二是我最初的想法和注释的想法大相径庭，实现的角度很不一样，导致我在耗费了大量时间去揣测注释的意思，最后又因为语法等原因进行了一定时间的debug，但在看到输出和期望输出相同的那一瞬间，我还是发自内心的开心，并理解到其实现逻辑的合理性。</p>
-]]></content>
-      <categories>
-        <category>OS(BUAA)</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
@@ -690,89 +635,58 @@ int main()&#123;
       </tags>
   </entry>
   <entry>
-    <title>计算机组成原理P3(Logisim)</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/P3-Logisim/</url>
-    <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
-<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>
-<h2 id="模块需求"><a href="#模块需求" class="headerlink" title="模块需求"></a>模块需求</h2><p>根据工作流程，我们可以看到其实CPU工作总的来说就是一个状态的不断转移，在每个状态中做相应的操作。<br/>进一步看，每个状态完全由PC来决定，所以状态转移其实只涉及PC的算术运算，将PC的算术运算电路与PC寄存器相连就能实现状态转移。<br/>而操作部分其实就完完全全是组合逻辑电路，但操作部分是很庞大的系统，我们需要对其进行细分实现更小的模块。根据工作流程中的操作分析，我们可以看到在这一部分我们应该需要一个解析指令的模块，一个寄存器堆，一个算术运算模块，一个数据存储器。但由于指令的不同，执行的相关操作也不同，例如对于add与sub，一个在算术运算模块中需要执行加法操作，一个需要执行减法操作，因此我们需要相应的控制信号来控制每个操作模块的具体操作（相应的控制信号有寄存器堆写信号，数据存储器写信号，数据存储器读信号，指令相关位数选择信号，算术运算模块操作数选择信号，算术运算模块选项信号，寄存器堆数据输入选择信号），而这些控制信号便是由相应的指令来得出的，因此还需要一个控制器。</p>
-<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.28.36.png"
-                     
-                ></p>
-<h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
-                     
-                ></p>
-<h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/cpu.png"
-                     
-                ></p>
-<hr>
-<h2 id="易遗漏或出错的地方"><a href="#易遗漏或出错的地方" class="headerlink" title="易遗漏或出错的地方"></a>易遗漏或出错的地方</h2><ul>
-<li>在对beq指令做考虑的时候，<del>需要对PC与立即数的4倍相加</del>，我们要意识到这时PC首先应该自增再与立即数的4倍相加，这才是正确的操作。</li>
-<li>若当前指令为I型指令，由于算术运算模块对数据位数的限制，<del>我们用一个位拓展器将立即数扩展到32位就行了</del>，对于不同的I型指令，立即数的扩展方式是不同的，例如对于ori要对立即数进行无符号扩展，对于lw要对立即数进行有符号扩展，因此我们需要加一个选择信号去对立即数进行何种扩展方式做出说明。（幸运的是该次CPU设计只涉及ori一个需要对立即数进行无符号扩展的指令，因此将ori信号作为选择信号即可，若后续增加指令，加上一个或电路即可）</li>
+    <title>linux中的vim编辑器</title>
+    <url>/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
+    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
+<li>命令模式</li>
+<li>输入模式</li>
+<li>底线命令模式</li>
 </ul>
-<hr>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>测试中尽可能使每条指令的每种情况都覆盖，并且由最基本的指令开始构造测试（不需要其他指令就可以检验覆盖率的指令为最基本的），因此，从ori与lui开始构造，并通过他们几条指令让寄存器的值不全为0，是得能对后续指令做检验。<br/>根据以上指导思想设计的MIPS测试程序如下：</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,0x1011</span><br><span class="line">ori $2,$1,0x0111</span><br><span class="line">ori $11,$0,2</span><br><span class="line">lui $3,0</span><br><span class="line">lui $3,0x0111</span><br><span class="line">lui $3,0xffff</span><br><span class="line">ori $4,$3,0xffff</span><br><span class="line">lui $3,0x0111</span><br><span class="line">add $5,$3,$0</span><br><span class="line">add $5,$4,$0</span><br><span class="line">add $5,$3,$1</span><br><span class="line">add $5,$3,$4</span><br><span class="line">add $5,$4,$4</span><br><span class="line">add $5,$5,$5</span><br><span class="line">loop3:add $11,$11,$4</span><br><span class="line">beq $11,$0,loop4</span><br><span class="line">sub $6,$3,$0</span><br><span class="line">sub $6,$4,$0</span><br><span class="line">sub $6,$3,$1</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">ori $7,$0,1</span><br><span class="line">sub $8,$4,$7</span><br><span class="line">sub $6,$4,$8</span><br><span class="line">sub $6,$6,$6</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">loop3:sw $5,4($1)</span><br><span class="line">sw $6,4($2)</span><br><span class="line">nop</span><br><span class="line">lw $9,4($1)</span><br><span class="line">lw $10,4($2)</span><br><span class="line">beq $5,$10,loop1</span><br><span class="line">beq $5,$9,loop2</span><br><span class="line">loop1:sw $10,8($2)</span><br><span class="line">loop2:beq $6,$10,loop3</span><br><span class="line">loop4:sw $9,12($2)</span><br></pre></td></tr></table></figure></div>
-<h1 id="单周期CPU思考题"><a href="#单周期CPU思考题" class="headerlink" title="单周期CPU思考题"></a>单周期CPU思考题</h1><h2 id="单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"><a href="#单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？" class="headerlink" title="单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"></a>单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？</h2><h3 id="状态转移功能"><a href="#状态转移功能" class="headerlink" title="状态转移功能"></a>状态转移功能</h3><ul>
-<li>NPC模块</li>
+<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
+<li>i 在当前光标位置进入输入模式</li>
+<li>a 在当前光标之后进入输入模式</li>
+<li>I 在当前行开头进入输入模式</li>
+<li>A 在当前行结尾进入输入模式</li>
+<li>o 在当前光标下一行进入输入模式</li>
+<li>O 在当前光标上一行进入输入模式</li>
+<li>0 移动光标到当前行的开头</li>
+<li>$ 移动光标到当前行的结尾</li>
+<li>&#x2F; 搜索模式</li>
 <li><ul>
-<li>NPC模块当中，需要判断下一个PC的值，如果当前指令不是beq指令，则PC相对于当前值加4便得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器，否则在加4的基础上，与当前获得的立即数的4倍相加得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器。</li>
+<li>n 向下继续搜索</li>
 </ul>
 </li>
-</ul>
-<hr>
-<h3 id="状态存储功能"><a href="#状态存储功能" class="headerlink" title="状态存储功能"></a>状态存储功能</h3><ul>
-<li>PC存储器</li>
 <li><ul>
-<li>PC存储器存储当前周期PC的值，并以该值指导后续工作电路的所有操作。</li>
+<li>N 向上继续搜索</li>
 </ul>
 </li>
-<li>GRF模块</li>
-<li><ul>
-<li>在Controller根据当前PC的值读出对应的指令后，GRF根据指令做出相关操作，并决定是否在内部某个存储器存入新的值。</li>
+<li>dd 删除光标所在行内容</li>
+<li>ndd 删除当前光标向下n行</li>
+<li>yy 复制当前行</li>
+<li>nyy 复制当前行和下面n行</li>
+<li>p 粘贴复制内容</li>
+<li>u 撤销修改</li>
+<li><code>ctrl</code>+r 反向撤销修改</li>
+<li>gg 跳到首行</li>
+<li>G 跳到末行</li>
+<li>dG 从当前行开始，向下全部删除</li>
+<li>dgg 从当前行开始，向上全部删除</li>
+<li>d$ 从当前光标开始，删除到本行结尾</li>
+<li>d0 从当前光标开始，删除到本行开头</li>
 </ul>
-</li>
-<li>DM模块</li>
-<li><ul>
-<li>在Controller根据当前PC的值读出对应的指令后，DM根据指令做出相关操作，并决定是否在内部某个空间写入新的值。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出"><a href="#模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出" class="headerlink" title="模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出"></a>模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出</h2><ul>
-<li>IM模块为指令存储器，由于在CPU执行操作的时候是从相应的地址空间里读取该周期使用的指令，不会对指令作出修改，也就是针对指令只需实现读的操作，因此使用ROM来实现IM模块是合理的。</li>
-<li>DM模块为数据存储器，是在相应的地址空间存储数据，在指令不同时，可以从相应的地址空间读取数据，也可以将新的数据写入相应的地址空间，因此需要同时做到读和写的操作，因此使用RAM可以实现且最为方便。</li>
-<li>GRF是通用寄存器组，里面放置了三十二个寄存器用于读取和写入数据，且搭建的是单周期CPU，因此在每个周期最多对里面的一个寄存器写入新数据（该新数据将在下一个时钟上沿存入寄存器），因此使用三十二个寄存器的组合来实现GRF是合理的。</li>
-</ul>
-<hr>
-<h2 id="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"><a href="#在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路" class="headerlink" title="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"></a>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路</h2><h3 id="beq指令操作模块"><a href="#beq指令操作模块" class="headerlink" title="beq指令操作模块"></a>beq指令操作模块</h3><ul>
-<li>该模块是实现beq操作的模块，因为针对beq指令，最终所需要操作改变的数并不是寄存器里的值或者内存空间的值，而是PC的值，因此需要将其单独拿出来进行一个操作。该模块由原本的（PC+4）与当前立即数的四倍相加的一个运算电路再加上由beq信号和alu模块判断相等信号的与作为选择信号的多路选择器构成，若当前两个寄存器的值相等且beq信号为1，那么下一个PC将为经过运算电路得到的值，否则就为（PC+4）。</li>
-</ul>
-<hr>
-<h2 id="实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？"><a href="#实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？" class="headerlink" title="实现 nop 空指令，我们并不需要将它加入控制信号真值表，为什么？"></a>实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</h2><ul>
-<li>nop指令为空指令，如若该周期CPU执行该条指令，则不会发生任何操作（除了PC自增）。不将nop指令加入控制信号真值表说明在计算相应控制信号的值时，我们不需考虑nop指令的影响，也即当当前指令为nop时，所有控制信号的值均为0。这时，首先考虑beq指令操作部分，由于此时beq信号为0，因此下一个PC的值只是当前PC的值的简单自增，不受影响；而针对其他指令操作部分，我们关心的仅是这些操作部分会不会在nop指令期间影响寄存器的值或者内存空间里存储的值，这都与写操作有关，但nop指令期间寄存器写信号和数据存储器写信号均为0，因此不会执行写操作，所以二者内部的值都不会改变。</li>
-</ul>
-<hr>
-<h2 id="阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"><a href="#阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。" class="headerlink" title="阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"></a>阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</h2><p>测试样例的数据针对其给出的几条指令（<code>ori</code>, <code>lui</code>, <code>add</code>, <code>sw</code>, <code>lw</code>, <code>beq</code>）已经较强，每个指令的覆盖率都较高，但仍在一些方面存在不足，下面列出不足之处：</p>
-<ul>
-<li><code>add</code>进行了正数和正数，正数和负数，负数和负数的操作，但未进行0与正负数的操作，不能确保CPU是否会在至少有一个数为0时出差错。</li>
-<li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
+<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
+<li>q！ 强制退出</li>
+<li>set nu 显示行号</li>
+<li>set nonu 不显示行号</li>
+<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
 </ul>
 ]]></content>
       <categories>
-        <category>计算机组成原理</category>
+        <category>Linux操作系统</category>
       </categories>
       <tags>
-        <tag>BUAA</tag>
-        <tag>计算机组成原理</tag>
+        <tag>操作系统</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -863,173 +777,82 @@ int main()&#123;
       </tags>
   </entry>
   <entry>
-    <title>计算机组成原理P4</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P4/</url>
-    <content><![CDATA[<h1 id="单周期CPU设计草稿（verilog"><a href="#单周期CPU设计草稿（verilog" class="headerlink" title="单周期CPU设计草稿（verilog)"></a>单周期CPU设计草稿（verilog)</h1><p>本次课下需要我们通过verilog来设计一个支持10条指令的单周期CPU。由于在上周我们已经通过logisim搭建了一个单周期CPU，所以本次的任务其实简单来说就是通过一个硬件描述语言去描述搭建好的电路。<br>我们还是先来简单捋一下构建思路。</p>
-<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><ul>
-<li>工作流程：每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作，并判断下一个周期的PC的取值。</li>
-<li>模块需求：我们希望在编写verilog的时候能像在logisim里一样使用不同的模块，并在最后使用这些模块来构成整个CPU。而通过相应的指令和流程，我们可以编写以下几个模块：im（指令存储器），grf（寄存器堆），alu（算术运算模块），dm（数据存储器），controller（控制器）以及最顶层的模块mips。</li>
-</ul>
-<p>（附上单周期CPUlogisim搭建图）<br><img  
+    <title>计算机组成原理P3(Logisim)</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/P3-Logisim/</url>
+    <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>
+<h2 id="模块需求"><a href="#模块需求" class="headerlink" title="模块需求"></a>模块需求</h2><p>根据工作流程，我们可以看到其实CPU工作总的来说就是一个状态的不断转移，在每个状态中做相应的操作。<br/>进一步看，每个状态完全由PC来决定，所以状态转移其实只涉及PC的算术运算，将PC的算术运算电路与PC寄存器相连就能实现状态转移。<br/>而操作部分其实就完完全全是组合逻辑电路，但操作部分是很庞大的系统，我们需要对其进行细分实现更小的模块。根据工作流程中的操作分析，我们可以看到在这一部分我们应该需要一个解析指令的模块，一个寄存器堆，一个算术运算模块，一个数据存储器。但由于指令的不同，执行的相关操作也不同，例如对于add与sub，一个在算术运算模块中需要执行加法操作，一个需要执行减法操作，因此我们需要相应的控制信号来控制每个操作模块的具体操作（相应的控制信号有寄存器堆写信号，数据存储器写信号，数据存储器读信号，指令相关位数选择信号，算术运算模块操作数选择信号，算术运算模块选项信号，寄存器堆数据输入选择信号），而这些控制信号便是由相应的指令来得出的，因此还需要一个控制器。</p>
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.28.36.png"
                      
                 ></p>
-<h2 id="模块分析"><a href="#模块分析" class="headerlink" title="模块分析"></a>模块分析</h2><ul>
-<li><ul>
-<li>mips：作为最顶层的模块，这个模块也即CPU本身，它包含了其他的子模块，在这个模块当中，只需要定义相关的信号将子模块联系起来，除此之外其唯一需要做的就是计算下一个pc的值，因此该模块中应有一个pc的计算部分。图示如下：<br/><img  
+<h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/mips.png"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
                      
-                ></li>
+                ></p>
+<h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/cpu.png"
+                     
+                ></p>
+<hr>
+<h2 id="易遗漏或出错的地方"><a href="#易遗漏或出错的地方" class="headerlink" title="易遗漏或出错的地方"></a>易遗漏或出错的地方</h2><ul>
+<li>在对beq指令做考虑的时候，<del>需要对PC与立即数的4倍相加</del>，我们要意识到这时PC首先应该自增再与立即数的4倍相加，这才是正确的操作。</li>
+<li>若当前指令为I型指令，由于算术运算模块对数据位数的限制，<del>我们用一个位拓展器将立即数扩展到32位就行了</del>，对于不同的I型指令，立即数的扩展方式是不同的，例如对于ori要对立即数进行无符号扩展，对于lw要对立即数进行有符号扩展，因此我们需要加一个选择信号去对立即数进行何种扩展方式做出说明。（幸运的是该次CPU设计只涉及ori一个需要对立即数进行无符号扩展的指令，因此将ori信号作为选择信号即可，若后续增加指令，加上一个或电路即可）</li>
 </ul>
-</li>
+<hr>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>测试中尽可能使每条指令的每种情况都覆盖，并且由最基本的指令开始构造测试（不需要其他指令就可以检验覆盖率的指令为最基本的），因此，从ori与lui开始构造，并通过他们几条指令让寄存器的值不全为0，是得能对后续指令做检验。<br/>根据以上指导思想设计的MIPS测试程序如下：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,0x1011</span><br><span class="line">ori $2,$1,0x0111</span><br><span class="line">ori $11,$0,2</span><br><span class="line">lui $3,0</span><br><span class="line">lui $3,0x0111</span><br><span class="line">lui $3,0xffff</span><br><span class="line">ori $4,$3,0xffff</span><br><span class="line">lui $3,0x0111</span><br><span class="line">add $5,$3,$0</span><br><span class="line">add $5,$4,$0</span><br><span class="line">add $5,$3,$1</span><br><span class="line">add $5,$3,$4</span><br><span class="line">add $5,$4,$4</span><br><span class="line">add $5,$5,$5</span><br><span class="line">loop3:add $11,$11,$4</span><br><span class="line">beq $11,$0,loop4</span><br><span class="line">sub $6,$3,$0</span><br><span class="line">sub $6,$4,$0</span><br><span class="line">sub $6,$3,$1</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">ori $7,$0,1</span><br><span class="line">sub $8,$4,$7</span><br><span class="line">sub $6,$4,$8</span><br><span class="line">sub $6,$6,$6</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">loop3:sw $5,4($1)</span><br><span class="line">sw $6,4($2)</span><br><span class="line">nop</span><br><span class="line">lw $9,4($1)</span><br><span class="line">lw $10,4($2)</span><br><span class="line">beq $5,$10,loop1</span><br><span class="line">beq $5,$9,loop2</span><br><span class="line">loop1:sw $10,8($2)</span><br><span class="line">loop2:beq $6,$10,loop3</span><br><span class="line">loop4:sw $9,12($2)</span><br></pre></td></tr></table></figure></div>
+<h1 id="单周期CPU思考题"><a href="#单周期CPU思考题" class="headerlink" title="单周期CPU思考题"></a>单周期CPU思考题</h1><h2 id="单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"><a href="#单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？" class="headerlink" title="单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"></a>单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？</h2><h3 id="状态转移功能"><a href="#状态转移功能" class="headerlink" title="状态转移功能"></a>状态转移功能</h3><ul>
+<li>NPC模块</li>
 <li><ul>
-<li>im：指令存储器模块，需要一个地址信号输入，并输出指令编码。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/im.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>grf：寄存器堆模块，需要三个地址信号，一个写入数据，一个写入数据使能信号，时钟和复位信号。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/grf.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>alu：算术运算模块，在这个模块本人设计了与或加减左移及相等6种运算，需要两个运算数输入，一个操作选择信号，一个结果输出，为了方便并再加一个等于输出信号（判断输入的两数是否相等）<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/alu.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>dm：数据存储器模块，需要时钟和复位信号，写使能和读使能信号，地址和写入数据信号，并输出一个读出的数据。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/dm.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>controller：控制器模块，输入仍然是指令的操作码和功能码，输出包括了该电路中所有的控制信号。但本次增加了两条跳转指令，分别是jal和jr，因此在确定控制信号时还要考虑进这两条指令。简单分析即可知，由于这两条都是跳转指令，所以数据存储器既不写数据也不读数据即可，但对于jal来说，需要对31号寄存器存入下一条指令的地址，因此grf的写入地址应为31，写入数据为下一条指令的地址，对于jr来说就简单了，寄存器堆也不用写数据，因此将其写使能信号置零即可。<br/>jal:regwe-&gt;1,memwe-&gt;0,loadwe-&gt;0<br/>jr:regwe-&gt;0,memwe-&gt;0,loadwe-&gt;0<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
-                     
-                ><br/>由于grf写入地址现在有三种情况，下一个pc的值也有三种情况，因此我们还得在上一次控制信号的基础上再加上两个控制信号，但这两个控制信号直接由jal和jr来当即可，也即当目前指令为jal（jr）时，jal（jr）置1.</li>
+<li>NPC模块当中，需要判断下一个PC的值，如果当前指令不是beq指令，则PC相对于当前值加4便得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器，否则在加4的基础上，与当前获得的立即数的4倍相加得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器。</li>
 </ul>
 </li>
 </ul>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
-<li>基本指令测试（不含jal和jr）</li>
-</ol>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
-<ol start="2">
-<li>jal与jr测试</li>
-</ol>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,1</span><br><span class="line">ori $31,$0,0x3014</span><br><span class="line">loop:add $2,$1,$1</span><br><span class="line">jr $ra</span><br><span class="line">add $3,$2,$0</span><br><span class="line">add $4,$3,$2</span><br><span class="line">jal loop</span><br><span class="line">ori $5,$4,$0</span><br></pre></td></tr></table></figure></div>
-<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？"><a href="#根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？" class="headerlink" title="根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？"></a>根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？</h2><p>addr信号是从alu的输出中得来的。我们自行写的dm当中，一个地址可以存储一个字，但在MIPS里，地址是字对齐的，也即存一个字的地址都是4的倍数，因此实际上dm对应的地址是真正的地址除以4，dm地址有10位，也就对应aluout的第11到第2位。</p>
-<h2 id="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"><a href="#思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣" class="headerlink" title="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"></a>思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣</h2><ol>
-<li>指令对应控制信号<br>代码示例（在此仅给出ori指令相关代码作为示例）：</li>
-</ol>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">module controller(</span><br><span class="line">	//信号定义</span><br><span class="line">	)</span><br><span class="line">	always @(*) begin</span><br><span class="line">	if(ori == 1)begin</span><br><span class="line">	regwe=1;</span><br><span class="line">	aluopt=&#x27;b001</span><br><span class="line">	ori=1;</span><br><span class="line">	end</span><br><span class="line">	//其余指令判断相关控制信号</span><br><span class="line">	end</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure></div>
-<ol start="2">
-<li>控制信号对应指令<br>代码示例：</li>
-</ol>
-<pre><code>module controller(
-	//信号定义
-	)
-	always @(*)begin
-	regwe = add | sub | ori | lw | lui | jal;
-	regdst = add | sub ;
-	//其余信号
-endmodule
-</code></pre>
+<hr>
+<h3 id="状态存储功能"><a href="#状态存储功能" class="headerlink" title="状态存储功能"></a>状态存储功能</h3><ul>
+<li>PC存储器</li>
+<li><ul>
+<li>PC存储器存储当前周期PC的值，并以该值指导后续工作电路的所有操作。</li>
+</ul>
+</li>
+<li>GRF模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，GRF根据指令做出相关操作，并决定是否在内部某个存储器存入新的值。</li>
+</ul>
+</li>
+<li>DM模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，DM根据指令做出相关操作，并决定是否在内部某个空间写入新的值。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出"><a href="#模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出" class="headerlink" title="模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出"></a>模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出</h2><ul>
+<li>IM模块为指令存储器，由于在CPU执行操作的时候是从相应的地址空间里读取该周期使用的指令，不会对指令作出修改，也就是针对指令只需实现读的操作，因此使用ROM来实现IM模块是合理的。</li>
+<li>DM模块为数据存储器，是在相应的地址空间存储数据，在指令不同时，可以从相应的地址空间读取数据，也可以将新的数据写入相应的地址空间，因此需要同时做到读和写的操作，因此使用RAM可以实现且最为方便。</li>
+<li>GRF是通用寄存器组，里面放置了三十二个寄存器用于读取和写入数据，且搭建的是单周期CPU，因此在每个周期最多对里面的一个寄存器写入新数据（该新数据将在下一个时钟上沿存入寄存器），因此使用三十二个寄存器的组合来实现GRF是合理的。</li>
+</ul>
+<hr>
+<h2 id="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"><a href="#在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路" class="headerlink" title="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"></a>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路</h2><h3 id="beq指令操作模块"><a href="#beq指令操作模块" class="headerlink" title="beq指令操作模块"></a>beq指令操作模块</h3><ul>
+<li>该模块是实现beq操作的模块，因为针对beq指令，最终所需要操作改变的数并不是寄存器里的值或者内存空间的值，而是PC的值，因此需要将其单独拿出来进行一个操作。该模块由原本的（PC+4）与当前立即数的四倍相加的一个运算电路再加上由beq信号和alu模块判断相等信号的与作为选择信号的多路选择器构成，若当前两个寄存器的值相等且beq信号为1，那么下一个PC将为经过运算电路得到的值，否则就为（PC+4）。</li>
+</ul>
+<hr>
+<h2 id="实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？"><a href="#实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？" class="headerlink" title="实现 nop 空指令，我们并不需要将它加入控制信号真值表，为什么？"></a>实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</h2><ul>
+<li>nop指令为空指令，如若该周期CPU执行该条指令，则不会发生任何操作（除了PC自增）。不将nop指令加入控制信号真值表说明在计算相应控制信号的值时，我们不需考虑nop指令的影响，也即当当前指令为nop时，所有控制信号的值均为0。这时，首先考虑beq指令操作部分，由于此时beq信号为0，因此下一个PC的值只是当前PC的值的简单自增，不受影响；而针对其他指令操作部分，我们关心的仅是这些操作部分会不会在nop指令期间影响寄存器的值或者内存空间里存储的值，这都与写操作有关，但nop指令期间寄存器写信号和数据存储器写信号均为0，因此不会执行写操作，所以二者内部的值都不会改变。</li>
+</ul>
+<hr>
+<h2 id="阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"><a href="#阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。" class="headerlink" title="阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"></a>阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</h2><p>测试样例的数据针对其给出的几条指令（<code>ori</code>, <code>lui</code>, <code>add</code>, <code>sw</code>, <code>lw</code>, <code>beq</code>）已经较强，每个指令的覆盖率都较高，但仍在一些方面存在不足，下面列出不足之处：</p>
 <ul>
-<li>第二种方式代码量可能更小，第一种方式更为直观，且在运行时出错的话较容易定位到问题</li>
+<li><code>add</code>进行了正数和正数，正数和负数，负数和负数的操作，但未进行0与正负数的操作，不能确保CPU是否会在至少有一个数为0时出差错。</li>
+<li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
 </ul>
-<h2 id="请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系"><a href="#请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系" class="headerlink" title="请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系"></a>请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系</h2><p>在同步复位下，clk信号的优先级高于reset信号，要等到每一个时钟周期上升沿到来时才能进行复位；而异步复位下，reset信号的优先级高于clk信号，只要reset为高电平，便可进行复位，无需考虑时钟的限制。</p>
-<h2 id="请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的"><a href="#请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的" class="headerlink" title="请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的"></a>请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的</h2><ul>
-<li>add：If the addition results in 32-bit 2’s complement arithmetic overflow, the destination register is not modified and an Integer Overflow exception occurs</li>
-<li>addu：The term “unsigned” in the instruction name is a misnomer; this operation is 32-bit modulo arithmetic that does not trap on overflow. This instruction is appropriate for unsigned arithmetic, such as address arithmetic, or integer arithmetic environments that ignore overflow, such as C language arithmetic<br>根据以上解释可知，addu其实是一种32位的模运算，就算溢出了也不会有影响，取其模值即可，而add如果溢出，也不会修改目标寄存器的值，但会抛出一个溢出异常，因此在不考虑溢出的情况下，目标寄存器的值其实也是32位模运算下的值，所以二者等价，同理对addi与addiu</li>
-</ul>
-]]></content>
-      <categories>
-        <category>计算机组成原理</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>计算机组成原理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机组成原理P6</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P6/</url>
-    <content><![CDATA[<h1 id="流水线CPU设计文档（多指令版）"><a href="#流水线CPU设计文档（多指令版）" class="headerlink" title="流水线CPU设计文档（多指令版）"></a>流水线CPU设计文档（多指令版）</h1><h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><p>本次流水线CPU的搭建在上一次的基础上多增了很多指令，其中包括计算型指令，存储型指令，跳转型指令。对于新增指令，我们其实只需考虑增加这条指令后要修改原来电路的哪些东西，想明白这一点之后，我们对代码的修改便会变得得心应手起来。</p>
-<h3 id="数据通路图"><a href="#数据通路图" class="headerlink" title="数据通路图"></a>数据通路图</h3><p>再次附上数据通路图和logisim里的单周期CPU电路搭建图。<br><strong>数据通路：</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p6/%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF.png"
-                     
-                ><br><strong>logisim单周期CPU电路：</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p6/single_cpu.png"
-                     
-                ><br>通过这两张图，我们对整个架构更加清晰，增加指令的时候也可以对着图来看有哪些信号或者模块需要修改</p>
-<h3 id="修改思路"><a href="#修改思路" class="headerlink" title="修改思路"></a>修改思路</h3><ol>
-<li>计算型指令（由于乘除相关指令要求我们模仿实际上的延时，因此乘除相关指令不放在此）：对于这一类指令，通过数据通路我们可以发现，要修改的模块只有<code>alu</code>模块，我们只需对其进行相应的扩展并修改对应的控制信号即可。具体来说，我们可能需要对<code>regwe</code>，<code>regdst</code>，<code>aluslt</code>，<code>aluopt</code>，<code>memreg</code>这些控制信号进行修改。</li>
-<li>存取型指令：对于这一类指令，我们可能需要对<code>alu</code>模块进行一定的修改，因为存取的地址很可能是<code>alu</code>的计算结果，其次由于这次的指令新增了<code>sb</code>，<code>sh</code>，<code>lb</code>，<code>lh</code>四条指令，所以我们需要用一个四位的MEM写信号来控制写入数据的相应位数的数据是否写入存储器。具体来说，我们可能需要对<code>regwe</code>，<code>regdst</code>，<code>aluslt</code>，<code>aluopt</code>，<code>memreg</code>，<code>memwe</code>，<code>loadwe</code>这些控制信号进行修改，而其中<code>memwe</code>需要扩展到四位，而如果后续（如课上）还要新增这一类指令的话，可能涉及到一些新增的算术运算，那我们还需要扩展<code>alu</code>模块。</li>
-<li>跳转型指令：在本次课下设计中新增的跳转型指令只有<code>bne</code>指令，而这条指令的实现与<code>beq</code>几乎一样，因此课下对这类指令的新增没有什么好说的。但我们仍然要明白新增这一类指令基本的修改方向。这类指令既可能涉及到运算，又可能涉及到存储，还一定会涉及到跳转，因此我们要将<code>alu</code>以及<code>npc</code>模块的修改全部纳入考虑范围内，又因为我们设计的是流水线CPU，因此如果涉及运算模块，我们需要将其加到D级，同时还可能需要修改<code>regwe</code>，<code>regdst</code>，<code>alust</code>，<code>aluopt</code>，<code>memreg</code>等控制信号。</li>
-<li>乘除型指令：由于我们需要模拟真正乘除法部件执行乘除法的延迟，因此需要在E级新增一个模块，而<code>hi</code>和<code>lo</code>两个寄存器也放在这个模块里。这次课下要求执行乘法的时间为5个时钟周期，执行除法的时间为10个时钟周期，我们只需要拿一个计数寄存器来记录当前是第几个周期，到达周期之后将相应的数据写入相应寄存器即可（针对纯粹的乘除类指令）。而针对写和读<code>hi</code>或<code>lo</code>指令来说，我们不需要模拟这个延迟，直接写入和读出并参与流水线的其他步骤即可，也因此需要考虑他们的控制信号的变化。</li>
-</ol>
-<h3 id="冒险"><a href="#冒险" class="headerlink" title="冒险"></a>冒险</h3><p>仍然采用A-T法来解决该问题，只需将新增指令的Tnew和Tuse算出即可。满足A-T的条件，我们就将相应数据进行转发，不满足我们就阻塞一周期。而相应的数据也不会太复杂，其实我们仔细思考可以发现，有写入功能的指令他们写入的数据无非就是四种，一种是<code>mfhi</code>和<code>mflo</code>指令，它会写入从<code>hi</code>或<code>lo</code>寄存器中读取的数据，一种是<code>jal</code>，它会写入下一条指令的地址，一种是ALU计算型，他们回写入ALU的计算结果，一种是<code>lw</code>，会写入MEM的读取值，况且再结合上阻塞会发现，如果我们当前指令是与<code>lw</code>产生冒险，那一定会阻塞到lw流水到M级或W级，而那时便可将MEM读取值转发，因此我们注意将下一条指令的地址以及ALU的结果流水下去即可。<br/>还有一点需要注意的是对于一些不用相关数据的指令例如jr，我们不应把他们的Tuse设为0，而是应该设为一个尽可能大的数，不然会产生无谓的阻塞，使得运行周期加长。</p>
-<h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><p>我们可以采用两种译码方式，一种是分布式译码，一种是集中式译码。集中式译码需要在某一级译码完成后将控制信号流水下去，这样流水的信号数量会很大，因此我采用的是分布式译码的方式，也就是在每一级对在该级的指令译码一次产生我所需要的控制信号即可，因此这样我会将控制器实例化4次。在控制器中除了单周期CPU里对应的控制信号以外，还需要加入转发的控制信号，我对Tuse和Tnew的计算也放进了控制器里。</p>
-<h4 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h4><p><code>regwe=add|sub|ori|jal|lui|lw|lh|lb|and_|or_|slt|sltu|addi|andi|mfhi|mflo</code><br><code>regdst=(jal)?2:(add|sub|and_|or_|slt|sltu|mfhi|mflo)?1:0</code><br><code>aluslt=add|sub|beq|and_|or_|slt|sltu|bne|mult|multu|div|divu</code>  </p>
-<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line">aluopt=(sltu)?<span class="number">6</span>:</span><br><span class="line">        (slt)?<span class="number">5</span>:</span><br><span class="line">        (lui)?<span class="number">4</span>:</span><br><span class="line">        (sub)?<span class="number">3</span>:</span><br><span class="line">        (add|lw|sw|addi|lh|lb|sh|sb)?<span class="number">2</span>:</span><br><span class="line">        (ori|or_)?<span class="number">1</span>:</span><br><span class="line">	    (and_|andi)?<span class="number">0</span>:</span><br><span class="line">        <span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
-<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line">memreg=(mfhi|mflo)?<span class="number">3</span>:</span><br><span class="line">       (jal)?<span class="number">2</span>:</span><br><span class="line">       (lw|lh|lb)?<span class="number">1</span>:</span><br><span class="line">		<span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
-<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> D_rs_Tuse=(phase==<span class="number">2</span>&amp;&amp;add)?<span class="number">1</span>:</span><br><span class="line">                 (phase==<span class="number">2</span>&amp;&amp;sub)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;and_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;or_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;slt)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;sltu)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;jr)?<span class="number">0</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;addi)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;andi)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;ori)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;lui)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(lw|lh|lb))?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(sw|sh|sb))?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(beq|bne))?<span class="number">0</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(mult|multu|div|divu|mthi|mtlo))?<span class="number">1</span>:</span><br><span class="line">				 <span class="number">3</span>;</span><br></pre></td></tr></table></figure></div>
-<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> D_rt_Tuse=(phase==<span class="number">2</span>&amp;&amp;add)?<span class="number">1</span>:</span><br><span class="line">                 (phase==<span class="number">2</span>&amp;&amp;sub)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;and_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;or_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;slt)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;sltu)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;jr)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;addi)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;andi)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;ori)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;lui)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(lw|lh|lb))?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(sw|sh|sb))?<span class="number">2</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(beq|bne))?<span class="number">0</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(mult|multu|div|divu))?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(mthi|mtlo|mfhi|mflo))?<span class="number">3</span>:</span><br><span class="line">				 <span class="number">3</span>;</span><br></pre></td></tr></table></figure></div>
-<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> Tnew=(phase==<span class="number">3</span>&amp;&amp;add)?<span class="number">1</span>:</span><br><span class="line">            (add)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;sub)?<span class="number">1</span>:</span><br><span class="line">			(sub)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;and_)?<span class="number">1</span>:</span><br><span class="line">			(and_)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;or_)?<span class="number">1</span>:</span><br><span class="line">			(or_)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;slt)?<span class="number">1</span>:</span><br><span class="line">			(slt)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;sltu)?<span class="number">1</span>:</span><br><span class="line">			(sltu)?<span class="number">0</span>:</span><br><span class="line">			(jr)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;addi)?<span class="number">1</span>:</span><br><span class="line">			(addi)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;andi)?<span class="number">1</span>:</span><br><span class="line">			(andi)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;ori)?<span class="number">1</span>:</span><br><span class="line">			(ori)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;lui)?<span class="number">1</span>:</span><br><span class="line">			(lui)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;(lw|lh|lb))?<span class="number">2</span>:</span><br><span class="line">			(phase==<span class="number">4</span>&amp;&amp;(lw|lh|lb))?<span class="number">1</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;(mfhi|mflo))?<span class="number">1</span>:</span><br><span class="line">			(phase==<span class="number">4</span>&amp;&amp;(mfhi|mflo))?<span class="number">0</span>:</span><br><span class="line">			(lw|lh|lb)?<span class="number">0</span>:</span><br><span class="line">			(sw|sh|sb)?<span class="number">0</span>:</span><br><span class="line">			(beq|bne)?<span class="number">0</span>:</span><br><span class="line">			<span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>基本指令：</p>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">andi </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">addi </span>$<span class="number">3</span>,$<span class="number">2</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">4</span>,<span class="number">0x0011</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">5</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">5</span></span><br><span class="line"><span class="keyword">and </span>$<span class="number">7</span>,$<span class="number">6</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">and </span>$<span class="number">7</span>,$<span class="number">6</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">or </span>$<span class="number">8</span>,$<span class="number">7</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">or </span>$<span class="number">8</span>,$<span class="number">8</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">slt </span>$<span class="number">9</span>,$<span class="number">8</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">slt </span>$<span class="number">9</span>,$<span class="number">7</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sltu </span>$<span class="number">10</span>,$<span class="number">8</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sltu </span>$<span class="number">10</span>,$<span class="number">7</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">2</span>,<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sh </span>$<span class="number">2</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sh </span>$<span class="number">2</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lb </span>$<span class="number">11</span>,-<span class="number">2</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,<span class="number">0</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,-<span class="number">2</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">12</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">12</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">13</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">mult </span>$<span class="number">12</span>,$<span class="number">13</span></span><br><span class="line"><span class="keyword">mfhi </span>$<span class="number">14</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">15</span>,$<span class="number">14</span>,$<span class="number">13</span></span><br><span class="line"><span class="keyword">multu </span>$<span class="number">15</span>,$<span class="number">14</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">16</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">17</span>,$<span class="number">16</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">div </span>$<span class="number">17</span>,$<span class="number">16</span></span><br><span class="line"><span class="keyword">mfhi </span>$<span class="number">18</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">18</span>,$<span class="number">18</span>,$<span class="number">18</span></span><br><span class="line"><span class="keyword">divu </span>$<span class="number">18</span>,$<span class="number">17</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">19</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">19</span>,$<span class="number">19</span>,$<span class="number">19</span></span><br><span class="line"><span class="keyword">mthi </span>$<span class="number">19</span></span><br><span class="line"><span class="keyword">mtlo </span>$<span class="number">17</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">20</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">20</span>,$<span class="number">20</span>,$<span class="number">19</span></span><br><span class="line"><span class="keyword">mfhi </span>$<span class="number">21</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">21</span>,$<span class="number">21</span>,$<span class="number">20</span></span><br></pre></td></tr></table></figure></div>
-<p>跳转：</p>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">bne </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x301c</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">jal </span>loop</span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">4</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">6</span>,$<span class="number">4</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
-<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="为什么需要有单独的乘除法部件而不是整合进-ALU？为何需要有独立的-HI、LO-寄存器？"><a href="#为什么需要有单独的乘除法部件而不是整合进-ALU？为何需要有独立的-HI、LO-寄存器？" class="headerlink" title="为什么需要有单独的乘除法部件而不是整合进 ALU？为何需要有独立的 HI、LO 寄存器？"></a>为什么需要有单独的乘除法部件而不是整合进 ALU？为何需要有独立的 HI、LO 寄存器？</h2><ul>
-<li>因为我们要模仿真正乘除法部件执行乘除法的延迟，如果整合进了ALU模块，那么因为这个延迟可能会阻塞其他指令多个周期，导致运行的效率十分低，而设计单独的乘除法部件就可以不影响其他指令的执行。</li>
-<li>如果不设置单独的HI、LO寄存器，那么因为乘除法的延迟，当乘除模块到达时间想要写入寄存器的时候，这时可能有其他指令也想要写入寄存器，造成矛盾，况且HI、LO寄存器内的值只供读出到某个寄存器里，而非读出来做运算，因此需要独立出来。</li>
-</ul>
-<h2 id="真实的流水线-CPU-是如何使用实现乘除法的？请查阅相关资料进行简单说明"><a href="#真实的流水线-CPU-是如何使用实现乘除法的？请查阅相关资料进行简单说明" class="headerlink" title="真实的流水线 CPU 是如何使用实现乘除法的？请查阅相关资料进行简单说明"></a>真实的流水线 CPU 是如何使用实现乘除法的？请查阅相关资料进行简单说明</h2><p>真实的流水线CPU中，乘法是由一级一级的门级电路搭建来的，因此是一个周期一个周期的传下去，每个周期计算特定的几位，最后走完整个乘法模块的时候得到最终结果。而除法使用试商法，通过组合逻辑在一个周期内计算4位左右的商，经过8个周期结束计算。</p>
-<h2 id="请结合自己的实现分析，你是如何处理-Busy-信号带来的周期阻塞的"><a href="#请结合自己的实现分析，你是如何处理-Busy-信号带来的周期阻塞的" class="headerlink" title="请结合自己的实现分析，你是如何处理 Busy 信号带来的周期阻塞的"></a>请结合自己的实现分析，你是如何处理 Busy 信号带来的周期阻塞的</h2><p>当D级指令为乘除模块相关指令（即mult,multu,div,divu,mfhi,mflo,mthi,mtlo）时且E级的Busy信号为1时，阻塞D级。</p>
-<h2 id="请问采用字节使能信号的方式处理写指令有什么好处"><a href="#请问采用字节使能信号的方式处理写指令有什么好处" class="headerlink" title="请问采用字节使能信号的方式处理写指令有什么好处"></a>请问采用字节使能信号的方式处理写指令有什么好处</h2><p>首先可以很清晰地看到具体是哪几位要写入，并且针对sw、sh、sb都使用同样的写使能信号，不用引进多的使能信号增加模块复杂性。</p>
-<h2 id="请思考，我们在按字节读和按字节写时，实际从-DM-获得的数据和向-DM-写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢"><a href="#请思考，我们在按字节读和按字节写时，实际从-DM-获得的数据和向-DM-写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢" class="headerlink" title="请思考，我们在按字节读和按字节写时，实际从 DM 获得的数据和向 DM 写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢"></a>请思考，我们在按字节读和按字节写时，实际从 DM 获得的数据和向 DM 写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢</h2><p>是同一字节，但不是一字节。在只需要对字节或半字访问时，按字节访问内存性能更由优势。</p>
-<h2 id="为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助"><a href="#为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助" class="headerlink" title="为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助"></a>为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助</h2><p>首先命名上规范，这样可以让自己的代码较为清晰，容易查错。除此之外，将控制信号按指令的类别来定义和分类，这样考虑某类指令的时候，不需要去考虑其他的控制信号，也不用每个控制信号都要囊括所有指令。</p>
-<h2 id="在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？"><a href="#在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？" class="headerlink" title="在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？"></a>在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？</h2><ul>
-<li>存取和运算指令——转发+阻塞解决</li>
-</ul>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">sb </span>$<span class="number">2</span>,<span class="number">0</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">3</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">3</span>,$<span class="number">3</span></span><br></pre></td></tr></table></figure></div>
-<ul>
-<li>乘除和存取指令——转发+阻塞解决</li>
-</ul>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">sb </span>$<span class="number">2</span>,<span class="number">0</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">3</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">mult </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">3</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">5</span></span><br></pre></td></tr></table></figure></div>
-<ul>
-<li>运算（存取）和跳转指令——阻塞+转发解决</li>
-</ul>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x301c</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">jal </span>loop</span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">4</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">6</span>,$<span class="number">4</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果"><a href="#如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果" class="headerlink" title="如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果"></a>如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果</h2><p>由于数据生成器生成的样例可能前后关联性不够强，因此我手动构造了一些样例。这些样例首先要保证针对每一条指令都将其的所有情况考虑完整，比如对于跳转指令就不能只考虑向后跳转还要考虑向前跳转。除此之外，由于流水线CPU很重要的就是解决冒险，因此还要考虑不同指令间的冒险，而这有可能发生在同类型指令，也可能发生在不同类型指令，因此两种情况我们都需要考虑到。在设计不同类型指令冒险的代码的时候，在保证前面的测试正确的情况下，可以只挑选一个类型里的典型指令出来，不必一个类型里的所有指令都拿出来设计一遍，因为同一类型下的转发和阻塞实现是相同的。</p>
 ]]></content>
       <categories>
         <category>计算机组成原理</category>
@@ -1297,6 +1120,183 @@ endmodule
                 ></p>
 <h2 id="倘若中断信号流入的时候，在检测宏观-PC-的一级如果是一条空泡（你的-CPU-该级所有信息均为空）指令，此时会发生什么问题？在此例基础上请思考：在-P7-中，清空流水线产生的空泡指令应该保留原指令的哪些信息？"><a href="#倘若中断信号流入的时候，在检测宏观-PC-的一级如果是一条空泡（你的-CPU-该级所有信息均为空）指令，此时会发生什么问题？在此例基础上请思考：在-P7-中，清空流水线产生的空泡指令应该保留原指令的哪些信息？" class="headerlink" title="倘若中断信号流入的时候，在检测宏观 PC 的一级如果是一条空泡（你的 CPU 该级所有信息均为空）指令，此时会发生什么问题？在此例基础上请思考：在 P7 中，清空流水线产生的空泡指令应该保留原指令的哪些信息？"></a>倘若中断信号流入的时候，在检测宏观 PC 的一级如果是一条空泡（你的 CPU 该级所有信息均为空）指令，此时会发生什么问题？在此例基础上请思考：在 P7 中，清空流水线产生的空泡指令应该保留原指令的哪些信息？</h2><p>受害PC写入CP0发生错误，导致异常处理程序结束后无法跳转到正确的地址继续执行相应指令。应保留原指令的地址。</p>
 <h2 id="为什么-jalr-指令为什么不能写成-jalr-31-31"><a href="#为什么-jalr-指令为什么不能写成-jalr-31-31" class="headerlink" title="为什么 jalr 指令为什么不能写成 jalr $31, $31"></a>为什么 jalr 指令为什么不能写成 jalr $31, $31</h2><p>若jalr的延迟槽指令发生异常或响应中断，则异常处理程序结束后会重新回到jalr并执行，但此时$31号寄存器的值已经被修改，再次跳转的时候便会错误执行。</p>
+]]></content>
+      <categories>
+        <category>计算机组成原理</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>计算机组成原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机组成原理P6</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P6/</url>
+    <content><![CDATA[<h1 id="流水线CPU设计文档（多指令版）"><a href="#流水线CPU设计文档（多指令版）" class="headerlink" title="流水线CPU设计文档（多指令版）"></a>流水线CPU设计文档（多指令版）</h1><h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><p>本次流水线CPU的搭建在上一次的基础上多增了很多指令，其中包括计算型指令，存储型指令，跳转型指令。对于新增指令，我们其实只需考虑增加这条指令后要修改原来电路的哪些东西，想明白这一点之后，我们对代码的修改便会变得得心应手起来。</p>
+<h3 id="数据通路图"><a href="#数据通路图" class="headerlink" title="数据通路图"></a>数据通路图</h3><p>再次附上数据通路图和logisim里的单周期CPU电路搭建图。<br><strong>数据通路：</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p6/%E6%95%B0%E6%8D%AE%E9%80%9A%E8%B7%AF.png"
+                     
+                ><br><strong>logisim单周期CPU电路：</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p6/single_cpu.png"
+                     
+                ><br>通过这两张图，我们对整个架构更加清晰，增加指令的时候也可以对着图来看有哪些信号或者模块需要修改</p>
+<h3 id="修改思路"><a href="#修改思路" class="headerlink" title="修改思路"></a>修改思路</h3><ol>
+<li>计算型指令（由于乘除相关指令要求我们模仿实际上的延时，因此乘除相关指令不放在此）：对于这一类指令，通过数据通路我们可以发现，要修改的模块只有<code>alu</code>模块，我们只需对其进行相应的扩展并修改对应的控制信号即可。具体来说，我们可能需要对<code>regwe</code>，<code>regdst</code>，<code>aluslt</code>，<code>aluopt</code>，<code>memreg</code>这些控制信号进行修改。</li>
+<li>存取型指令：对于这一类指令，我们可能需要对<code>alu</code>模块进行一定的修改，因为存取的地址很可能是<code>alu</code>的计算结果，其次由于这次的指令新增了<code>sb</code>，<code>sh</code>，<code>lb</code>，<code>lh</code>四条指令，所以我们需要用一个四位的MEM写信号来控制写入数据的相应位数的数据是否写入存储器。具体来说，我们可能需要对<code>regwe</code>，<code>regdst</code>，<code>aluslt</code>，<code>aluopt</code>，<code>memreg</code>，<code>memwe</code>，<code>loadwe</code>这些控制信号进行修改，而其中<code>memwe</code>需要扩展到四位，而如果后续（如课上）还要新增这一类指令的话，可能涉及到一些新增的算术运算，那我们还需要扩展<code>alu</code>模块。</li>
+<li>跳转型指令：在本次课下设计中新增的跳转型指令只有<code>bne</code>指令，而这条指令的实现与<code>beq</code>几乎一样，因此课下对这类指令的新增没有什么好说的。但我们仍然要明白新增这一类指令基本的修改方向。这类指令既可能涉及到运算，又可能涉及到存储，还一定会涉及到跳转，因此我们要将<code>alu</code>以及<code>npc</code>模块的修改全部纳入考虑范围内，又因为我们设计的是流水线CPU，因此如果涉及运算模块，我们需要将其加到D级，同时还可能需要修改<code>regwe</code>，<code>regdst</code>，<code>alust</code>，<code>aluopt</code>，<code>memreg</code>等控制信号。</li>
+<li>乘除型指令：由于我们需要模拟真正乘除法部件执行乘除法的延迟，因此需要在E级新增一个模块，而<code>hi</code>和<code>lo</code>两个寄存器也放在这个模块里。这次课下要求执行乘法的时间为5个时钟周期，执行除法的时间为10个时钟周期，我们只需要拿一个计数寄存器来记录当前是第几个周期，到达周期之后将相应的数据写入相应寄存器即可（针对纯粹的乘除类指令）。而针对写和读<code>hi</code>或<code>lo</code>指令来说，我们不需要模拟这个延迟，直接写入和读出并参与流水线的其他步骤即可，也因此需要考虑他们的控制信号的变化。</li>
+</ol>
+<h3 id="冒险"><a href="#冒险" class="headerlink" title="冒险"></a>冒险</h3><p>仍然采用A-T法来解决该问题，只需将新增指令的Tnew和Tuse算出即可。满足A-T的条件，我们就将相应数据进行转发，不满足我们就阻塞一周期。而相应的数据也不会太复杂，其实我们仔细思考可以发现，有写入功能的指令他们写入的数据无非就是四种，一种是<code>mfhi</code>和<code>mflo</code>指令，它会写入从<code>hi</code>或<code>lo</code>寄存器中读取的数据，一种是<code>jal</code>，它会写入下一条指令的地址，一种是ALU计算型，他们回写入ALU的计算结果，一种是<code>lw</code>，会写入MEM的读取值，况且再结合上阻塞会发现，如果我们当前指令是与<code>lw</code>产生冒险，那一定会阻塞到lw流水到M级或W级，而那时便可将MEM读取值转发，因此我们注意将下一条指令的地址以及ALU的结果流水下去即可。<br/>还有一点需要注意的是对于一些不用相关数据的指令例如jr，我们不应把他们的Tuse设为0，而是应该设为一个尽可能大的数，不然会产生无谓的阻塞，使得运行周期加长。</p>
+<h3 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h3><p>我们可以采用两种译码方式，一种是分布式译码，一种是集中式译码。集中式译码需要在某一级译码完成后将控制信号流水下去，这样流水的信号数量会很大，因此我采用的是分布式译码的方式，也就是在每一级对在该级的指令译码一次产生我所需要的控制信号即可，因此这样我会将控制器实例化4次。在控制器中除了单周期CPU里对应的控制信号以外，还需要加入转发的控制信号，我对Tuse和Tnew的计算也放进了控制器里。</p>
+<h4 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h4><p><code>regwe=add|sub|ori|jal|lui|lw|lh|lb|and_|or_|slt|sltu|addi|andi|mfhi|mflo</code><br><code>regdst=(jal)?2:(add|sub|and_|or_|slt|sltu|mfhi|mflo)?1:0</code><br><code>aluslt=add|sub|beq|and_|or_|slt|sltu|bne|mult|multu|div|divu</code>  </p>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line">aluopt=(sltu)?<span class="number">6</span>:</span><br><span class="line">        (slt)?<span class="number">5</span>:</span><br><span class="line">        (lui)?<span class="number">4</span>:</span><br><span class="line">        (sub)?<span class="number">3</span>:</span><br><span class="line">        (add|lw|sw|addi|lh|lb|sh|sb)?<span class="number">2</span>:</span><br><span class="line">        (ori|or_)?<span class="number">1</span>:</span><br><span class="line">	    (and_|andi)?<span class="number">0</span>:</span><br><span class="line">        <span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line">memreg=(mfhi|mflo)?<span class="number">3</span>:</span><br><span class="line">       (jal)?<span class="number">2</span>:</span><br><span class="line">       (lw|lh|lb)?<span class="number">1</span>:</span><br><span class="line">		<span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> D_rs_Tuse=(phase==<span class="number">2</span>&amp;&amp;add)?<span class="number">1</span>:</span><br><span class="line">                 (phase==<span class="number">2</span>&amp;&amp;sub)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;and_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;or_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;slt)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;sltu)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;jr)?<span class="number">0</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;addi)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;andi)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;ori)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;lui)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(lw|lh|lb))?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(sw|sh|sb))?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(beq|bne))?<span class="number">0</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(mult|multu|div|divu|mthi|mtlo))?<span class="number">1</span>:</span><br><span class="line">				 <span class="number">3</span>;</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> D_rt_Tuse=(phase==<span class="number">2</span>&amp;&amp;add)?<span class="number">1</span>:</span><br><span class="line">                 (phase==<span class="number">2</span>&amp;&amp;sub)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;and_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;or_)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;slt)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;sltu)?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;jr)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;addi)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;andi)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;ori)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;lui)?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(lw|lh|lb))?<span class="number">3</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(sw|sh|sb))?<span class="number">2</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(beq|bne))?<span class="number">0</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(mult|multu|div|divu))?<span class="number">1</span>:</span><br><span class="line">				 (phase==<span class="number">2</span>&amp;&amp;(mthi|mtlo|mfhi|mflo))?<span class="number">3</span>:</span><br><span class="line">				 <span class="number">3</span>;</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Verilog"><figure class="iseeu highlight verilog"><table><tr><td class="code"><pre><span class="line"><span class="keyword">assign</span> Tnew=(phase==<span class="number">3</span>&amp;&amp;add)?<span class="number">1</span>:</span><br><span class="line">            (add)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;sub)?<span class="number">1</span>:</span><br><span class="line">			(sub)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;and_)?<span class="number">1</span>:</span><br><span class="line">			(and_)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;or_)?<span class="number">1</span>:</span><br><span class="line">			(or_)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;slt)?<span class="number">1</span>:</span><br><span class="line">			(slt)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;sltu)?<span class="number">1</span>:</span><br><span class="line">			(sltu)?<span class="number">0</span>:</span><br><span class="line">			(jr)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;addi)?<span class="number">1</span>:</span><br><span class="line">			(addi)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;andi)?<span class="number">1</span>:</span><br><span class="line">			(andi)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;ori)?<span class="number">1</span>:</span><br><span class="line">			(ori)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;lui)?<span class="number">1</span>:</span><br><span class="line">			(lui)?<span class="number">0</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;(lw|lh|lb))?<span class="number">2</span>:</span><br><span class="line">			(phase==<span class="number">4</span>&amp;&amp;(lw|lh|lb))?<span class="number">1</span>:</span><br><span class="line">			(phase==<span class="number">3</span>&amp;&amp;(mfhi|mflo))?<span class="number">1</span>:</span><br><span class="line">			(phase==<span class="number">4</span>&amp;&amp;(mfhi|mflo))?<span class="number">0</span>:</span><br><span class="line">			(lw|lh|lb)?<span class="number">0</span>:</span><br><span class="line">			(sw|sh|sb)?<span class="number">0</span>:</span><br><span class="line">			(beq|bne)?<span class="number">0</span>:</span><br><span class="line">			<span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>基本指令：</p>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">andi </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">addi </span>$<span class="number">3</span>,$<span class="number">2</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">4</span>,<span class="number">0x0011</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">5</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">5</span></span><br><span class="line"><span class="keyword">and </span>$<span class="number">7</span>,$<span class="number">6</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">and </span>$<span class="number">7</span>,$<span class="number">6</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">or </span>$<span class="number">8</span>,$<span class="number">7</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">or </span>$<span class="number">8</span>,$<span class="number">8</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">slt </span>$<span class="number">9</span>,$<span class="number">8</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">slt </span>$<span class="number">9</span>,$<span class="number">7</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sltu </span>$<span class="number">10</span>,$<span class="number">8</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sltu </span>$<span class="number">10</span>,$<span class="number">7</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">2</span>,<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sh </span>$<span class="number">2</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sh </span>$<span class="number">2</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lb </span>$<span class="number">11</span>,-<span class="number">2</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,<span class="number">0</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,-<span class="number">2</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sb </span>$<span class="number">11</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">12</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">12</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">13</span>,-<span class="number">3</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">mult </span>$<span class="number">12</span>,$<span class="number">13</span></span><br><span class="line"><span class="keyword">mfhi </span>$<span class="number">14</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">15</span>,$<span class="number">14</span>,$<span class="number">13</span></span><br><span class="line"><span class="keyword">multu </span>$<span class="number">15</span>,$<span class="number">14</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">16</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">17</span>,$<span class="number">16</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">div </span>$<span class="number">17</span>,$<span class="number">16</span></span><br><span class="line"><span class="keyword">mfhi </span>$<span class="number">18</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">18</span>,$<span class="number">18</span>,$<span class="number">18</span></span><br><span class="line"><span class="keyword">divu </span>$<span class="number">18</span>,$<span class="number">17</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">19</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">19</span>,$<span class="number">19</span>,$<span class="number">19</span></span><br><span class="line"><span class="keyword">mthi </span>$<span class="number">19</span></span><br><span class="line"><span class="keyword">mtlo </span>$<span class="number">17</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">20</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">20</span>,$<span class="number">20</span>,$<span class="number">19</span></span><br><span class="line"><span class="keyword">mfhi </span>$<span class="number">21</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">21</span>,$<span class="number">21</span>,$<span class="number">20</span></span><br></pre></td></tr></table></figure></div>
+<p>跳转：</p>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">bne </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x301c</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">jal </span>loop</span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">4</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">6</span>,$<span class="number">4</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="为什么需要有单独的乘除法部件而不是整合进-ALU？为何需要有独立的-HI、LO-寄存器？"><a href="#为什么需要有单独的乘除法部件而不是整合进-ALU？为何需要有独立的-HI、LO-寄存器？" class="headerlink" title="为什么需要有单独的乘除法部件而不是整合进 ALU？为何需要有独立的 HI、LO 寄存器？"></a>为什么需要有单独的乘除法部件而不是整合进 ALU？为何需要有独立的 HI、LO 寄存器？</h2><ul>
+<li>因为我们要模仿真正乘除法部件执行乘除法的延迟，如果整合进了ALU模块，那么因为这个延迟可能会阻塞其他指令多个周期，导致运行的效率十分低，而设计单独的乘除法部件就可以不影响其他指令的执行。</li>
+<li>如果不设置单独的HI、LO寄存器，那么因为乘除法的延迟，当乘除模块到达时间想要写入寄存器的时候，这时可能有其他指令也想要写入寄存器，造成矛盾，况且HI、LO寄存器内的值只供读出到某个寄存器里，而非读出来做运算，因此需要独立出来。</li>
+</ul>
+<h2 id="真实的流水线-CPU-是如何使用实现乘除法的？请查阅相关资料进行简单说明"><a href="#真实的流水线-CPU-是如何使用实现乘除法的？请查阅相关资料进行简单说明" class="headerlink" title="真实的流水线 CPU 是如何使用实现乘除法的？请查阅相关资料进行简单说明"></a>真实的流水线 CPU 是如何使用实现乘除法的？请查阅相关资料进行简单说明</h2><p>真实的流水线CPU中，乘法是由一级一级的门级电路搭建来的，因此是一个周期一个周期的传下去，每个周期计算特定的几位，最后走完整个乘法模块的时候得到最终结果。而除法使用试商法，通过组合逻辑在一个周期内计算4位左右的商，经过8个周期结束计算。</p>
+<h2 id="请结合自己的实现分析，你是如何处理-Busy-信号带来的周期阻塞的"><a href="#请结合自己的实现分析，你是如何处理-Busy-信号带来的周期阻塞的" class="headerlink" title="请结合自己的实现分析，你是如何处理 Busy 信号带来的周期阻塞的"></a>请结合自己的实现分析，你是如何处理 Busy 信号带来的周期阻塞的</h2><p>当D级指令为乘除模块相关指令（即mult,multu,div,divu,mfhi,mflo,mthi,mtlo）时且E级的Busy信号为1时，阻塞D级。</p>
+<h2 id="请问采用字节使能信号的方式处理写指令有什么好处"><a href="#请问采用字节使能信号的方式处理写指令有什么好处" class="headerlink" title="请问采用字节使能信号的方式处理写指令有什么好处"></a>请问采用字节使能信号的方式处理写指令有什么好处</h2><p>首先可以很清晰地看到具体是哪几位要写入，并且针对sw、sh、sb都使用同样的写使能信号，不用引进多的使能信号增加模块复杂性。</p>
+<h2 id="请思考，我们在按字节读和按字节写时，实际从-DM-获得的数据和向-DM-写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢"><a href="#请思考，我们在按字节读和按字节写时，实际从-DM-获得的数据和向-DM-写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢" class="headerlink" title="请思考，我们在按字节读和按字节写时，实际从 DM 获得的数据和向 DM 写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢"></a>请思考，我们在按字节读和按字节写时，实际从 DM 获得的数据和向 DM 写入的数据是否是一字节？在什么情况下我们按字节读和按字节写的效率会高于按字读和按字写呢</h2><p>是同一字节，但不是一字节。在只需要对字节或半字访问时，按字节访问内存性能更由优势。</p>
+<h2 id="为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助"><a href="#为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助" class="headerlink" title="为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助"></a>为了对抗复杂性你采取了哪些抽象和规范手段？这些手段在译码和处理数据冲突的时候有什么样的特点与帮助</h2><p>首先命名上规范，这样可以让自己的代码较为清晰，容易查错。除此之外，将控制信号按指令的类别来定义和分类，这样考虑某类指令的时候，不需要去考虑其他的控制信号，也不用每个控制信号都要囊括所有指令。</p>
+<h2 id="在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？"><a href="#在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？" class="headerlink" title="在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？"></a>在本实验中你遇到了哪些不同指令类型组合产生的冲突？你又是如何解决的？相应的测试样例是什么样的？</h2><ul>
+<li>存取和运算指令——转发+阻塞解决</li>
+</ul>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">sb </span>$<span class="number">2</span>,<span class="number">0</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">3</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">3</span>,$<span class="number">3</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>乘除和存取指令——转发+阻塞解决</li>
+</ul>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">3</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">sb </span>$<span class="number">2</span>,<span class="number">0</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lh </span>$<span class="number">3</span>,-<span class="number">1</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">mult </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">3</span></span><br><span class="line"><span class="keyword">mflo </span>$<span class="number">5</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>运算（存取）和跳转指令——阻塞+转发解决</li>
+</ul>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x301c</span></span><br><span class="line"><span class="keyword">sw </span>$<span class="number">1</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">31</span>,<span class="number">4</span>($<span class="number">0</span>)</span><br><span class="line"><span class="symbol">loop:</span><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">1</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">jr </span>$<span class="built_in">ra</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">3</span>,$<span class="number">2</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">4</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line"><span class="keyword">jal </span>loop</span><br><span class="line"><span class="keyword">ori </span>$<span class="number">5</span>,$<span class="number">4</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">6</span>,$<span class="number">4</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果"><a href="#如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果" class="headerlink" title="如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果"></a>如果你是手动构造的样例，请说明构造策略，说明你的测试程序如何保证覆盖了所有需要测试的情况；如果你是完全随机生成的测试样例，请思考完全随机的测试程序有何不足之处；如果你在生成测试样例时采用了特殊的策略，比如构造连续数据冒险序列，请你描述一下你使用的策略如何结合了随机性达到强测的效果</h2><p>由于数据生成器生成的样例可能前后关联性不够强，因此我手动构造了一些样例。这些样例首先要保证针对每一条指令都将其的所有情况考虑完整，比如对于跳转指令就不能只考虑向后跳转还要考虑向前跳转。除此之外，由于流水线CPU很重要的就是解决冒险，因此还要考虑不同指令间的冒险，而这有可能发生在同类型指令，也可能发生在不同类型指令，因此两种情况我们都需要考虑到。在设计不同类型指令冒险的代码的时候，在保证前面的测试正确的情况下，可以只挑选一个类型里的典型指令出来，不必一个类型里的所有指令都拿出来设计一遍，因为同一类型下的转发和阻塞实现是相同的。</p>
+]]></content>
+      <categories>
+        <category>计算机组成原理</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>计算机组成原理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机组成原理P4</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P4/</url>
+    <content><![CDATA[<h1 id="单周期CPU设计草稿（verilog"><a href="#单周期CPU设计草稿（verilog" class="headerlink" title="单周期CPU设计草稿（verilog)"></a>单周期CPU设计草稿（verilog)</h1><p>本次课下需要我们通过verilog来设计一个支持10条指令的单周期CPU。由于在上周我们已经通过logisim搭建了一个单周期CPU，所以本次的任务其实简单来说就是通过一个硬件描述语言去描述搭建好的电路。<br>我们还是先来简单捋一下构建思路。</p>
+<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><ul>
+<li>工作流程：每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作，并判断下一个周期的PC的取值。</li>
+<li>模块需求：我们希望在编写verilog的时候能像在logisim里一样使用不同的模块，并在最后使用这些模块来构成整个CPU。而通过相应的指令和流程，我们可以编写以下几个模块：im（指令存储器），grf（寄存器堆），alu（算术运算模块），dm（数据存储器），controller（控制器）以及最顶层的模块mips。</li>
+</ul>
+<p>（附上单周期CPUlogisim搭建图）<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
+                     
+                ></p>
+<h2 id="模块分析"><a href="#模块分析" class="headerlink" title="模块分析"></a>模块分析</h2><ul>
+<li><ul>
+<li>mips：作为最顶层的模块，这个模块也即CPU本身，它包含了其他的子模块，在这个模块当中，只需要定义相关的信号将子模块联系起来，除此之外其唯一需要做的就是计算下一个pc的值，因此该模块中应有一个pc的计算部分。图示如下：<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/mips.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>im：指令存储器模块，需要一个地址信号输入，并输出指令编码。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/im.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>grf：寄存器堆模块，需要三个地址信号，一个写入数据，一个写入数据使能信号，时钟和复位信号。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/grf.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>alu：算术运算模块，在这个模块本人设计了与或加减左移及相等6种运算，需要两个运算数输入，一个操作选择信号，一个结果输出，为了方便并再加一个等于输出信号（判断输入的两数是否相等）<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/alu.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>dm：数据存储器模块，需要时钟和复位信号，写使能和读使能信号，地址和写入数据信号，并输出一个读出的数据。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/dm.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>controller：控制器模块，输入仍然是指令的操作码和功能码，输出包括了该电路中所有的控制信号。但本次增加了两条跳转指令，分别是jal和jr，因此在确定控制信号时还要考虑进这两条指令。简单分析即可知，由于这两条都是跳转指令，所以数据存储器既不写数据也不读数据即可，但对于jal来说，需要对31号寄存器存入下一条指令的地址，因此grf的写入地址应为31，写入数据为下一条指令的地址，对于jr来说就简单了，寄存器堆也不用写数据，因此将其写使能信号置零即可。<br/>jal:regwe-&gt;1,memwe-&gt;0,loadwe-&gt;0<br/>jr:regwe-&gt;0,memwe-&gt;0,loadwe-&gt;0<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
+                     
+                ><br/>由于grf写入地址现在有三种情况，下一个pc的值也有三种情况，因此我们还得在上一次控制信号的基础上再加上两个控制信号，但这两个控制信号直接由jal和jr来当即可，也即当目前指令为jal（jr）时，jal（jr）置1.</li>
+</ul>
+</li>
+</ul>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
+<li>基本指令测试（不含jal和jr）</li>
+</ol>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>jal与jr测试</li>
+</ol>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,1</span><br><span class="line">ori $31,$0,0x3014</span><br><span class="line">loop:add $2,$1,$1</span><br><span class="line">jr $ra</span><br><span class="line">add $3,$2,$0</span><br><span class="line">add $4,$3,$2</span><br><span class="line">jal loop</span><br><span class="line">ori $5,$4,$0</span><br></pre></td></tr></table></figure></div>
+<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？"><a href="#根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？" class="headerlink" title="根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？"></a>根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？</h2><p>addr信号是从alu的输出中得来的。我们自行写的dm当中，一个地址可以存储一个字，但在MIPS里，地址是字对齐的，也即存一个字的地址都是4的倍数，因此实际上dm对应的地址是真正的地址除以4，dm地址有10位，也就对应aluout的第11到第2位。</p>
+<h2 id="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"><a href="#思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣" class="headerlink" title="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"></a>思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣</h2><ol>
+<li>指令对应控制信号<br>代码示例（在此仅给出ori指令相关代码作为示例）：</li>
+</ol>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">module controller(</span><br><span class="line">	//信号定义</span><br><span class="line">	)</span><br><span class="line">	always @(*) begin</span><br><span class="line">	if(ori == 1)begin</span><br><span class="line">	regwe=1;</span><br><span class="line">	aluopt=&#x27;b001</span><br><span class="line">	ori=1;</span><br><span class="line">	end</span><br><span class="line">	//其余指令判断相关控制信号</span><br><span class="line">	end</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>控制信号对应指令<br>代码示例：</li>
+</ol>
+<pre><code>module controller(
+	//信号定义
+	)
+	always @(*)begin
+	regwe = add | sub | ori | lw | lui | jal;
+	regdst = add | sub ;
+	//其余信号
+endmodule
+</code></pre>
+<ul>
+<li>第二种方式代码量可能更小，第一种方式更为直观，且在运行时出错的话较容易定位到问题</li>
+</ul>
+<h2 id="请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系"><a href="#请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系" class="headerlink" title="请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系"></a>请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系</h2><p>在同步复位下，clk信号的优先级高于reset信号，要等到每一个时钟周期上升沿到来时才能进行复位；而异步复位下，reset信号的优先级高于clk信号，只要reset为高电平，便可进行复位，无需考虑时钟的限制。</p>
+<h2 id="请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的"><a href="#请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的" class="headerlink" title="请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的"></a>请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的</h2><ul>
+<li>add：If the addition results in 32-bit 2’s complement arithmetic overflow, the destination register is not modified and an Integer Overflow exception occurs</li>
+<li>addu：The term “unsigned” in the instruction name is a misnomer; this operation is 32-bit modulo arithmetic that does not trap on overflow. This instruction is appropriate for unsigned arithmetic, such as address arithmetic, or integer arithmetic environments that ignore overflow, such as C language arithmetic<br>根据以上解释可知，addu其实是一种32位的模运算，就算溢出了也不会有影响，取其模值即可，而add如果溢出，也不会修改目标寄存器的值，但会抛出一个溢出异常，因此在不考虑溢出的情况下，目标寄存器的值其实也是32位模运算下的值，所以二者等价，同理对addi与addiu</li>
+</ul>
 ]]></content>
       <categories>
         <category>计算机组成原理</category>

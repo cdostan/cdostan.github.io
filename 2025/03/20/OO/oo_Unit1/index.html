@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-03-20T12:21:00.000Z">
-<meta property="article:modified_time" content="2025-04-15T14:20:20.120Z">
+<meta property="article:modified_time" content="2025-04-18T09:52:10.158Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="面向对象">
 <meta property="article:tag" content="BUAA">
@@ -110,7 +110,123 @@
     
     
     
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 
 
@@ -651,8 +767,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-04-15 22:20:20</span>
-            <span class="mobile">2025-04-15 22:20:20</span>
+            <span class="desktop">2025-04-18 17:52:10</span>
+            <span class="mobile">2025-04-18 17:52:10</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -720,37 +836,22 @@
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
 			<p>第一单元的OO在紧张与刺激中落下帷幕，回顾第一单元，真是应了吴际老师上学期在OOPre的最后讲的“一定要好好理解文法分析，不然下学期的第一单元会很痛苦”。整个Unit1就是围绕文法展开，前前后后就是让我们展开表达式，在我们做好这个蛋糕后，再用化简优化去为它裱花点缀。</p>
 <h1 id="第一次作业"><a href="#第一次作业" class="headerlink" title="第一次作业"></a>第一次作业</h1><p>第一次作业较为简单，因为出现的是最基本的常数与幂函数，且括号最多一层，因此实现起来并不困难，只要把词法和语法分析做好，并能实现展开，第一次作业就基本成型。</p>
-<h2 id="1-1程序架构"><a href="#1-1程序架构" class="headerlink" title="1.1程序架构"></a>1.1程序架构</h2><p><strong>UML类图</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw1uml.png"
-                     
-                ></p>
+<h2 id="1-1程序架构"><a href="#1-1程序架构" class="headerlink" title="1.1程序架构"></a>1.1程序架构</h2><p><strong>UML类图</strong><br><img lazyload="" src="/images/loading.svg" data-src="/img/oo/unit1/hw1uml.png"></p>
 <p><strong>功能说明</strong>  </p>
 <ul>
 <li><code>Main</code>：程序入口  </li>
 <li><code>Expr</code>、<code>Term</code>、<code>Variable</code>、<code>Const</code>：表达式的基础结构  </li>
 <li><code>Symbol</code>：进行符号处理，保证每一个项的内部不会出现正号或负号，且每个项前最多有一个符号  </li>
 <li><code>Lexer</code>、<code>Parser</code>：进行语法和词法分析  </li>
-<li><code>Poly</code>：把项规范为形如 $a*x^b$ 的形式  </li>
+<li><code>Poly</code>：把项规范为形如 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="5.502ex" height="1.956ex" role="img" focusable="false" viewBox="0 -853.7 2431.8 864.7"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g><g data-mml-node="mo" transform="translate(751.2,0)"><path data-c="2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path></g><g data-mml-node="msup" transform="translate(1473.4,0)"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mi" transform="translate(605,363) scale(0.707)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g></g></g></g></svg></mjx-container> 的形式  </li>
 <li><code>Operate</code>：进行运算，包括表达式幂的展开和项的展开</li>
 </ul>
-<h2 id="1-2代码复杂度"><a href="#1-2代码复杂度" class="headerlink" title="1.2代码复杂度"></a>1.2代码复杂度</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw1_complexity.png"
-                     
-                ></p>
+<h2 id="1-2代码复杂度"><a href="#1-2代码复杂度" class="headerlink" title="1.2代码复杂度"></a>1.2代码复杂度</h2><p><img lazyload="" src="/images/loading.svg" data-src="/img/oo/unit1/hw1_complexity.png"></p>
 <p>可以发现，其中<code>Operate</code>、<code>Parse</code>、<code>Symbol</code>的复杂度比较高，其中有最大的圈复杂度甚至达到了16。我在这几个类里面所用到的条件判断语句和循环语句以及函数调用比较多，因此造成了圈复杂度比较高。拿<code>Symbol</code>类举例来说，虽然里面就只有两个方法，但针对字符串化简符号的逻辑是十分复杂的，尤其是项里面有子表达式的时候，因此涉及到很多判断和循环，造成圈复杂度很高，而这样的结果也说明了我这个类以及里面的方法其实可迭代性和可维护性并不好，因为化简符号不像词法和语法分析那样只需要添加一定的<code>token</code>和语法解析就能实现，在后续表达式逐渐变复杂后整个符号化简的逻辑可能会大变，而且遇上多层嵌套括号后复杂度可能会很高。<br>进一步分析，其实会发现我第一次作业的架构和”高内聚低耦合”似乎不太沾边，我后续作业是经过了重构的，因此后续完全没有回顾过我第一次作业。而当我重看第一次作业代码时，抛开写得shi不shi不谈，其实理解还是很容易理解的，但是整体看下来其实好像并不是在写面向对象编程，而是在写面向过程编程，很多类的耦合度过高，而有的类该自己干的事没干，不该自己干的事干了，甚至有的类干的事和自己的名字都没啥关系，比如<code>Poly</code>。因此我在第一次作业结束后发现在这样的代码基础上迭代十分困难，决定重构。</p>
 <h2 id="1-3化简优化"><a href="#1-3化简优化" class="headerlink" title="1.3化简优化"></a>1.3化简优化</h2><p>能把整个表达式正确展开后，其实本次作业的正确性我们已经可以拿满分了，但是估计性能分会很低。针对第一次作业，其实化简无非就是同类项合并，而判断能否合并也十分简单，只需要判断展开后每个项中x的幂次相等，最后如果所有项里有符号为正的，我们把它放在第一位即可省掉一个负号带来的长度，实现了这些后，性能分也可以拿满。</p>
 <h2 id="1-4Bug分析"><a href="#1-4Bug分析" class="headerlink" title="1.4Bug分析"></a>1.4Bug分析</h2><p>在互测中我出现了一些WA的错误，而错误的来源全是来自于我<code>Symbol</code>类中化简符号的方法出错（其逻辑真的很复杂，bug修复时针对这一个bug都修改了好多行），具体出错的原因是我把项里子表达式的第一个符号拿出来给了整个项，若是正号还好，但如果是负号，我整个项的符号就会取一次反，最终造成错误。<br>事实上，这个符号简化的方法完全是自己折腾自己，因为完全可以把符号放在语法分析里面一起，这样在解析完一个项时，它的符号也被解析出来，因此我后续重构的时候完全摒弃了这一个类。</p>
 <h1 id="第二次作业"><a href="#第二次作业" class="headerlink" title="第二次作业"></a>第二次作业</h1><p>第二次作业较第一次作业的难度陡然上升，引进了三角函数和自定义递推函数，同时允许多层嵌套括号。主要有两个难点，一个是如何正确地算出递推函数并代入表达式，一个是针对有三角函数的化简可以怎么做，如果不考虑化简的话，只需要解决递推函数这个难点即可。由于第一次作业我的架构很烂，层次不清淅，因此第二次作业我首先进行了重构。</p>
-<h2 id="2-1程序架构"><a href="#2-1程序架构" class="headerlink" title="2.1程序架构"></a>2.1程序架构</h2><p><strong>UML类图</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw2uml.png"
-                     
-                ></p>
+<h2 id="2-1程序架构"><a href="#2-1程序架构" class="headerlink" title="2.1程序架构"></a>2.1程序架构</h2><p><strong>UML类图</strong><br><img lazyload="" src="/images/loading.svg" data-src="/img/oo/unit1/hw2uml.png"></p>
 <p><strong>功能说明</strong>  </p>
 <ul>
 <li><code>Main</code>：程序入口  </li>
@@ -760,25 +861,15 @@
 <li><code>Regofunc</code>：存储被解析出来的递推函数规则，供整个项目使用  </li>
 <li><code>Bracketdeal</code>：括号处理，寻找匹配的括号  </li>
 <li><code>Equandneg</code>：判断表达式是否相等或相反  </li>
-<li><code>Unit</code>：最终表达式中的最小单元，形如 $a*x^b*{sin()}*{cos()}$  </li>
+<li><code>Unit</code>：最终表达式中的最小单元，形如 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="19.633ex" height="2.497ex" role="img" focusable="false" viewBox="0 -853.7 8677.7 1103.7"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g><g data-mml-node="mo" transform="translate(751.2,0)"><path data-c="2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path></g><g data-mml-node="msup" transform="translate(1473.4,0)"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mi" transform="translate(605,363) scale(0.707)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g></g><g data-mml-node="mo" transform="translate(2654,0)"><path data-c="2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(3376.2,0)"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(469,0)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(814,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1414,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mo" transform="translate(1803,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g><g data-mml-node="mo" transform="translate(5790.5,0)"><path data-c="2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(6512.7,0)"><g data-mml-node="mi"><path data-c="1D450" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"></path></g><g data-mml-node="mi" transform="translate(433,0)"><path data-c="1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path></g><g data-mml-node="mi" transform="translate(918,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mo" transform="translate(1387,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mo" transform="translate(1776,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></g></svg></mjx-container>  </li>
 <li><code>Entirety</code>：由多个<code>Unit</code>组成的单元</li>
 </ul>
-<h2 id="2-2代码复杂度"><a href="#2-2代码复杂度" class="headerlink" title="2.2代码复杂度"></a>2.2代码复杂度</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw2_complexity.png"
-                     
-                >  </p>
+<h2 id="2-2代码复杂度"><a href="#2-2代码复杂度" class="headerlink" title="2.2代码复杂度"></a>2.2代码复杂度</h2><p><img lazyload="" src="/images/loading.svg" data-src="/img/oo/unit1/hw2_complexity.png">  </p>
 <p>在本次项目中，复杂度较高的类为<code>Unit</code>类，其他类复杂度稍高可能是因为条件和循环语句稍多，例如<code>Lexer</code>和<code>Bracketdeal</code>类，而<code>Unit</code>类的复杂度是由于其里面涉及了很多方法，包括运算以及判断是否能合并等方法，涉及到的方法调用也较多，因此呈现了一个较高的复杂度。<br>此次作业我尽可能的满足了“高内聚低耦合”的想法，尽可能把一些特定功能单独抽象出来成为一个类，同时尽量保证每个类只干和自己相关的事。<br><strong>重构前后对比</strong><br>先抛开本次作业新增的三角函数和自定义递推函数不谈，其他部分我也和第一次作业有很大的差别。<br>首先是词法和语法解析，本次我单独设计了一个<code>Token</code>类，里面包含了字符串所包含的可能的字符类型，而不是在<code>Lexer</code>类里对字符串中的一个一个字符分析，整理来说可理解性和可迭代行会增强不少。我还在<code>Parser</code>里面确定了项的符号，直接抛弃了第一次作业中的<code>Symbol</code>类，且这样的方法几乎适用于往后的所有迭代。<br>其次我设计了<code>Entirety</code>和<code>Unit</code>两个类，最终的计算化简全都在这两个类中进行，而所有的表达式基础结构如<code>Expr</code>等都有一个<code>toentirety()</code>方法，方便之后的展开和化简，这样，我的代码在面临下一次迭代时可能不需要修改很多东西就能适应情景，而层次化的结构也比较清晰，这提高了整个项目的可维护性。  </p>
-<h2 id="2-3难点分析及化简优化"><a href="#2-3难点分析及化简优化" class="headerlink" title="2.3难点分析及化简优化"></a>2.3难点分析及化简优化</h2><p>前面说到，本次作业主要有两个难点：一个是递推函数，一个是三角函数化简。<br>针对递推函数，我采用字符串替换的方式，替换字符串后再对得到的字符串进行一次词法和语法分析并重复操作直到表达式中不含形如“f{n}(x)”的东西。要注意的是，在这里替换字符串的时候为了以防错误替换，可以先把第i个参数用“ai”替换，全部替换完后再将对应的“ai”替换为真正的实参。<br>针对三角函数的化简，其实难点在于如何判断两个三角函数是否相等或相反，也即三角函数内部的表达式是否相等或相反。这里我采用了一种比较暴力的方式，我想既然我们整个程序做的事情就是化简表达式，那我要判断两个表达式是否相等或相反，是不是可以把这两个表达式相加或相减，然后调用我们的程序其是否为零即可。综合各方面性能考虑，我最后决定只做 $cos(0)$ ， $sin(0)$ ，以及正弦函数二倍角的化简，而且为了使最终结果的长度尽可能短，我在最后一步才化简，以防出现本来可以合并但在中途化简之后无法合并的情况。</p>
+<h2 id="2-3难点分析及化简优化"><a href="#2-3难点分析及化简优化" class="headerlink" title="2.3难点分析及化简优化"></a>2.3难点分析及化简优化</h2><p>前面说到，本次作业主要有两个难点：一个是递推函数，一个是三角函数化简。<br>针对递推函数，我采用字符串替换的方式，替换字符串后再对得到的字符串进行一次词法和语法分析并重复操作直到表达式中不含形如“f{n}(x)”的东西。要注意的是，在这里替换字符串的时候为了以防错误替换，可以先把第i个参数用“ai”替换，全部替换完后再将对应的“ai”替换为真正的实参。<br>针对三角函数的化简，其实难点在于如何判断两个三角函数是否相等或相反，也即三角函数内部的表达式是否相等或相反。这里我采用了一种比较暴力的方式，我想既然我们整个程序做的事情就是化简表达式，那我要判断两个表达式是否相等或相反，是不是可以把这两个表达式相加或相减，然后调用我们的程序其是否为零即可。综合各方面性能考虑，我最后决定只做 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="6.029ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2665 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D450" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"></path></g><g data-mml-node="mi" transform="translate(433,0)"><path data-c="1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path></g><g data-mml-node="mi" transform="translate(918,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mo" transform="translate(1387,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(1776,0)"><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path></g><g data-mml-node="mo" transform="translate(2276,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container> ， <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="6.09ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2692 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(469,0)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(814,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1414,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mn" transform="translate(1803,0)"><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path></g><g data-mml-node="mo" transform="translate(2303,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container> ，以及正弦函数二倍角的化简，而且为了使最终结果的长度尽可能短，我在最后一步才化简，以防出现本来可以合并但在中途化简之后无法合并的情况。</p>
 <h2 id="2-4Bug分析"><a href="#2-4Bug分析" class="headerlink" title="2.4Bug分析"></a>2.4Bug分析</h2><p>此次作业我出现了一些RE和WA以及TLE的错误，其中最主要的是RE错误。RE的原因是我在做递推函数的字符串替换时，忽略了可能嵌套函数的情况，导致我用的逗号下标可能是嵌套函数里面的逗号的下标，最后替换的结果自然是错的，为了修复这个问题，我添加在<code>Token</code>中添加了<code>Comma</code>这一类型，这样就能准确找到属于当前函数的逗号的下标，从而正确替换字符串。<br>而WA和TLE的原因在于我在合并<code>Unit</code>时，需要判断每个三角函数的幂次是否相同，但是我的三角函数在<code>Unit</code>里是用<code>HashMap&lt;String,Integer&gt;</code>来存储的，我对幂次相同的判断直接用的等号，但是显然等号是不适用于<code>Integer</code>内容的判相等的，因此出现了错误，当我改用<code>Objects</code>的<code>equals</code>方法后，问题就解决了。</p>
 <h1 id="第三次作业"><a href="#第三次作业" class="headerlink" title="第三次作业"></a>第三次作业</h1><p>第三次作业添加了自定义普通函数和求导算子，自定义普通函数的处理方法和第二次作业的自定义递归函数的处理方法类似，而且更简单，只不过由于函数内部的因子多了自定义普通函数这一选项，在替换和解析的时候可能需要做一点改动。而关于求导，可以采用自下而上的方法，先把最基本的常数、幂函数和三角函数的求导实现，再实现项和表达式的求导。本次作业我在第二次作业的基础上进行迭代，添加的东西并不多。</p>
-<h2 id="3-1程序架构"><a href="#3-1程序架构" class="headerlink" title="3.1程序架构"></a>3.1程序架构</h2><p><strong>UML类图</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw3uml.png"
-                     
-                ></p>
+<h2 id="3-1程序架构"><a href="#3-1程序架构" class="headerlink" title="3.1程序架构"></a>3.1程序架构</h2><p><strong>UML类图</strong><br><img lazyload="" src="/images/loading.svg" data-src="/img/oo/unit1/hw3uml.png"></p>
 <p><strong>新增类和功能</strong>  </p>
 <ul>
 <li><code>Deriva</code>：表达式基础结构，表示求导因子  </li>
@@ -787,12 +878,7 @@
 <li><code>Parser</code>、<code>Lexer</code>、<code>Token</code>：新增对求导因子的解析  </li>
 <li>各类基本单元：新增求导方法</li>
 </ul>
-<h2 id="3-2代码复杂度"><a href="#3-2代码复杂度" class="headerlink" title="3.2代码复杂度"></a>3.2代码复杂度</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/oo/unit1/hw3_complexity.png"
-                     
-                >  </p>
+<h2 id="3-2代码复杂度"><a href="#3-2代码复杂度" class="headerlink" title="3.2代码复杂度"></a>3.2代码复杂度</h2><p><img lazyload="" src="/images/loading.svg" data-src="/img/oo/unit1/hw3_complexity.png">  </p>
 <p>本次复杂度和第二次作业类似，但由于我把读取字符串的行为放在了<code>Main</code>类里，而这次读取字符串需要读普通函数，因此条件语句可能会增多导致圈复杂度上升。  </p>
 <h2 id="3-3Bug分析"><a href="#3-3Bug分析" class="headerlink" title="3.3Bug分析"></a>3.3Bug分析</h2><p>本次作业出现了几个RE和WA的错误。<br>RE是由于我在解析递推函数的参数个数时是靠逗号的个数来计算的，而此次由于递推函数表达式中可以出现普通函数，因此很可能会得到错误的参数个数，针对此问题，我修改为只考察等号左边是否有逗号，这样可以省去对右边复杂的分析。<br>WA是由于我没有考虑嵌套求导的情况，我原本的<code>Deriva</code>类里有<code>toentirety()</code>和<code>derivative()</code>两个方法，但这两个方法完全一样，因此导致嵌套求导时该求多次导的表达式只求了一次导，针对该问题，我将<code>toentirety()</code>方法修改为求一次导，将<code>derivative()</code>方法修改为求两次导，这样便修复了Bug。  </p>
 <h1 id="TalkTalk"><a href="#TalkTalk" class="headerlink" title="TalkTalk"></a>TalkTalk</h1><h2 id="程序优缺点总结"><a href="#程序优缺点总结" class="headerlink" title="程序优缺点总结"></a>程序优缺点总结</h2><p>仅针对重构后的程序<del>（重构前的优点是写的复杂）</del><br><strong>优点</strong>  </p>
@@ -826,7 +912,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-04-15 22:20:20
+                    :</strong> 2025-04-18 17:52:10
             </li>
         
         <li>
@@ -981,7 +1067,7 @@
                     </span>
                     
                         <span>
-                            33.8k words in total
+                            33.7k words in total
                         </span>
                     
                 </p>

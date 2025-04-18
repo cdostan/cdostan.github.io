@@ -30,10 +30,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-03-25T06:23:00.000Z">
-<meta property="article:modified_time" content="2025-04-07T16:33:05.859Z">
+<meta property="article:modified_time" content="2025-04-18T10:07:37.966Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="BUAA">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdostan.github.io/images/redefine-og.webp">
     
@@ -604,7 +604,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">13</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -655,8 +655,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-04-08 00:33:05</span>
-            <span class="mobile">2025-04-08 00:33:05</span>
+            <span class="desktop">2025-04-18 18:07:37</span>
+            <span class="mobile">2025-04-18 18:07:37</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -684,11 +684,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/BUAA/">BUAA</a>&nbsp;
+                        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>&nbsp;
+                        | <a href="/tags/BUAA/">BUAA</a>&nbsp;
                     </li>
                 
             </ul>
@@ -731,13 +731,9 @@
 <li>-g：显示调试信息</li>
 <li>-f：显示文件头信息，包括文件类型、架构、字节序等</li>
 </ul>
-<p>在过程中，我使用最多的是-D和-S选项，用来将目标文件反汇编出来。<br>我在使用原生x86工具链和MIPS交叉编译工具链并观察相应结果时发现，它们最大的差异就是相应架构的不同，x86工具链适用于x86架构，而MIPS工具链适用于MIPS架构。<br>比如，我编写了一个简单的C程序，如下：  </p>
-<pre><code class="language-C">#include&lt;stdio.h&gt;
-int main()&#123;
-  printf(&quot;Hello,World!\n&quot;);
-  return 0;
-&#125;
-</code></pre>
+<p>在过程中，我使用最多的是-D和-S选项，用来将目标文件反汇编出来。<br>我在使用原生x86工具链和MIPS交叉编译工具链并观察相应结果时发现，它们最大的差异就是相应架构的不同，x86工具链适用于x86架构，而MIPS工具链适用于MIPS架构。<br>比如，我编写了一个简单的C程序，如下：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Hello,World!\n&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
 <p>使用原生工具链gcc正常编译出可执行文件，即”gcc hello.c”后，通过file查看文件类型，结果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
@@ -809,7 +805,7 @@ int main()&#123;
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-04-08 00:33:05
+                    :</strong> 2025-04-18 18:07:37
             </li>
         
         <li>
@@ -835,11 +831,11 @@ int main()&#123;
 		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
 			
 			<li class="tag-item mx-0.5">
-				<a href="/tags/BUAA/">#BUAA</a>&nbsp;
+				<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>&nbsp;
 			</li>
 			
 			<li class="tag-item mx-0.5">
-				<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>&nbsp;
+				<a href="/tags/BUAA/">#BUAA</a>&nbsp;
 			</li>
 			
 		</ul>
@@ -960,11 +956,11 @@ int main()&#123;
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        13 posts in total
+                        12 posts in total
                     </span>
                     
                         <span>
-                            33.8k words in total
+                            33.7k words in total
                         </span>
                     
                 </p>

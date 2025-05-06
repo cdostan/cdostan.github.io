@@ -13,7 +13,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://cdostan.github.io/2025/03/12/os/lab0实验报告/"/>
+    <link rel="canonical" href="https://cdostan.github.io/2025/05/06/os/lab4实验报告/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -23,17 +23,16 @@
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUAA操作系统lab0">
-<meta property="og:url" content="https://cdostan.github.io/2025/03/12/OS/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/index.html">
+<meta property="og:title" content="BUAA操作系统lab3">
+<meta property="og:url" content="https://cdostan.github.io/2025/05/06/OS/Lab4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
-<meta property="article:published_time" content="2025-03-12T02:21:00.000Z">
-<meta property="article:modified_time" content="2025-03-25T06:24:12.870Z">
+<meta property="article:published_time" content="2025-05-06T09:10:00.000Z">
+<meta property="article:modified_time" content="2025-05-06T11:58:59.371Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="BUAA">
-<meta property="article:tag" content="Linux">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdostan.github.io/images/redefine-og.webp">
@@ -48,7 +47,7 @@
     
     <title>
         
-            BUAA操作系统lab0 | CD&#39;s Blog
+            BUAA操作系统lab3 | CD&#39;s Blog
         
     </title>
 
@@ -628,7 +627,7 @@
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">BUAA操作系统lab0</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">BUAA操作系统lab3</h1>
 			</div>
 			
 		</div>
@@ -649,15 +648,15 @@
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2025-03-12 10:21</span>
-        <span class="mobile">2025-03-12 10:21</span>
+        <span class="desktop">2025-05-06 17:10</span>
+        <span class="mobile">2025-05-06 17:10</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-03-25 14:24:12</span>
-            <span class="mobile">2025-03-25 14:24:12</span>
+            <span class="desktop">2025-05-06 19:58:59</span>
+            <span class="mobile">2025-05-06 19:58:59</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -689,10 +688,6 @@
                     </li>
                 
                     <li>
-                        | <a href="/tags/Linux/">Linux</a>&nbsp;
-                    </li>
-                
-                    <li>
                         | <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>&nbsp;
                     </li>
                 
@@ -703,12 +698,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>992 Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>3 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>6 Mins</span>
         </span>
     
     
@@ -727,39 +722,37 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><strong>执行命令cat Modified.txt，观察其结果和第一次执行 add 命令之前的 status 是否一样，并思考原因</strong><br>这两次的结果是不一样的。第一次将<code>git status</code>命令结果重定向至<code>Untracked.txt</code>文件中时，这时的<code>README.txt</code>文件还未被放入暂存区，所以状态是未被追踪，而第二次进行类似操作时，<code>README.txt</code>文件已被放入暂存区，所以状态应该是已修改。</p>
-<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><strong>仔细看看0.10，思考一下箭头中的add thefile、stage thefile和commit分别对应的是Git里的哪些命令呢</strong><br><img  
+			<h1 id="Lab4实验报告"><a href="#Lab4实验报告" class="headerlink" title="Lab4实验报告"></a>Lab4实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-4-1"><a href="#Thinking-4-1" class="headerlink" title="Thinking 4.1"></a>Thinking 4.1</h3><p><strong>内核在保存现场的时候是如何避免破坏通用寄存器的</strong><br>内存在保护现场的时候，通过将自身的局部变量、返回地址、调用函数的参数等压入栈中这样来保存此时通用寄存器中的值，放置在后续操作中这些值丢失，在返回时，再将这些值弹出栈并赋给相应的寄存器。<br><strong>系统陷入内核调用后可以直接从当时的$a0-$a3参数寄存器中得到用户调用msyscall留下的信息吗</strong><br>不可以，因为这四个寄存器在系统陷入内核态后可能会进行其他的操作而导致里面的值被破坏，直接访问是不安全的，应该从栈帧中来读取相关参数。<br><strong>我们是怎么做到让sys开头的函数“认为”我们提供了和用户调用msyscall时同样的参数的</strong><br>在用户态调用msyscall时，前四个参数会被存入$a0-$a3寄存器，同时在栈帧底部保留16字节的空间，后两个参数被存入在预留空间之上的8字节空间内，内核态中显式地从保存的用户上下文中获取这些参数值，这样就可以让sys开头的函数认为我们提供了和用户调用msyscall时同样的参数。<br><strong>内核处理系统调用的过程对Trapframe做了哪些更改？这种修改对应的用户态的变化是什么</strong><br>将EPC值加4以保证系统调用完成后返回到正确地址，同时将返回值存入2号寄存器。用户态会正确执行下一条指令。</p>
+<h3 id="Thinking-4-2"><a href="#Thinking-4-2" class="headerlink" title="Thinking 4.2"></a>Thinking 4.2</h3><p><strong>为什么 envid2env中需要判断 e-&gt;env_id !&#x3D; envid的情况？如果没有这步判断会发生什么情况</strong><br>不同envid的后十位可能相同（二进制），所以如果不加上该判断，可能会取到错误的进程。</p>
+<h3 id="Thinking-4-3"><a href="#Thinking-4-3" class="headerlink" title="Thinking 4.3"></a>Thinking 4.3</h3><p><strong>请回顾 kern&#x2F;env.c 文件中 mkenvid()函数的实现，该函数不会返回 0，请结合系统调用和 IPC 部分的实现与envid2env()函数的行为进行解释</strong><br>首先，若mkenvid()函数会返回0，那么就会有进程的id为0，但在envid2env()的实现中，如果envid为0，则查询到的进程将会是目前的进程，这和我们的预期不符，同时也让进程间的通信发生错误，因此mkenvid()函数不会返回0。同时由于curenv是内核态的变量，用户态不能获取其id，这样实现方便用户进程将当前进程的envid传给内核。</p>
+<h3 id="Thinking-4-4"><a href="#Thinking-4-4" class="headerlink" title="Thinking 4.4"></a>Thinking 4.4</h3><p><strong>关于 fork 函数的两个返回值，下面说法正确的是：<br>A、fork 在父进程中被调用两次，产生两个返回值<br>B、fork 在两个进程中分别被调用一次，产生两个不同的返回值<br>C、fork 只在父进程中被调用了一次，在两个进程中各产生一个返回值<br>D、fork 只在子进程中被调用了一次，在两个进程中各产生一个返回值</strong><br>正确的是C</p>
+<h3 id="Thinking-4-5"><a href="#Thinking-4-5" class="headerlink" title="Thinking 4.5"></a>Thinking 4.5</h3><p><strong>我们并不应该对所有的用户空间页都使用duppage进行映射。那么究竟哪<br>些用户空间页应该映射，哪些不应该呢？请结合kern&#x2F;env.c中env_init函数进行的页<br>面映射、include&#x2F;mmu.h里的内存布局图以及本章的后续描述进行思考</strong><br>从0到USTACKTOP的用户空间页应该映射，USTACKTOP到UTOP之间的内容是拿来处理页写入异常的，因此不需要与子进程共享，UTOP之上的内容是所有进程共享的，也不需要做父子进程之间单独的共享。</p>
+<h3 id="Thinking-4-6"><a href="#Thinking-4-6" class="headerlink" title="Thinking 4.6"></a>Thinking 4.6</h3><p><strong>vpt和vpd的作用是什么？怎样使用它们</strong><br>vpt和vpd相当于两个数组，一个是页表项的数组，一个是页目录项的数组，只需通过页表项和页目录项的下标就可通过这两个宏来访问相应的页表项或页目录项。<br><strong>从实现的角度谈一下为什么进程能够通过这种方式来存取自身的页表</strong><br>页表和页目录是存放在用户空间中的，且逻辑上是连续的，因此进程可以通过这种方式来存取自身页表。<br><strong>它们是如何体现自映射设计的</strong><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/img/os/lab0/pic10.png"
+                     data-src="/img/os/lab3/ziyingshe.png"
                      
-                >  </p>
-<ol>
-<li><strong>Untracked-&gt;Staged</strong>：<code>git add</code>  </li>
-<li><strong>Modified-&gt;Staged</strong>：<code>git add</code>  </li>
-<li><strong>Staged-&gt;Modified</strong>：<code>git commit</code></li>
-</ol>
-<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><strong>代码文件print.c被错误删除时，应当使用什么命令将其恢复</strong><br><code>git checkout -- print.c </code><br><strong>代码文件print.c被错误删除后，执行了gitrmprint.c命令，此时应当使用什么命令将其恢复</strong><br><code>git reset HEAD print.c</code><br><code>git checkout -- print.c</code><br><strong>无关文件hello.txt已经被添加到暂存区时，如何在不删除此文件的前提下将其移出暂存区？</strong><br><code>git rm --cached hello.txt</code>  </p>
-<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><p><strong>reset命令作用</strong><br>在循着Thinking中给出的步骤练习后，可以发现reset命令的作用就是让我们回退或恢复版本的，可以通过<code>git reset --hard HEAD~(num)</code>来进行版本回退，也可以直接用版本的哈希值（通过<code>git log</code>查询）来指定移动到哪个版本。</p>
-<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><p><strong>执行如下命令, 并查看结果</strong><br><strong>· echo first</strong><br>result:first(stdout)<br><strong>· echo second &gt; output.txt</strong><br>result:second(output.txt)<br><strong>• echo third &gt; output.txt</strong><br>result:third(otuput.txt)<br><strong>• echo forth &gt;&gt; output.txt</strong><br>result:<br>third<br>forth(output.txt)</p>
-<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><p><strong>使用你知道的方法（包括重定向）创建下图内容的文件（文件命名为test），将创建该文件的命令序列保存在command文件中，并将test文件作为批处理文件运行，将运行结果输出至result文件中。给出command文件和result文件的内容，并对最后的结果进行解释说明（可以从test文件的内容入手）. 具体实现的过程中思考下列问题: echo<br> echo Shell Start 与 echo <code>echo Shell Start</code> 效果是否有区别; echo echo $c&gt;file1与echo <code>echo $c&gt;file1</code> 效果是否有区别</strong><br>command文件内容如图所示：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/command.png"
-                     
-                ><br>result文件内容如图所示：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/result.png"
-                     
-                ><br><strong>解释</strong><br>根据test文件内容，不难发现执行test文件其实就是为变量<code>a</code>，<code>b</code>，<code>c</code>赋值后再把它们的值存到不同的文件中，之后再根据顺序把相应值依次添加到file4文件中，最后输出到result文件中，因此result文件最终结果为”3 2 1”</p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人认为本次实验的难点还是在于接触新的东西时各方面的不熟悉导致的，具体来说有如下：  </p>
+                ><br>如图，可以发现页目录是处于页表中的，同时在页表中的位置相当于页表在整个内存中的位置，这体现了自映射设计。<br><strong>进程能够通过这种方式来修改自己的页表项吗</strong><br>不能，虽然该区域处于用户空间，但是对用户态只读不写，要修改必须陷入内核态。  </p>
+<h3 id="Thinking-4-7"><a href="#Thinking-4-7" class="headerlink" title="Thinking 4.7"></a>Thinking 4.7</h3><p><strong>在 do_tlb_mod 函数中，你可能注意到了一个向异常处理栈复制 Trapframe<br>运行现场的过程，请思考并回答这几个问题：<br>这里实现了一个支持类似于“异常重入”的机制，而在什么时候会出现这种“异常重入”</strong><br>出现写时复制异常时。<br><strong>内核为什么需要将异常的现场 Trapframe复制到用户空间？</strong><br>因为最终需要恢复到用户态后跳转到用户异常处理函数，由用户程序完成写时复制等自定义处理，这时用户异常处理函数需要相应的现场。  </p>
+<h3 id="Thinking-4-8"><a href="#Thinking-4-8" class="headerlink" title="Thinking 4.8"></a>Thinking 4.8</h3><p><strong>在用户态处理页写入异常，相比于在内核态处理有什么优势</strong>  </p>
 <ul>
-<li>git的使用，对工作区、暂存区、分支、状态、版本的体会  </li>
-<li>linux相关指令的使用，对指令和选项功能的体会（尤其是多功能指令例如sed、awk等命令）  </li>
-<li>shell脚本的编写，对语法的把握和认识</li>
+<li>缓解内核压力</li>
+<li>使得其更安全，防止更改不必要的页面</li>
+<li>使其更加灵活，能够完成很多自定义的处理</li>
+<li>降低异常处理错误而导致的影响</li>
 </ul>
-<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>lab0的实验难度并不算大，主要是让我们熟悉实验环境，回顾之前的知识，了解操作系统基本的概念和原理，并了解linux的基本使用。本人之前并未太多使用linux系统，只能使用一些基本的指令，对于编写脚本，编译代码等并不熟悉，在做完本次实验后，我才终于理解为什么都说程序员要想提高自己的效率一定要会使用linux，当使用多了linux系统后，也会真正体会到cli的魅力，可能它没有gui那么简单，那么直观，但是通过输入指令来控制电脑让我们进一步能体会到人与机器的交互。</p>
+<h3 id="Thinking-4-9"><a href="#Thinking-4-9" class="headerlink" title="Thinking 4.9"></a>Thinking 4.9</h3><p><strong>为什么需要将 syscall_set_tlb_mod_entry的调用放置在 syscall_exofork之前</strong><br>因为子进程需要修改env指针的值，这涉及到对写时复制页面的写入，因此会触发写时复制异常，而该异常需要调用syscall_set_tlb_mod_entry才能正确触发。<br><strong>如果放置在写时复制保护机制完成之后会有怎样的效果</strong><br>这样将会不能正确处理异常。  </p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>本次实验的代码量进一步增加，且内容也很多，从异常处理到fork的实现，中间有很多需要停下来仔细思考理解的点，我认为主要有以下：</p>
+<ul>
+<li>对系统调用流程的理解</li>
+<li>对何时在内核态何时在用户态的辨析</li>
+<li>对Trapframe结构体的理解</li>
+<li>对写时复制机制的理解与实现</li>
+<li>对页写入异常处理流程的理解</li>
+<li>对进程的共享空间的理解</li>
+<li>对进程通信之间的实现</li>
+</ul>
+<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>在Lab4中，我学会了如何实现系统调用机制，并以此来实现进程创建函数fork()。整体来说，我认为本次实验还是较难的，前后关系很紧密，又引入了大量的宏以及函数，如何去使用或者实现它们是一大难点，同时由于实验代码的完成还涉及到对整个内存空间的认识，很多时候很容易分不清楚内核空间和用户空间，因此完成起来还是较为困难的。但是完成了实验之后，我对系统调用和进程创建的理解确实加深了不少，虽说仍然有一些地方存在些许疑惑，理解起来不是那么容易，担仍然感受到了操作系统设计的巧妙，同时也对整个内存空间的认识更深入。一句话总结起来就是困难但丰富。</p>
 
 		</div>
 
@@ -767,18 +760,18 @@
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> BUAA操作系统lab0</li>
+        <li><strong>Title:</strong> BUAA操作系统lab3</li>
         <li><strong>Author:</strong> Cdostan</li>
         <li><strong>Created at
-                :</strong> 2025-03-12 10:21:00</li>
+                :</strong> 2025-05-06 17:10:00</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-03-25 14:24:12
+                    :</strong> 2025-05-06 19:58:59
             </li>
         
         <li>
-            <strong>Link:</strong> https://cdostan.github.io/2025/03/12/OS/Lab0实验报告/
+            <strong>Link:</strong> https://cdostan.github.io/2025/05/06/OS/Lab4实验报告/
         </li>
         <li>
             <strong>
@@ -804,10 +797,6 @@
 			</li>
 			
 			<li class="tag-item mx-0.5">
-				<a href="/tags/Linux/">#Linux</a>&nbsp;
-			</li>
-			
-			<li class="tag-item mx-0.5">
 				<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>&nbsp;
 			</li>
 			
@@ -819,23 +808,11 @@
 		
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
-			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="prev" rel="prev" href="/2025/03/20/OO/oo_Unit1/">
-					<span class="left arrow-icon flex justify-center items-center">
-						<i class="fa-solid fa-chevron-left"></i>
-					</span>
-					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">2025_BUAA_OO_Unit1</span>
-						<span class="post-nav-item">Prev posts</span>
-					</span>
-				</a>
-			</div>
-			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/">
+				<a class="next" rel="next" href="/2025/04/19/OS/Lab3%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">linux中的vim编辑器</span>
+						<span class="post-nav-title-item">BUAA操作系统lab3</span>
 						<span class="post-nav-item">Next posts</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -899,8 +876,8 @@
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
-		<div class="page-title">BUAA操作系统lab0</div>
-		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A"><span class="nav-number">1.</span> <span class="nav-text">Lab0实验报告</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%9D%E8%80%83%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">一、思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-0-1"><span class="nav-number">1.1.1.</span> <span class="nav-text">Thinking 0.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-0-2"><span class="nav-number">1.1.2.</span> <span class="nav-text">Thinking 0.2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-0-3"><span class="nav-number">1.1.3.</span> <span class="nav-text">Thinking 0.3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-0-4"><span class="nav-number">1.1.4.</span> <span class="nav-text">Thinking 0.4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-0-5"><span class="nav-number">1.1.5.</span> <span class="nav-text">Thinking 0.5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-0-6"><span class="nav-number">1.1.6.</span> <span class="nav-text">Thinking 0.6</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%9A%BE%E7%82%B9%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">二、难点分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E9%AA%8C%E4%BD%93%E4%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">三、实验体会</span></a></li></ol></li></ol>
+		<div class="page-title">BUAA操作系统lab3</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lab4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A"><span class="nav-number">1.</span> <span class="nav-text">Lab4实验报告</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%80%9D%E8%80%83%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">一、思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-1"><span class="nav-number">1.1.1.</span> <span class="nav-text">Thinking 4.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-2"><span class="nav-number">1.1.2.</span> <span class="nav-text">Thinking 4.2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-3"><span class="nav-number">1.1.3.</span> <span class="nav-text">Thinking 4.3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-4"><span class="nav-number">1.1.4.</span> <span class="nav-text">Thinking 4.4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-5"><span class="nav-number">1.1.5.</span> <span class="nav-text">Thinking 4.5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-6"><span class="nav-number">1.1.6.</span> <span class="nav-text">Thinking 4.6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-7"><span class="nav-number">1.1.7.</span> <span class="nav-text">Thinking 4.7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-8"><span class="nav-number">1.1.8.</span> <span class="nav-text">Thinking 4.8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thinking-4-9"><span class="nav-number">1.1.9.</span> <span class="nav-text">Thinking 4.9</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%9A%BE%E7%82%B9%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">二、难点分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BF%83%E5%BE%97%E4%BD%93%E4%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">三、心得体会</span></a></li></ol></li></ol>
 
 	</div>
 </div>

@@ -222,255 +222,305 @@
       </tags>
   </entry>
   <entry>
-    <title>计算机组成原理P3(Logisim)</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/P3-Logisim/</url>
-    <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
-<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>
-<h2 id="模块需求"><a href="#模块需求" class="headerlink" title="模块需求"></a>模块需求</h2><p>根据工作流程，我们可以看到其实CPU工作总的来说就是一个状态的不断转移，在每个状态中做相应的操作。<br/>进一步看，每个状态完全由PC来决定，所以状态转移其实只涉及PC的算术运算，将PC的算术运算电路与PC寄存器相连就能实现状态转移。<br/>而操作部分其实就完完全全是组合逻辑电路，但操作部分是很庞大的系统，我们需要对其进行细分实现更小的模块。根据工作流程中的操作分析，我们可以看到在这一部分我们应该需要一个解析指令的模块，一个寄存器堆，一个算术运算模块，一个数据存储器。但由于指令的不同，执行的相关操作也不同，例如对于add与sub，一个在算术运算模块中需要执行加法操作，一个需要执行减法操作，因此我们需要相应的控制信号来控制每个操作模块的具体操作（相应的控制信号有寄存器堆写信号，数据存储器写信号，数据存储器读信号，指令相关位数选择信号，算术运算模块操作数选择信号，算术运算模块选项信号，寄存器堆数据输入选择信号），而这些控制信号便是由相应的指令来得出的，因此还需要一个控制器。</p>
-<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.28.36.png"
-                     
-                ></p>
-<h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
-                     
-                ></p>
-<h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/cpu.png"
-                     
-                ></p>
-<hr>
-<h2 id="易遗漏或出错的地方"><a href="#易遗漏或出错的地方" class="headerlink" title="易遗漏或出错的地方"></a>易遗漏或出错的地方</h2><ul>
-<li>在对beq指令做考虑的时候，<del>需要对PC与立即数的4倍相加</del>，我们要意识到这时PC首先应该自增再与立即数的4倍相加，这才是正确的操作。</li>
-<li>若当前指令为I型指令，由于算术运算模块对数据位数的限制，<del>我们用一个位拓展器将立即数扩展到32位就行了</del>，对于不同的I型指令，立即数的扩展方式是不同的，例如对于ori要对立即数进行无符号扩展，对于lw要对立即数进行有符号扩展，因此我们需要加一个选择信号去对立即数进行何种扩展方式做出说明。（幸运的是该次CPU设计只涉及ori一个需要对立即数进行无符号扩展的指令，因此将ori信号作为选择信号即可，若后续增加指令，加上一个或电路即可）</li>
-</ul>
-<hr>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>测试中尽可能使每条指令的每种情况都覆盖，并且由最基本的指令开始构造测试（不需要其他指令就可以检验覆盖率的指令为最基本的），因此，从ori与lui开始构造，并通过他们几条指令让寄存器的值不全为0，是得能对后续指令做检验。<br/>根据以上指导思想设计的MIPS测试程序如下：</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,0x1011</span><br><span class="line">ori $2,$1,0x0111</span><br><span class="line">ori $11,$0,2</span><br><span class="line">lui $3,0</span><br><span class="line">lui $3,0x0111</span><br><span class="line">lui $3,0xffff</span><br><span class="line">ori $4,$3,0xffff</span><br><span class="line">lui $3,0x0111</span><br><span class="line">add $5,$3,$0</span><br><span class="line">add $5,$4,$0</span><br><span class="line">add $5,$3,$1</span><br><span class="line">add $5,$3,$4</span><br><span class="line">add $5,$4,$4</span><br><span class="line">add $5,$5,$5</span><br><span class="line">loop3:add $11,$11,$4</span><br><span class="line">beq $11,$0,loop4</span><br><span class="line">sub $6,$3,$0</span><br><span class="line">sub $6,$4,$0</span><br><span class="line">sub $6,$3,$1</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">ori $7,$0,1</span><br><span class="line">sub $8,$4,$7</span><br><span class="line">sub $6,$4,$8</span><br><span class="line">sub $6,$6,$6</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">loop3:sw $5,4($1)</span><br><span class="line">sw $6,4($2)</span><br><span class="line">nop</span><br><span class="line">lw $9,4($1)</span><br><span class="line">lw $10,4($2)</span><br><span class="line">beq $5,$10,loop1</span><br><span class="line">beq $5,$9,loop2</span><br><span class="line">loop1:sw $10,8($2)</span><br><span class="line">loop2:beq $6,$10,loop3</span><br><span class="line">loop4:sw $9,12($2)</span><br></pre></td></tr></table></figure></div>
-<h1 id="单周期CPU思考题"><a href="#单周期CPU思考题" class="headerlink" title="单周期CPU思考题"></a>单周期CPU思考题</h1><h2 id="单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"><a href="#单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？" class="headerlink" title="单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"></a>单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？</h2><h3 id="状态转移功能"><a href="#状态转移功能" class="headerlink" title="状态转移功能"></a>状态转移功能</h3><ul>
-<li>NPC模块</li>
-<li><ul>
-<li>NPC模块当中，需要判断下一个PC的值，如果当前指令不是beq指令，则PC相对于当前值加4便得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器，否则在加4的基础上，与当前获得的立即数的4倍相加得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="状态存储功能"><a href="#状态存储功能" class="headerlink" title="状态存储功能"></a>状态存储功能</h3><ul>
-<li>PC存储器</li>
-<li><ul>
-<li>PC存储器存储当前周期PC的值，并以该值指导后续工作电路的所有操作。</li>
-</ul>
-</li>
-<li>GRF模块</li>
-<li><ul>
-<li>在Controller根据当前PC的值读出对应的指令后，GRF根据指令做出相关操作，并决定是否在内部某个存储器存入新的值。</li>
-</ul>
-</li>
-<li>DM模块</li>
-<li><ul>
-<li>在Controller根据当前PC的值读出对应的指令后，DM根据指令做出相关操作，并决定是否在内部某个空间写入新的值。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出"><a href="#模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出" class="headerlink" title="模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出"></a>模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出</h2><ul>
-<li>IM模块为指令存储器，由于在CPU执行操作的时候是从相应的地址空间里读取该周期使用的指令，不会对指令作出修改，也就是针对指令只需实现读的操作，因此使用ROM来实现IM模块是合理的。</li>
-<li>DM模块为数据存储器，是在相应的地址空间存储数据，在指令不同时，可以从相应的地址空间读取数据，也可以将新的数据写入相应的地址空间，因此需要同时做到读和写的操作，因此使用RAM可以实现且最为方便。</li>
-<li>GRF是通用寄存器组，里面放置了三十二个寄存器用于读取和写入数据，且搭建的是单周期CPU，因此在每个周期最多对里面的一个寄存器写入新数据（该新数据将在下一个时钟上沿存入寄存器），因此使用三十二个寄存器的组合来实现GRF是合理的。</li>
-</ul>
-<hr>
-<h2 id="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"><a href="#在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路" class="headerlink" title="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"></a>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路</h2><h3 id="beq指令操作模块"><a href="#beq指令操作模块" class="headerlink" title="beq指令操作模块"></a>beq指令操作模块</h3><ul>
-<li>该模块是实现beq操作的模块，因为针对beq指令，最终所需要操作改变的数并不是寄存器里的值或者内存空间的值，而是PC的值，因此需要将其单独拿出来进行一个操作。该模块由原本的（PC+4）与当前立即数的四倍相加的一个运算电路再加上由beq信号和alu模块判断相等信号的与作为选择信号的多路选择器构成，若当前两个寄存器的值相等且beq信号为1，那么下一个PC将为经过运算电路得到的值，否则就为（PC+4）。</li>
-</ul>
-<hr>
-<h2 id="实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？"><a href="#实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？" class="headerlink" title="实现 nop 空指令，我们并不需要将它加入控制信号真值表，为什么？"></a>实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</h2><ul>
-<li>nop指令为空指令，如若该周期CPU执行该条指令，则不会发生任何操作（除了PC自增）。不将nop指令加入控制信号真值表说明在计算相应控制信号的值时，我们不需考虑nop指令的影响，也即当当前指令为nop时，所有控制信号的值均为0。这时，首先考虑beq指令操作部分，由于此时beq信号为0，因此下一个PC的值只是当前PC的值的简单自增，不受影响；而针对其他指令操作部分，我们关心的仅是这些操作部分会不会在nop指令期间影响寄存器的值或者内存空间里存储的值，这都与写操作有关，但nop指令期间寄存器写信号和数据存储器写信号均为0，因此不会执行写操作，所以二者内部的值都不会改变。</li>
-</ul>
-<hr>
-<h2 id="阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"><a href="#阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。" class="headerlink" title="阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"></a>阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</h2><p>测试样例的数据针对其给出的几条指令（<code>ori</code>, <code>lui</code>, <code>add</code>, <code>sw</code>, <code>lw</code>, <code>beq</code>）已经较强，每个指令的覆盖率都较高，但仍在一些方面存在不足，下面列出不足之处：</p>
+    <title>2025_BUAA_OO_Unit3</title>
+    <url>/2025/05/15/OO/oo_Unit3/</url>
+    <content><![CDATA[<p>OO第三单元的主题是JML规格化设计，通过社交网络的例子让我们学会遵守规格，并在规格的限制内灵活实现规格。本单元看似难度不大，但想要顺利通过强测互测，需要仔细考虑所采用的数据结构以及算法。</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>单元测试是对程序中的最小的可测部分进行测试，一般就是我们在各种类里面实现的方法。该测试能够确保每个单元能够独立正确工作，及时进行单元测试能够尽量保证我们程序的正确性，但是编写单元测试的过程可能较为繁琐，同时需要尽可能地覆盖到方法的每一个分支及边缘情况，这样才能确保测试的准确性。</p>
+<h2 id="功能测试"><a href="#功能测试" class="headerlink" title="功能测试"></a>功能测试</h2><p>功能测试是指从用户的角度触发去验证程序功能是否符合规格。这对于规格化设计来说是十分重要的。对程序进行功能性测试时，一般要根据面向规格来构造数据，然后进行手动或自动化测试。功能测试能够尽量保证功能实现正确，但对程序内部实现逻辑不过多关注，这也容易造成一些结果正确但逻辑错误的隐藏bug难以被发现。</p>
+<h2 id="集成测试"><a href="#集成测试" class="headerlink" title="集成测试"></a>集成测试</h2><p>集成测试是将已经通过单元测试的单元组合在一起进行测试，验证这些单元之间的交互是否正确。其能够检测到单元之间的交互问题，提高系统的整体质量。但是对于复杂的程序实现，多个方法之间相互联系的情况，集成测试的成本会很高，因为要考虑这些方法之间的交互情况。</p>
+<h2 id="压力测试"><a href="#压力测试" class="headerlink" title="压力测试"></a>压力测试</h2><p>压力测试是通过模拟高负载的情况，测试系统在极限条件下的性能表现。在互测时很多同学想要检测其他同学是否有TLE的产生对相应程序进行测试应该都是压力测试。压力测试能够提高程序在高负载情况下的可靠性，但如何去模拟这样的高负载情况是压力测试的一大难点。</p>
+<h2 id="回归测试"><a href="#回归测试" class="headerlink" title="回归测试"></a>回归测试</h2><p>回归测试是在软件修改后重新进行测试，以验证修改是否引入了新的问题。课程的bug修复环节就是典型的回归测试。回归测试保证我们出于增删功能、修复错误、改善性能等需求而对程序进行的修改没有对其他功能产生负面影响。这对于程序的迭代等有重要意义。</p>
+<h2 id="数据构造策略"><a href="#数据构造策略" class="headerlink" title="数据构造策略"></a>数据构造策略</h2><p>本单元的背景是一个社交网络，里面还有公众号、文章、信息等元素，所有这些元素都可以被一张图展示得很好，因此，构造数据时考虑的其实就是图中点和边的关系。我在进行数据构造时主要有两个策略，一个是随机生成，另一个是面向JML构造数据。<br>随机生成比较简单，即人、关系等等都完全随机的生成，但是这有个毛病，虽然本单元的输入几乎没什么限制，只要你按照指令格式给予程序指令，那么都有异常处理帮你兜底，但如果完全随机，可能会导致一直在异常处理，所以随机生成也要不那么随机。比如我们可以建立目前已有的人的集合，已有的关系集合等，这样能够方便我们在生成其他指令时能够限制随机的范围，让数据更加合理。<br>面向JML构造数据就需要根据相关的JML描述来构造特定数据，这些数据一般都是一些特殊情况下的数据，或者是压力数据，常拿来对一些可能忽视的小点或者程序整体性能测试。比如说针对某个查询方法，根据其JML可能会发现该操作的时间复杂度可能较高或是与当前类的其他属性相关联，那构造数据的时候就可以先修改其他属性，在进行查询，这样一直循环，构造一个压力数据。</p>
+<h1 id="大模型体验"><a href="#大模型体验" class="headerlink" title="大模型体验"></a>大模型体验</h1><p>其实本单元我并未太多使用大模型，使用大模型的情景更多地是询问其相关数据结构的实现以及性能改善的建议。但是在完成本单元的代码作业后再回顾，发现确实有很多地方可以通过大模型来减少自己的工作量，但需要良好地引导大模型才能提高效率，我认为可以根据以下步骤让大模型对我们的实现过程提供帮助：  </p>
 <ul>
-<li><code>add</code>进行了正数和正数，正数和负数，负数和负数的操作，但未进行0与正负数的操作，不能确保CPU是否会在至少有一个数为0时出差错。</li>
-<li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
+<li>将JML规格提供给大模型，让其分析完整个项目的JML规格并给予我们有关每个类的内部属性使用哪种数据结构的反馈。</li>
+<li>让大模型分析出哪些方法的实现较为复杂，并提供实现它的简要思路以及推荐相关算法。</li>
+<li>让大模型分析出哪些方法的实现可能因为一些潜在的难以察觉的因素而出错，并列举出相关因素。</li>
+<li>根据大模型的反馈完成代码，途中可以不断询问大模型有关数据结构或算法的疑惑。</li>
+<li>将实现好的代码提供给大模型让其分析可能存在的bug，以及询问其是否有性能优化的推荐，并根据反馈修改代码。</li>
+<li>在个人发现某些需要改善的点后，针对性地向大模型询问改善的建议，比如有关性能，要将自己现在使用的方法提供给大模型，并提供给大模型预期实现的效果，比如我现在的方法时间复杂度是o(n)，我想优化到o(1)，那就要给大模型讲清楚需求，并理性采纳其建议。</li>
 </ul>
+<p>以上步骤及引导方法是我对本单元三次作业的认真回顾下所想出的，拿第一条来举例，我们实现代码首先写的肯定都是一个类里面的相应属性，不会一上来就写类的方法，而像一些数组属性，JML里面不会规定你实现的数据结构，我们需要自己选择，但选择哪种数据结构肯定又要根据使用该属性的方法来确定，而我们就算通读了整个JML，大概理解了每个方法要干什么，但通读下来之后可能仍然对每个方法的内部实现不清晰，要真正到了编写相应方法的代码时，才能加深对方法内部的理解，而这时便可能会发现相关属性的数据结构使用不当而回去调整，我在完成作业时就经常遇到该问题，如果能在一开始就确定要使用的数据结构，那一定能提高不少效率。</p>
+<h1 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h1><p>由于本单元要求我们按照规格实现代码，所以整体上的架构都是JML给出的，简单来说就是一个社交网络负责添加人员、添加关系、修改关系、管理公众号和文章、管理消息等。</p>
+<h2 id="图模型构建"><a href="#图模型构建" class="headerlink" title="图模型构建"></a>图模型构建</h2><p>社交网络中，很自然地把人作为点，同时在Person内部通过一个HashMap来存储和其他人的关系，也就是整个图里面的边，有关其他元素，例如文章或公众号等，也在Person内部通过HashMap或其他数据结构进行存储，同时在Network里面也用一个大的容器来存储这些元素方便管理。</p>
+<h2 id="维护"><a href="#维护" class="headerlink" title="维护"></a>维护</h2><p>整个社交网络里面需要维护的东西十分多，因为涉及到很多查询方法，为了尽可能使查询的性能较优，对于大多数查询方法我们都需要对所查询的内容进行维护。<br>比如Tag里面的平均年龄，年龄方差、不同人之间的社交价值总和等，需要在每一次在tag内部相关属性发生改变时对这些属性进行实时修改来维护，同理对Person的最好朋友、OfficialAccount里面的最佳贡献者等等。需要注意的是，维护的时候不能只将目光聚焦在某个类的内部实现中，很有可能在大的Network中也存在某些修改影响到了某些类的内部属性，这时也需要进行维护。</p>
+<h1 id="规格理解"><a href="#规格理解" class="headerlink" title="规格理解"></a>规格理解</h1><p>规格限制了我们方法的参数、返回结果等，但是对于整个方法的实现并没有做特别的限制，因此根据一个方法的规格可以有很多种实现该方法的思路，这也是大家都按照规格完成代码但性能差距巨大的原因，在本单元中，我也遇到了很多性能问题，修复这些性能问题是整个单元最为艰巨的任务。</p>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul>
+<li>在本单元第一次作业，对于查询联通的方法，我使用了并查集算法，但仍然未能顺利通过强测每一个点，但是原因也非常诡异。我首先是对并查集进行缓存，也就是如果没有删除关系，那我就会继续使用上一次建立的并查集，当有关系被删除时，我会重新建立并查集，但这样修改后并没有提升我太多的性能，强测未通过的点仍然没通过。再之后我检查了我建立并查集的实现，发现我建立并查集时采用了广度优先遍历的思想，这让我在建立并查集的时候就耗费了不少时间，我将其修改为按点建立后通过了原来大部分未通过的点，但仍有一个点没有通过。最后我将按点建立修改为按边建立后，诡异地通过了最后一个点，至今我仍然觉得匪夷所思，因为这样的修改仅仅只是让原来的时间复杂度除2而已，但整体上来看二者的时间复杂度仍然是相同的。</li>
+<li>本单元第二次作业，虽然强测通过的点较第一次更多，但实际上遇到了更多的性能问题，分别有如下：</li>
+<li><ul>
+<li>我在实现Person内部的文章数组时使用的是LinkedList结构，但这样在删除文章的时候复杂度就会是o(n)，又因为Network里面进行删除文章操作时还需要对所有人遍历，这样时间复杂度就飙升到了o(n^2)，因此需要一种数据结构来让在头部增加元素以及删除元素的时间复杂度都是o(1)，这样才能解决这个问题，我通过链表加HashMap的一个结构解决了该问题。</li>
+</ul>
+</li>
+<li><ul>
+<li>对于qba方法，没有在Person内部维护导致时间复杂度为o(n)，整体导致了qcs的复杂度为o(n^2)，在Person内部维护最好的朋友之后解决了该问题。</li>
+</ul>
+</li>
+<li><ul>
+<li>对于qtvs方法，没有在Tag内部维护相应的valuesum，改为动态维护之后解决了该问题。</li>
+</ul>
+</li>
+<li>本单元第三次作业并没有什么特别的涉及性能的问题，很多性能问题还是前两次作业的，因此前两次作业如果将能优化的地方尽可能优化之后，第三次作业也不太可能出现性能问题。</li>
+</ul>
+<h2 id="规格与实现分离的理解"><a href="#规格与实现分离的理解" class="headerlink" title="规格与实现分离的理解"></a>规格与实现分离的理解</h2><p>规格只是对参数、结果以及一些不变量的限制，并不限制我们实现方法的细节，同理对属性，就比如有一个List[]型的属性，你大可以选择ArrayList、HashMap、HashSet等去实现它，只要你选择的数据结构方便你在方法中的使用即可，对方法也是，你完全可以选择不同的算法去实现，只要结果以及不变式满足规格说明即可，这也要求我们就算按照规格实现程序也不能照着规格就开写，而是要大致对实现的东西有了自己的理解之后再去编写代码。</p>
+<h1 id="Junit测试"><a href="#Junit测试" class="headerlink" title="Junit测试"></a>Junit测试</h1><p>在对一个方法编写Junit测试时，其JML规格是我们编写测试的一个很好的参考。因为JML里面的描述一般是针对该方法的朴素实现，因此方便我们在编写测试时避免使用自己实现的其他结构，而是按照朴素的实现来获取方法的正确结果，这样能有效防止因为自己实现的其他结构的错误而导致的测试不准确。<br>同时，JML规格还能为我们构造数据提供思路，比如一些边界情况等，我在自己编写本单元的Junig测试时就通过伪随机生成、完全图生成、空图生成这三种数据生成策略来为测试提供数据，并取得了较好的测试结果。<br>我们的Junit测试还需根据JML的描述来检验方法的实现，具体来说，不能只检验方法的结果正确性，还要检验方法的实现是否满足规格中的不变式限制，以及是否产生了副作用等，这样才能保证代码实现与规格一致。</p>
+<h1 id="学习体会"><a href="#学习体会" class="headerlink" title="学习体会"></a>学习体会</h1><p>通过本单元的学习，我了解到了契约式设计，并认识到这是一种较为安全的设计模式。同时在完成作业的过程中我也深刻体会到了规格与实现分离，意识到契约式设计不是死的，而是活的，留给程序员操作的空间仍然是巨大的。同时通过本单元的作业，我更深地意识到数据结构和算法对于程序设计的重要性，当同样一个需求，别人的程序只需要你的十分之一的时间就能完成的时候，你会感到难以置信，而现实中的众多用户肯定是希望自己的需求能尽快得到解决，所以我认为这对于我们未来对实际项目的开发的启发意义是重大的。</p>
 ]]></content>
       <categories>
-        <category>计算机组成原理</category>
+        <category>面向对象(BUAA)</category>
       </categories>
       <tags>
+        <tag>面向对象</tag>
         <tag>BUAA</tag>
-        <tag>计算机组成原理</tag>
       </tags>
   </entry>
   <entry>
-    <title>计算机组成原理P4</title>
-    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P4/</url>
-    <content><![CDATA[<h1 id="单周期CPU设计草稿（verilog"><a href="#单周期CPU设计草稿（verilog" class="headerlink" title="单周期CPU设计草稿（verilog)"></a>单周期CPU设计草稿（verilog)</h1><p>本次课下需要我们通过verilog来设计一个支持10条指令的单周期CPU。由于在上周我们已经通过logisim搭建了一个单周期CPU，所以本次的任务其实简单来说就是通过一个硬件描述语言去描述搭建好的电路。<br>我们还是先来简单捋一下构建思路。</p>
-<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><ul>
-<li>工作流程：每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作，并判断下一个周期的PC的取值。</li>
-<li>模块需求：我们希望在编写verilog的时候能像在logisim里一样使用不同的模块，并在最后使用这些模块来构成整个CPU。而通过相应的指令和流程，我们可以编写以下几个模块：im（指令存储器），grf（寄存器堆），alu（算术运算模块），dm（数据存储器），controller（控制器）以及最顶层的模块mips。</li>
-</ul>
-<p>（附上单周期CPUlogisim搭建图）<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
-                     
-                ></p>
-<h2 id="模块分析"><a href="#模块分析" class="headerlink" title="模块分析"></a>模块分析</h2><ul>
-<li><ul>
-<li>mips：作为最顶层的模块，这个模块也即CPU本身，它包含了其他的子模块，在这个模块当中，只需要定义相关的信号将子模块联系起来，除此之外其唯一需要做的就是计算下一个pc的值，因此该模块中应有一个pc的计算部分。图示如下：<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/mips.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>im：指令存储器模块，需要一个地址信号输入，并输出指令编码。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/im.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>grf：寄存器堆模块，需要三个地址信号，一个写入数据，一个写入数据使能信号，时钟和复位信号。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/grf.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>alu：算术运算模块，在这个模块本人设计了与或加减左移及相等6种运算，需要两个运算数输入，一个操作选择信号，一个结果输出，为了方便并再加一个等于输出信号（判断输入的两数是否相等）<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/alu.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>dm：数据存储器模块，需要时钟和复位信号，写使能和读使能信号，地址和写入数据信号，并输出一个读出的数据。<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/dm.png"
-                     
-                ></li>
-</ul>
-</li>
-<li><ul>
-<li>controller：控制器模块，输入仍然是指令的操作码和功能码，输出包括了该电路中所有的控制信号。但本次增加了两条跳转指令，分别是jal和jr，因此在确定控制信号时还要考虑进这两条指令。简单分析即可知，由于这两条都是跳转指令，所以数据存储器既不写数据也不读数据即可，但对于jal来说，需要对31号寄存器存入下一条指令的地址，因此grf的写入地址应为31，写入数据为下一条指令的地址，对于jr来说就简单了，寄存器堆也不用写数据，因此将其写使能信号置零即可。<br/>jal:regwe-&gt;1,memwe-&gt;0,loadwe-&gt;0<br/>jr:regwe-&gt;0,memwe-&gt;0,loadwe-&gt;0<br/><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
-                     
-                ><br/>由于grf写入地址现在有三种情况，下一个pc的值也有三种情况，因此我们还得在上一次控制信号的基础上再加上两个控制信号，但这两个控制信号直接由jal和jr来当即可，也即当目前指令为jal（jr）时，jal（jr）置1.</li>
-</ul>
-</li>
-</ul>
-<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
-<li>基本指令测试（不含jal和jr）</li>
-</ol>
-<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
-<ol start="2">
-<li>jal与jr测试</li>
-</ol>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,1</span><br><span class="line">ori $31,$0,0x3014</span><br><span class="line">loop:add $2,$1,$1</span><br><span class="line">jr $ra</span><br><span class="line">add $3,$2,$0</span><br><span class="line">add $4,$3,$2</span><br><span class="line">jal loop</span><br><span class="line">ori $5,$4,$0</span><br></pre></td></tr></table></figure></div>
-<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？"><a href="#根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？" class="headerlink" title="根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？"></a>根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？</h2><p>addr信号是从alu的输出中得来的。我们自行写的dm当中，一个地址可以存储一个字，但在MIPS里，地址是字对齐的，也即存一个字的地址都是4的倍数，因此实际上dm对应的地址是真正的地址除以4，dm地址有10位，也就对应aluout的第11到第2位。</p>
-<h2 id="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"><a href="#思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣" class="headerlink" title="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"></a>思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣</h2><ol>
-<li>指令对应控制信号<br>代码示例（在此仅给出ori指令相关代码作为示例）：</li>
-</ol>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">module controller(</span><br><span class="line">	//信号定义</span><br><span class="line">	)</span><br><span class="line">	always @(*) begin</span><br><span class="line">	if(ori == 1)begin</span><br><span class="line">	regwe=1;</span><br><span class="line">	aluopt=&#x27;b001</span><br><span class="line">	ori=1;</span><br><span class="line">	end</span><br><span class="line">	//其余指令判断相关控制信号</span><br><span class="line">	end</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure></div>
-<ol start="2">
-<li>控制信号对应指令<br>代码示例：</li>
-</ol>
-<pre><code>module controller(
-	//信号定义
-	)
-	always @(*)begin
-	regwe = add | sub | ori | lw | lui | jal;
-	regdst = add | sub ;
-	//其余信号
-endmodule
-</code></pre>
+    <title>BUAA操作系统lab1</title>
+    <url>/2025/03/25/OS/Lab1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab1实验报告"><a href="#Lab1实验报告" class="headerlink" title="Lab1实验报告"></a>Lab1实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-1-1"><a href="#Thinking-1-1" class="headerlink" title="Thinking 1.1"></a>Thinking 1.1</h3><p><strong>尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS交叉编译工具链（带有mips-linux-gnu- 前缀，如 mips-linux-gnu-gcc、mips-linux-gnu-ld），重复其中的编译和解析过程，观察相应的结果，并解释其中向objdump传入的参数的含义</strong><br>objdump是一个强大的二进制文件分析工具，常用于反汇编和查看目标文件的详细信息，常用的参数有以下几个：  </p>
 <ul>
-<li>第二种方式代码量可能更小，第一种方式更为直观，且在运行时出错的话较容易定位到问题</li>
+<li>-d：反汇编可执行段  </li>
+<li>-D：反汇编所有段</li>
+<li>-S：在反汇编代码中混合显示源代码</li>
+<li>-j：指定要反汇编的段</li>
+<li>-g：显示调试信息</li>
+<li>-f：显示文件头信息，包括文件类型、架构、字节序等</li>
 </ul>
-<h2 id="请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系"><a href="#请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系" class="headerlink" title="请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系"></a>请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系</h2><p>在同步复位下，clk信号的优先级高于reset信号，要等到每一个时钟周期上升沿到来时才能进行复位；而异步复位下，reset信号的优先级高于clk信号，只要reset为高电平，便可进行复位，无需考虑时钟的限制。</p>
-<h2 id="请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的"><a href="#请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的" class="headerlink" title="请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的"></a>请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的</h2><ul>
-<li>add：If the addition results in 32-bit 2’s complement arithmetic overflow, the destination register is not modified and an Integer Overflow exception occurs</li>
-<li>addu：The term “unsigned” in the instruction name is a misnomer; this operation is 32-bit modulo arithmetic that does not trap on overflow. This instruction is appropriate for unsigned arithmetic, such as address arithmetic, or integer arithmetic environments that ignore overflow, such as C language arithmetic<br>根据以上解释可知，addu其实是一种32位的模运算，就算溢出了也不会有影响，取其模值即可，而add如果溢出，也不会修改目标寄存器的值，但会抛出一个溢出异常，因此在不考虑溢出的情况下，目标寄存器的值其实也是32位模运算下的值，所以二者等价，同理对addi与addiu</li>
+<p>在过程中，我使用最多的是-D和-S选项，用来将目标文件反汇编出来。<br>我在使用原生x86工具链和MIPS交叉编译工具链并观察相应结果时发现，它们最大的差异就是相应架构的不同，x86工具链适用于x86架构，而MIPS工具链适用于MIPS架构。<br>比如，我编写了一个简单的C程序，如下：</p>
+<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Hello,World!\n&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>使用原生工具链gcc正常编译出可执行文件，即”gcc hello.c”后，通过file查看文件类型，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/x86file.png"
+                     
+                ><br>可以发现其是一个64位的x86-64架构的ELF可执行文件，同时用readelf查看其信息，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/x86elf.png"
+                     
+                ><br>再运用gcc的-c选项只编译不链接并使用objdump进行反汇编后，相应结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/x86dump.png"
+                     
+                ><br>可见其中的指令全是x86指令集架构中的指令。<br>再使用MIPS交叉编译工具链，用mips-linux-gnu-gcc编译出可执行文件，通过file查看文件类型，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/mipsfile.png"
+                     
+                ><br>其是一个32位的mips架构的ELF可执行文件，使用readelf查看其信息，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/mipself.png"
+                     
+                ><br>再只对其编译不链接并使用objdump进行反汇编，结果如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/mipsdump.png"
+                     
+                ><br>其指令全是mips指令集架构中的指令。  </p>
+<h3 id="Thinking-1-2"><a href="#Thinking-1-2" class="headerlink" title="Thinking 1.2"></a>Thinking 1.2</h3><p><strong>也许你会发现我们编写的readelf程序是不能解析readelf 文件本身的，而我们刚才介绍的系统工具readelf 则可以解析，这是为什么呢？</strong><br>首先查看Makefile：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/makefile.png"
+                     
+                ><br>可以发现，制作readelf和hello的语句选项并不相同，制作hello时多了”-m32”、”-static”、”-g”三个选项，指定了目标文件是32位架构，且其为静态链接。再分别查看hello和readelf的文件头：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/helloelf.png"
+                     
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab1/elfelf.png"
+                     
+                ><br>可以发现hello确实是32位架构，而readelf是64位架构，而我们整个实验是在mips32位架构下进行的，所以我们自己写的readelf可以解析hello而不能解析自己  </p>
+<h3 id="Thinking-1-3"><a href="#Thinking-1-3" class="headerlink" title="Thinking 1.3"></a>Thinking 1.3</h3><p><strong>在理论课上我们了解到，MIPS体系结构上电时，启动入口地址为0xBFC00000（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？</strong><br>我们的整个实验是在QEMU模拟器上运行的，在运行第一行代码之前，我们已经拥有了一个正常的程序运行环境，已经可以访问内存了，我们还设置好了相应节的位置和程序入口，因此可以直接通过访问内存来正确跳转到内核入口。  </p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人觉得本次实验由于有很多理论上较为晦涩的东西，因此在啃实验指导书的时候十分痛苦，但真正到跳板机上做实验的时候很多东西并没有用到，相应的难度降低了不少，但还是有一些困难的，个人总结下来有如下：  </p>
+<ul>
+<li>ELF相关数据结构的定义的认识与理解</li>
+<li>如何用指针去访问节和段</li>
+<li>链接的逻辑</li>
+<li>print的实现逻辑</li>
+<li>MIPS内存如何布局</li>
 </ul>
+<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab1中，我学习了操作系统是如何启动的，其启动过程是一个十分纠结的过程，好在实验所用qemu模拟器省去了那纠结的过程，我还了解到ELF格式的相关定义，以及内存的布局，链接器的工作原理等，这些东西对一向对底层硬件和软件不怎么感冒的我来说理解起来有一定的难度，就算完成了实验之后仍然觉得这些过程、原理和结构异常复杂，因为所完成的实验几乎没有怎么涉及到这些过程。最具挑战性的是最后对printf函数功能的实现，这个部分也花费了我很多时间，一来是相关注释的提示太模糊，二是我最初的想法和注释的想法大相径庭，实现的角度很不一样，导致我在耗费了大量时间去揣测注释的意思，最后又因为语法等原因进行了一定时间的debug，但在看到输出和期望输出相同的那一瞬间，我还是发自内心的开心，并理解到其实现逻辑的合理性。</p>
 ]]></content>
       <categories>
-        <category>计算机组成原理</category>
+        <category>OS(BUAA)</category>
       </categories>
       <tags>
         <tag>BUAA</tag>
-        <tag>计算机组成原理</tag>
+        <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
-    <title>linux中的vim编辑器</title>
-    <url>/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
-    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
-<li>命令模式</li>
-<li>输入模式</li>
-<li>底线命令模式</li>
+    <title>BUAA操作系统lab3</title>
+    <url>/2025/04/19/OS/Lab3%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab3实验报告"><a href="#Lab3实验报告" class="headerlink" title="Lab3实验报告"></a>Lab3实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-3-1"><a href="#Thinking-3-1" class="headerlink" title="Thinking 3.1"></a>Thinking 3.1</h3><p><strong>请结合MOS中的页目录自映射应用解释代码中e-&gt;env_pgdir[PDX(UVPT)] &#x3D; PADDR(e-&gt;env_pgdir) | PTE_V 的含义</strong><br>从虚拟地址UVPT开始往上到ULIM之间是进程自己的页表，因此在二级页表映射机制当中，页目录中也应该含有自己本身的相关映射，由虚拟地址可知其在页目录中的第[PDX(UVPT)]项中，因此做代码中的赋值，本质上是让进程可以真正访问自己的页目录和页表。</p>
+<h3 id="Thinking-3-2"><a href="#Thinking-3-2" class="headerlink" title="Thinking 3.2"></a>Thinking 3.2</h3><p><strong>elf_load_seg 以函数指针的形式，接受外部自定义的回调函数 map_page。请你找到与之相关的data这一参数在此处的来源，并思考它的作用。没有这个参数可不可以？为什么？</strong><br>该参数是由elf_load_seg传递给map_page的，data的作用是传递进程控制块以及其内部的属性，让相关的插入等操作得以实现。该参数使用void*的方式定义，能够很大程度上提升其复用性，较为方便。没有这个参数是不可以的，这样回调函数的需求得不到满足。</p>
+<h3 id="Thinking-3-3"><a href="#Thinking-3-3" class="headerlink" title="Thinking 3.3"></a>Thinking 3.3</h3><p><strong>结合 elf_load_seg 的参数和实现，考虑该函数需要处理哪些页面加载的情况</strong><br>如果段头地址未对齐，首先加载其数据在内存中起始位置bin所处的那一页。之后会加载所有数据内容。如果该段在文件中的大小小于其在内存中的大小，则一直分配和加载页面到该段在文件中大小不小于其在内存中大小为止。</p>
+<h3 id="Thinking-3-4"><a href="#Thinking-3-4" class="headerlink" title="Thinking 3.4"></a>Thinking 3.4</h3><p><strong>你认为这里的env_tf.cp0_epc存储的是物理地址还是虚拟地址?</strong><br>结合mips汇编的异常中断处理及Lab2内容容易知道，env_tf.cp0_epc存储的应该是虚拟地址。</p>
+<h3 id="Thinking-3-5"><a href="#Thinking-3-5" class="headerlink" title="Thinking 3.5"></a>Thinking 3.5</h3><p><strong>试找出0、1、2、3号异常处理函数的具体实现位置</strong><br>它们的实现位置在kern&#x2F;genex.S</p>
+<h3 id="Thinking-3-6"><a href="#Thinking-3-6" class="headerlink" title="Thinking 3.6"></a>Thinking 3.6</h3><p><strong>阅读entry.S、genex.S和env_asm.S这几个文件，并尝试说出时钟中断在哪些时候开启，在哪些时候关闭</strong><br>发生时钟中断的时候，首先跳到异常分发程序，检测发生了那种异常，针对时钟中断，应该检测出0号异常，通过handle_int函数处理，handle_int函数根据Cause寄存器的值判断是否是Timer对应的7号中断位引发的时钟中断，如果是，则执行中断服务函数timer_irq，跳转到schedule中执行</p>
+<h3 id="Thinking-3-7"><a href="#Thinking-3-7" class="headerlink" title="Thinking 3.7"></a>Thinking 3.7</h3><p><strong>阅读相关代码，思考操作系统是怎么根据时钟中断切换进程的。</strong><br>由schedule函数的实现逻辑可以看出，每次产生时间中断，操作系统都会将相应进程的时间片长度减1，当一个进程时间片长度为0时，便切换当前进程到调度队列的首个进程，并通过env_run方法运行它。</p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>由于在上一次实验中渐渐熟悉了对链表宏的使用以及相关地址的转换，所以本次实验的难度较上次没有那么大，但我认为仍有以下一些难点：  </p>
+<ul>
+<li>对用户空间和内核空间的认识</li>
+<li>对每一个进程的地址空间的认识</li>
+<li>对回调函数的实现和作用的理解</li>
+<li>对异常与中断和进程之间的联系的理解</li>
 </ul>
-<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
-<li>i 在当前光标位置进入输入模式</li>
-<li>a 在当前光标之后进入输入模式</li>
-<li>I 在当前行开头进入输入模式</li>
-<li>A 在当前行结尾进入输入模式</li>
-<li>o 在当前光标下一行进入输入模式</li>
-<li>O 在当前光标上一行进入输入模式</li>
-<li>0 移动光标到当前行的开头</li>
-<li>$ 移动光标到当前行的结尾</li>
-<li>&#x2F; 搜索模式</li>
-<li><ul>
-<li>n 向下继续搜索</li>
-</ul>
-</li>
-<li><ul>
-<li>N 向上继续搜索</li>
-</ul>
-</li>
-<li>dd 删除光标所在行内容</li>
-<li>ndd 删除当前光标向下n行</li>
-<li>yy 复制当前行</li>
-<li>nyy 复制当前行和下面n行</li>
-<li>p 粘贴复制内容</li>
-<li>u 撤销修改</li>
-<li><code>ctrl</code>+r 反向撤销修改</li>
-<li>gg 跳到首行</li>
-<li>G 跳到末行</li>
-<li>dG 从当前行开始，向下全部删除</li>
-<li>dgg 从当前行开始，向上全部删除</li>
-<li>d$ 从当前光标开始，删除到本行结尾</li>
-<li>d0 从当前光标开始，删除到本行开头</li>
-</ul>
-<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
-<li>q！ 强制退出</li>
-<li>set nu 显示行号</li>
-<li>set nonu 不显示行号</li>
-<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
-</ul>
+<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab3中，我学会了操作系统是怎么去创建进程、管理进程、运行进程、切换进程的。由于在Lab2中有大量的链表宏的使用，因此逐渐对其熟悉，所以这次在Lab3中再次遇到大量使用链表宏的情况下，我不再像Lab2那样手足无措了，因此本次作业写得也会比上一次轻松不少。但完成实验代码是一方面，理解Lab3的内容又是另一方面。我认为相较于Lab2的内容来说，本次的内容的理解难度完全不比上一次低，其实细究会发现上一次是有关操作系统管理内存的内容，这次是管理进程的内容，但其实这次有很多的实现还是和内存脱不了关系的，整个操作系统似乎都是围绕着内存来进行的，因此对内存管理有一个得当的理解和认识是很重要的。</p>
 ]]></content>
       <categories>
-        <category>Linux操作系统</category>
+        <category>OS(BUAA)</category>
       </categories>
       <tags>
+        <tag>BUAA</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA操作系统lab0</title>
+    <url>/2025/03/12/OS/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><strong>执行命令cat Modified.txt，观察其结果和第一次执行 add 命令之前的 status 是否一样，并思考原因</strong><br>这两次的结果是不一样的。第一次将<code>git status</code>命令结果重定向至<code>Untracked.txt</code>文件中时，这时的<code>README.txt</code>文件还未被放入暂存区，所以状态是未被追踪，而第二次进行类似操作时，<code>README.txt</code>文件已被放入暂存区，所以状态应该是已修改。</p>
+<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><strong>仔细看看0.10，思考一下箭头中的add thefile、stage thefile和commit分别对应的是Git里的哪些命令呢</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab0/pic10.png"
+                     
+                >  </p>
+<ol>
+<li><strong>Untracked-&gt;Staged</strong>：<code>git add</code>  </li>
+<li><strong>Modified-&gt;Staged</strong>：<code>git add</code>  </li>
+<li><strong>Staged-&gt;Modified</strong>：<code>git commit</code></li>
+</ol>
+<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><strong>代码文件print.c被错误删除时，应当使用什么命令将其恢复</strong><br><code>git checkout -- print.c </code><br><strong>代码文件print.c被错误删除后，执行了gitrmprint.c命令，此时应当使用什么命令将其恢复</strong><br><code>git reset HEAD print.c</code><br><code>git checkout -- print.c</code><br><strong>无关文件hello.txt已经被添加到暂存区时，如何在不删除此文件的前提下将其移出暂存区？</strong><br><code>git rm --cached hello.txt</code>  </p>
+<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><p><strong>reset命令作用</strong><br>在循着Thinking中给出的步骤练习后，可以发现reset命令的作用就是让我们回退或恢复版本的，可以通过<code>git reset --hard HEAD~(num)</code>来进行版本回退，也可以直接用版本的哈希值（通过<code>git log</code>查询）来指定移动到哪个版本。</p>
+<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><p><strong>执行如下命令, 并查看结果</strong><br><strong>· echo first</strong><br>result:first(stdout)<br><strong>· echo second &gt; output.txt</strong><br>result:second(output.txt)<br><strong>• echo third &gt; output.txt</strong><br>result:third(otuput.txt)<br><strong>• echo forth &gt;&gt; output.txt</strong><br>result:<br>third<br>forth(output.txt)</p>
+<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><p><strong>使用你知道的方法（包括重定向）创建下图内容的文件（文件命名为test），将创建该文件的命令序列保存在command文件中，并将test文件作为批处理文件运行，将运行结果输出至result文件中。给出command文件和result文件的内容，并对最后的结果进行解释说明（可以从test文件的内容入手）. 具体实现的过程中思考下列问题: echo<br> echo Shell Start 与 echo <code>echo Shell Start</code> 效果是否有区别; echo echo $c&gt;file1与echo <code>echo $c&gt;file1</code> 效果是否有区别</strong><br>command文件内容如图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab0/command.png"
+                     
+                ><br>result文件内容如图所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab0/result.png"
+                     
+                ><br><strong>解释</strong><br>根据test文件内容，不难发现执行test文件其实就是为变量<code>a</code>，<code>b</code>，<code>c</code>赋值后再把它们的值存到不同的文件中，之后再根据顺序把相应值依次添加到file4文件中，最后输出到result文件中，因此result文件最终结果为”3 2 1”</p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人认为本次实验的难点还是在于接触新的东西时各方面的不熟悉导致的，具体来说有如下：  </p>
+<ul>
+<li>git的使用，对工作区、暂存区、分支、状态、版本的体会  </li>
+<li>linux相关指令的使用，对指令和选项功能的体会（尤其是多功能指令例如sed、awk等命令）  </li>
+<li>shell脚本的编写，对语法的把握和认识</li>
+</ul>
+<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>lab0的实验难度并不算大，主要是让我们熟悉实验环境，回顾之前的知识，了解操作系统基本的概念和原理，并了解linux的基本使用。本人之前并未太多使用linux系统，只能使用一些基本的指令，对于编写脚本，编译代码等并不熟悉，在做完本次实验后，我才终于理解为什么都说程序员要想提高自己的效率一定要会使用linux，当使用多了linux系统后，也会真正体会到cli的魅力，可能它没有gui那么简单，那么直观，但是通过输入指令来控制电脑让我们进一步能体会到人与机器的交互。</p>
+]]></content>
+      <categories>
+        <category>OS(BUAA)</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>操作系统</tag>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA操作系统lab2</title>
+    <url>/2025/04/07/OS/Lab2%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab2实验报告"><a href="#Lab2实验报告" class="headerlink" title="Lab2实验报告"></a>Lab2实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-2-1"><a href="#Thinking-2-1" class="headerlink" title="Thinking 2.1"></a>Thinking 2.1</h3><p><strong>在编写的 C 程序中，指针变量中存储的地址被视为虚拟地址，还是物理地址？MIPS 汇编程序中 lw和sw 指令使用的地址被视为虚拟地址，还是物理地址？</strong><br>在编写的C程序中，指针变量存储的地址为虚拟地址，MIPS汇编中lw和sw使用的地址也是虚拟地址</p>
+<h3 id="Thinking-2-2"><a href="#Thinking-2-2" class="headerlink" title="Thinking 2.2"></a>Thinking 2.2</h3><p><strong>1)从可重用性的角度，阐述用宏来实现链表的好处。</strong><br>在实验中定义的有关链表的宏是一些十分常用的对于链表的操作，而在实验中多次使用到定义的链表结构，因此相应的链表操作也是十分频繁的，通过宏来实现链表，可以让进行相关操作时不必在编写代码实现逻辑，直接使用宏即可，这省去了不必要的代码，同时提高了代码的可读性<br><strong>2)查看实验环境中的&#x2F;usr&#x2F;include&#x2F;sys&#x2F;queue.h，了解其中单向链表与循环链表的实现，比较它们与本实验中使用的双向链表，分析三者在插入与删除操作上的性能差异</strong><br>在这个文件中，有单向链表、双向链表和循环链表的定义，其中双向链表的定义与我们实验中使用的双向链表类似，我们可以看不同类型链表链表项的定义：<br>单向链表：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/singly_list.png"
+                     
+                ><br>双向链表：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/list.png"
+                     
+                ><br>循环链表：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/singly_tail.png"
+                     
+                ><br>实现上，单向链表和循环链表类似，都有指向下一个元素的指针，其中循环链表最后一个元素相应指针指向第一个元素，同时其维护了一个指向尾项的指针，而双向链表不仅有指向下一个元素的指针，还有一个指向前一个元素的指向下一个元素的指针的指针。<br>操作性能：</p>
+<ul>
+<li>单向链表：在某一项前插入，需要遍历链表，在某一项后插入，可以直接插入，删除也需要遍历链表  </li>
+<li>循环链表：在某一项前插入，需要遍历链表，在某一项后插入，可以直接插入，同时可以直接在尾部插入，删除需要遍历链表  </li>
+<li>双向链表：插入可以直接插入，但在尾部插入需要遍历链表，删除也可以直接删除</li>
+</ul>
+<h3 id="Thinking-2-3"><a href="#Thinking-2-3" class="headerlink" title="Thinking 2.3"></a>Thinking 2.3</h3><p><strong>选择Page_list正确的展开结构</strong><br>阅读代码可以知道Page_list其实包含的就是一个指向Page的指针，而Page的定义如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/page.png"
+                     
+                ><br>即一个链表项，一个被引用次数，所以相应的Page_list的结构应该是选项C所展示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/page_list.png"
+                     
+                ></p>
+<h3 id="Thinking-2-4"><a href="#Thinking-2-4" class="headerlink" title="Thinking 2.4"></a>Thinking 2.4</h3><p><strong>1)从虚拟内存和多进程操作系统的实现角度，阐述ASID的必要性</strong><br>操作系统为每一个进程维护一个独立的虚拟地址空间，并维护相应的页表，所以很可能同一虚拟地址在不同进程中映射到不同的物理地址，如果没有ASID，那操作系统无法知道当前虚拟地址是在哪个地址空间，也就无法给出正确的映射，导致无法正确访问相应的物理内存<br><strong>2)说明 4Kc 中可容纳不同的地址空间的最大数量</strong><br>官方文档描述如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/asid.png"
+                     
+                ><br>ASID占8位，所以4Kc中最多可容纳256个不同的地址空间</p>
+<h3 id="Thinking-2-5"><a href="#Thinking-2-5" class="headerlink" title="Thinking 2.5"></a>Thinking 2.5</h3><p><strong>1)tlb_invalidate和tlb_out的调用关系</strong><br>tlb_invalidate调用tlb_out<br><strong>2)请用一句话概括tlb_invalidate的作用</strong><br>删除特定虚拟地址在TLB中的旧表项<br><strong>3)逐行解释tlb_out中的汇编代码</strong>  </p>
+<pre><code class="language-MIPS">LEAF(tlb_out)
+.set noreorder
+        mfc0    t0, CP0_ENTRYHI
+        mtc0    a0, CP0_ENTRYHI
+        nop
+        /* Step 1: Use &#39;tlbp&#39; to probe TLB entry */
+        /* Exercise 2.8: Your code here. (1/2) */
+        tlbp
+        nop
+        /* Step 2: Fetch the probe result from CP0.Index */
+        mfc0    t1, CP0_INDEX
+.set reorder
+        bltz    t1, NO_SUCH_ENTRY
+.set noreorder
+        mtc0    zero, CP0_ENTRYHI
+        mtc0    zero, CP0_ENTRYLO0
+        mtc0    zero, CP0_ENTRYLO1
+        nop
+        /* Step 3: Use &#39;tlbwi&#39; to write CP0.EntryHi/Lo into TLB at CP0.Index  */
+        /* Exercise 2.8: Your code here. (2/2) */
+        tlbwi
+.set reorder
+</code></pre>
+<p>tlb_out汇编代码如上，首先将ENTRYHI寄存器的值放入t0寄存器，同时将a0寄存器里面保存的参数即KEY存入ENTRYHI，再通过 tlbp 指令寻找TLB中对应的旧表项，将表项的索引放入t1寄存器，如果索引大于等于0，向ENTRYHI、ENTRYLO0、ENTRYLO1寄存器中写入0，并使用tlbwi指令将这三个寄存器的值写入相应索引的表项</p>
+<h3 id="Thinking-2-6"><a href="#Thinking-2-6" class="headerlink" title="Thinking 2.6"></a>Thinking 2.6</h3><p><strong>请结合 Lab2 开始的 CPU 访存流程与下图中的 Lab2 用户函数部分，尝试将函数调用与CPU访存流程对应起来，思考函数调用与CPU访存流程的关系</strong><br>CPU访存流程：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/cpu.png"
+                     
+                ><br>函数调用：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab2/function.png"
+                     
+                ><br>函数调用需要将参数压入栈，这个操作需要对内存进行写，由于地址是虚拟地址，于是触发CPU访存。执行函数体时，CPU会跳转到函数入口地址，逐条开始执行指令，这时若遇到局部变量或者访存指令，又需要进行CPU的访存流程</p>
+<h3 id="Thinking-2-7"><a href="#Thinking-2-7" class="headerlink" title="Thinking 2.7"></a>Thinking 2.7</h3><p><strong>简单了解并叙述X86体系结构中的内存管理机制，比较X86和MIPS在内存管理上的区别</strong><br>X86体系结构的内存管理是通过分段和分页协同工作实现的。<br>其主要思想是将内存划分为逻辑段，每个段通过段描述符定义其基址、长度和权限，当有逻辑地址时，首先将通过分段将逻辑地址转化为线性地址，针对线性地址，采用分页机制，进一步将线性地址映射到物理地址，这和MIPS体系结构相似，而分页和分段既是协同的，又是独立的，两个机制共同实现了X86体系的内存管理。<br>在分页机制上，两种体系的实现也不同，MIPS体系结构是通过软件来管理页表和TLB的，而X86体系结构完全是通过硬件来管理二者的。</p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><ul>
+<li>Exercise 2.1:对相关宏定义的查找与了解</li>
+<li>Exercise 2.2:对双向链表的理解，尤其是对其中le_prev这个指针的理解，思考如何实现双向链表的插入、删除等操作，清楚要修改哪些值</li>
+<li>Exercise 2.3 - Exercise 2.5：对页结构体和页表结构体的理解，理解相应的地址变换操作，清楚该由什么地址变换到什么地址，同时熟悉链表相应宏的使用</li>
+<li>Exercise 2.6 - Exercise 2.7：对二级页表机制的理解，清楚相应的地址变换，熟练链表宏的使用  </li>
+<li>Exercise 2.8 - Exercise 2.10：对TLB的组成及替换机制的理解</li>
+</ul>
+<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab2中，我学会了操作系统是如何去管理内存的，包括怎么实现分页机制，怎么实现TLB机制，以及如何将逻辑地址转换到物理地址。说实话，我认为本单元的难度较大，机制本身并不难以理解，甚至如果在纸面上，应该是较为简单的，但是到要真正用软件去实现这些机制的时候，我才意识到这件事到底有多么的复杂，其中有数不清的结构体的定义，有数不清的宏定义，有难以理解的链表实现，有分不清楚的指针……最关键的是，一个文件里要用到的函数、宏定义等很可能来自其他文件，一方面，可能根本不知道有哪些函数和宏可以使用，另一方面，想用某个函数和宏的时候，如果突然不太记得其功能，可这时又不知道其定义在哪个文件。总的来说，完成本单元的代码对我来说是极具挑战性的，但是最终看到测试通过的时候我也有一种成就感，为自己付出的时间感到值得。</p>
+]]></content>
+      <categories>
+        <category>OS(BUAA)</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
         <tag>操作系统</tag>
       </tags>
   </entry>
@@ -657,8 +707,106 @@ endmodule
         <category>Linux操作系统</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>操作系统</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA操作系统lab4</title>
+    <url>/2025/05/06/OS/Lab4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
+    <content><![CDATA[<h1 id="Lab4实验报告"><a href="#Lab4实验报告" class="headerlink" title="Lab4实验报告"></a>Lab4实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-4-1"><a href="#Thinking-4-1" class="headerlink" title="Thinking 4.1"></a>Thinking 4.1</h3><p><strong>内核在保存现场的时候是如何避免破坏通用寄存器的</strong><br>内存在保护现场的时候，通过将自身的局部变量、返回地址、调用函数的参数等压入栈中这样来保存此时通用寄存器中的值，放置在后续操作中这些值丢失，在返回时，再将这些值弹出栈并赋给相应的寄存器。<br><strong>系统陷入内核调用后可以直接从当时的$a0-$a3参数寄存器中得到用户调用msyscall留下的信息吗</strong><br>不可以，因为这四个寄存器在系统陷入内核态后可能会进行其他的操作而导致里面的值被破坏，直接访问是不安全的，应该从栈帧中来读取相关参数。<br><strong>我们是怎么做到让sys开头的函数“认为”我们提供了和用户调用msyscall时同样的参数的</strong><br>在用户态调用msyscall时，前四个参数会被存入$a0-$a3寄存器，同时在栈帧底部保留16字节的空间，后两个参数被存入在预留空间之上的8字节空间内，内核态中显式地从保存的用户上下文中获取这些参数值，这样就可以让sys开头的函数认为我们提供了和用户调用msyscall时同样的参数。<br><strong>内核处理系统调用的过程对Trapframe做了哪些更改？这种修改对应的用户态的变化是什么</strong><br>将EPC值加4以保证系统调用完成后返回到正确地址，同时将返回值存入2号寄存器。用户态会正确执行下一条指令。</p>
+<h3 id="Thinking-4-2"><a href="#Thinking-4-2" class="headerlink" title="Thinking 4.2"></a>Thinking 4.2</h3><p><strong>为什么 envid2env中需要判断 e-&gt;env_id !&#x3D; envid的情况？如果没有这步判断会发生什么情况</strong><br>不同envid的后十位可能相同（二进制），所以如果不加上该判断，可能会取到错误的进程。</p>
+<h3 id="Thinking-4-3"><a href="#Thinking-4-3" class="headerlink" title="Thinking 4.3"></a>Thinking 4.3</h3><p><strong>请回顾 kern&#x2F;env.c 文件中 mkenvid()函数的实现，该函数不会返回 0，请结合系统调用和 IPC 部分的实现与envid2env()函数的行为进行解释</strong><br>首先，若mkenvid()函数会返回0，那么就会有进程的id为0，但在envid2env()的实现中，如果envid为0，则查询到的进程将会是目前的进程，这和我们的预期不符，同时也让进程间的通信发生错误，因此mkenvid()函数不会返回0。同时由于curenv是内核态的变量，用户态不能获取其id，这样实现方便用户进程将当前进程的envid传给内核。</p>
+<h3 id="Thinking-4-4"><a href="#Thinking-4-4" class="headerlink" title="Thinking 4.4"></a>Thinking 4.4</h3><p><strong>关于 fork 函数的两个返回值，下面说法正确的是：<br>A、fork 在父进程中被调用两次，产生两个返回值<br>B、fork 在两个进程中分别被调用一次，产生两个不同的返回值<br>C、fork 只在父进程中被调用了一次，在两个进程中各产生一个返回值<br>D、fork 只在子进程中被调用了一次，在两个进程中各产生一个返回值</strong><br>正确的是C</p>
+<h3 id="Thinking-4-5"><a href="#Thinking-4-5" class="headerlink" title="Thinking 4.5"></a>Thinking 4.5</h3><p><strong>我们并不应该对所有的用户空间页都使用duppage进行映射。那么究竟哪<br>些用户空间页应该映射，哪些不应该呢？请结合kern&#x2F;env.c中env_init函数进行的页<br>面映射、include&#x2F;mmu.h里的内存布局图以及本章的后续描述进行思考</strong><br>从0到USTACKTOP的用户空间页应该映射，USTACKTOP到UTOP之间的内容是拿来处理页写入异常的，因此不需要与子进程共享，UTOP之上的内容是所有进程共享的，也不需要做父子进程之间单独的共享。</p>
+<h3 id="Thinking-4-6"><a href="#Thinking-4-6" class="headerlink" title="Thinking 4.6"></a>Thinking 4.6</h3><p><strong>vpt和vpd的作用是什么？怎样使用它们</strong><br>vpt和vpd相当于两个数组，一个是页表项的数组，一个是页目录项的数组，只需通过页表项和页目录项的下标就可通过这两个宏来访问相应的页表项或页目录项。<br><strong>从实现的角度谈一下为什么进程能够通过这种方式来存取自身的页表</strong><br>页表和页目录是存放在用户空间中的，且逻辑上是连续的，因此进程可以通过这种方式来存取自身页表。<br><strong>它们是如何体现自映射设计的</strong><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/os/lab3/ziyingshe.png"
+                     
+                ><br>如图，可以发现页目录是处于页表中的，同时在页表中的位置相当于页表在整个内存中的位置，这体现了自映射设计。<br><strong>进程能够通过这种方式来修改自己的页表项吗</strong><br>不能，虽然该区域处于用户空间，但是对用户态只读不写，要修改必须陷入内核态。  </p>
+<h3 id="Thinking-4-7"><a href="#Thinking-4-7" class="headerlink" title="Thinking 4.7"></a>Thinking 4.7</h3><p><strong>在 do_tlb_mod 函数中，你可能注意到了一个向异常处理栈复制 Trapframe<br>运行现场的过程，请思考并回答这几个问题：<br>这里实现了一个支持类似于“异常重入”的机制，而在什么时候会出现这种“异常重入”</strong><br>出现写时复制异常时。<br><strong>内核为什么需要将异常的现场 Trapframe复制到用户空间？</strong><br>因为最终需要恢复到用户态后跳转到用户异常处理函数，由用户程序完成写时复制等自定义处理，这时用户异常处理函数需要相应的现场。  </p>
+<h3 id="Thinking-4-8"><a href="#Thinking-4-8" class="headerlink" title="Thinking 4.8"></a>Thinking 4.8</h3><p><strong>在用户态处理页写入异常，相比于在内核态处理有什么优势</strong>  </p>
+<ul>
+<li>缓解内核压力</li>
+<li>使得其更安全，防止更改不必要的页面</li>
+<li>使其更加灵活，能够完成很多自定义的处理</li>
+<li>降低异常处理错误而导致的影响</li>
+</ul>
+<h3 id="Thinking-4-9"><a href="#Thinking-4-9" class="headerlink" title="Thinking 4.9"></a>Thinking 4.9</h3><p><strong>为什么需要将 syscall_set_tlb_mod_entry的调用放置在 syscall_exofork之前</strong><br>因为子进程需要修改env指针的值，这涉及到对写时复制页面的写入，因此会触发写时复制异常，而该异常需要调用syscall_set_tlb_mod_entry才能正确触发。<br><strong>如果放置在写时复制保护机制完成之后会有怎样的效果</strong><br>这样将会不能正确处理异常。  </p>
+<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>本次实验的代码量进一步增加，且内容也很多，从异常处理到fork的实现，中间有很多需要停下来仔细思考理解的点，我认为主要有以下：</p>
+<ul>
+<li>对系统调用流程的理解</li>
+<li>对何时在内核态何时在用户态的辨析</li>
+<li>对Trapframe结构体的理解</li>
+<li>对写时复制机制的理解与实现</li>
+<li>对页写入异常处理流程的理解</li>
+<li>对进程的共享空间的理解</li>
+<li>对进程通信之间的实现</li>
+</ul>
+<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>在Lab4中，我学会了如何实现系统调用机制，并以此来实现进程创建函数fork()。整体来说，我认为本次实验还是较难的，前后关系很紧密，又引入了大量的宏以及函数，如何去使用或者实现它们是一大难点，同时由于实验代码的完成还涉及到对整个内存空间的认识，很多时候很容易分不清楚内核空间和用户空间，因此完成起来还是较为困难的。但是完成了实验之后，我对系统调用和进程创建的理解确实加深了不少，虽说仍然有一些地方存在些许疑惑，理解起来不是那么容易，担仍然感受到了操作系统设计的巧妙，同时也对整个内存空间的认识更深入。一句话总结起来就是困难但丰富。</p>
+]]></content>
+      <categories>
+        <category>OS(BUAA)</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux中的vim编辑器</title>
+    <url>/2025/03/09/linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
+    <content><![CDATA[<h1 id="vim编辑器的使用"><a href="#vim编辑器的使用" class="headerlink" title="vim编辑器的使用"></a>vim编辑器的使用</h1><ul>
+<li>命令模式</li>
+<li>输入模式</li>
+<li>底线命令模式</li>
+</ul>
+<h2 id="命令模式下的快捷键"><a href="#命令模式下的快捷键" class="headerlink" title="命令模式下的快捷键"></a>命令模式下的快捷键</h2><ul>
+<li>i 在当前光标位置进入输入模式</li>
+<li>a 在当前光标之后进入输入模式</li>
+<li>I 在当前行开头进入输入模式</li>
+<li>A 在当前行结尾进入输入模式</li>
+<li>o 在当前光标下一行进入输入模式</li>
+<li>O 在当前光标上一行进入输入模式</li>
+<li>0 移动光标到当前行的开头</li>
+<li>$ 移动光标到当前行的结尾</li>
+<li>&#x2F; 搜索模式</li>
+<li><ul>
+<li>n 向下继续搜索</li>
+</ul>
+</li>
+<li><ul>
+<li>N 向上继续搜索</li>
+</ul>
+</li>
+<li>dd 删除光标所在行内容</li>
+<li>ndd 删除当前光标向下n行</li>
+<li>yy 复制当前行</li>
+<li>nyy 复制当前行和下面n行</li>
+<li>p 粘贴复制内容</li>
+<li>u 撤销修改</li>
+<li><code>ctrl</code>+r 反向撤销修改</li>
+<li>gg 跳到首行</li>
+<li>G 跳到末行</li>
+<li>dG 从当前行开始，向下全部删除</li>
+<li>dgg 从当前行开始，向上全部删除</li>
+<li>d$ 从当前光标开始，删除到本行结尾</li>
+<li>d0 从当前光标开始，删除到本行开头</li>
+</ul>
+<h2 id="底线命令模式下命令"><a href="#底线命令模式下命令" class="headerlink" title="底线命令模式下命令"></a>底线命令模式下命令</h2><ul>
+<li>q！ 强制退出</li>
+<li>set nu 显示行号</li>
+<li>set nonu 不显示行号</li>
+<li>set paste 设置粘贴模式（从外部复制内容保持格式一致）</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux操作系统</category>
+      </categories>
+      <tags>
+        <tag>操作系统</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -749,6 +897,92 @@ endmodule
       </tags>
   </entry>
   <entry>
+    <title>计算机组成原理P3(Logisim)</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/P3-Logisim/</url>
+    <content><![CDATA[<h1 id="单周期CPU设计草稿"><a href="#单周期CPU设计草稿" class="headerlink" title="单周期CPU设计草稿"></a>单周期CPU设计草稿</h1><p>要搭建一个单周期CPU，首先要做的是清楚CPU工作的流程。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>在每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作（这些操作可能包含相加两个寄存器的值存入另一个寄存器，将某个寄存器的值写入某个内存空间，将PC进行算术操作得到下一个PC的值等），在这期间，PC还应自增（+4），执行完操作后，等到下一个时钟上升沿得到新的PC值并继续进行相关操作。</p>
+<h2 id="模块需求"><a href="#模块需求" class="headerlink" title="模块需求"></a>模块需求</h2><p>根据工作流程，我们可以看到其实CPU工作总的来说就是一个状态的不断转移，在每个状态中做相应的操作。<br/>进一步看，每个状态完全由PC来决定，所以状态转移其实只涉及PC的算术运算，将PC的算术运算电路与PC寄存器相连就能实现状态转移。<br/>而操作部分其实就完完全全是组合逻辑电路，但操作部分是很庞大的系统，我们需要对其进行细分实现更小的模块。根据工作流程中的操作分析，我们可以看到在这一部分我们应该需要一个解析指令的模块，一个寄存器堆，一个算术运算模块，一个数据存储器。但由于指令的不同，执行的相关操作也不同，例如对于add与sub，一个在算术运算模块中需要执行加法操作，一个需要执行减法操作，因此我们需要相应的控制信号来控制每个操作模块的具体操作（相应的控制信号有寄存器堆写信号，数据存储器写信号，数据存储器读信号，指令相关位数选择信号，算术运算模块操作数选择信号，算术运算模块选项信号，寄存器堆数据输入选择信号），而这些控制信号便是由相应的指令来得出的，因此还需要一个控制器。</p>
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>我们以lw指令为例说明过程。<br>当指令的操作码解析出来为100011时，说明该指令为lw。接下来我们来具体看看后续操作相关模块的工作情况。<br>lw操作具体为在内存空间中读取一个数据并存入一个寄存器，内存空间地址的计算为第一个寄存器的值加上立即数。因此，在这时算术运算模块执行的操作为加法，数据存储器允许读取数据，寄存器堆允许写入。电路连接草图如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.28.36.png"
+                     
+                ></p>
+<h2 id="控制信号"><a href="#控制信号" class="headerlink" title="控制信号"></a>控制信号</h2><p>在模块需求部分中，我们已经分析了所需要的控制信号有寄存器堆写信号（regwe），数据存储器写信号（memwe），数据存储器读信号（loadwe），指令相关位数选择信号（regdst），算术运算模块操作数选择信号（aluslt），算术运算模块选项信号（aluopt），寄存器堆数据输入选择信号（memreg）。而所有的控制信号都与当前的指令相关，因此我们只需针对每一个指令去考虑每个控制信号的值即可。具体如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
+                     
+                ></p>
+<h2 id="CPU草图"><a href="#CPU草图" class="headerlink" title="CPU草图"></a>CPU草图</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p3/cpu.png"
+                     
+                ></p>
+<hr>
+<h2 id="易遗漏或出错的地方"><a href="#易遗漏或出错的地方" class="headerlink" title="易遗漏或出错的地方"></a>易遗漏或出错的地方</h2><ul>
+<li>在对beq指令做考虑的时候，<del>需要对PC与立即数的4倍相加</del>，我们要意识到这时PC首先应该自增再与立即数的4倍相加，这才是正确的操作。</li>
+<li>若当前指令为I型指令，由于算术运算模块对数据位数的限制，<del>我们用一个位拓展器将立即数扩展到32位就行了</del>，对于不同的I型指令，立即数的扩展方式是不同的，例如对于ori要对立即数进行无符号扩展，对于lw要对立即数进行有符号扩展，因此我们需要加一个选择信号去对立即数进行何种扩展方式做出说明。（幸运的是该次CPU设计只涉及ori一个需要对立即数进行无符号扩展的指令，因此将ori信号作为选择信号即可，若后续增加指令，加上一个或电路即可）</li>
+</ul>
+<hr>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><p>测试中尽可能使每条指令的每种情况都覆盖，并且由最基本的指令开始构造测试（不需要其他指令就可以检验覆盖率的指令为最基本的），因此，从ori与lui开始构造，并通过他们几条指令让寄存器的值不全为0，是得能对后续指令做检验。<br/>根据以上指导思想设计的MIPS测试程序如下：</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,0x1011</span><br><span class="line">ori $2,$1,0x0111</span><br><span class="line">ori $11,$0,2</span><br><span class="line">lui $3,0</span><br><span class="line">lui $3,0x0111</span><br><span class="line">lui $3,0xffff</span><br><span class="line">ori $4,$3,0xffff</span><br><span class="line">lui $3,0x0111</span><br><span class="line">add $5,$3,$0</span><br><span class="line">add $5,$4,$0</span><br><span class="line">add $5,$3,$1</span><br><span class="line">add $5,$3,$4</span><br><span class="line">add $5,$4,$4</span><br><span class="line">add $5,$5,$5</span><br><span class="line">loop3:add $11,$11,$4</span><br><span class="line">beq $11,$0,loop4</span><br><span class="line">sub $6,$3,$0</span><br><span class="line">sub $6,$4,$0</span><br><span class="line">sub $6,$3,$1</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">ori $7,$0,1</span><br><span class="line">sub $8,$4,$7</span><br><span class="line">sub $6,$4,$8</span><br><span class="line">sub $6,$6,$6</span><br><span class="line">sub $6,$3,$4</span><br><span class="line">loop3:sw $5,4($1)</span><br><span class="line">sw $6,4($2)</span><br><span class="line">nop</span><br><span class="line">lw $9,4($1)</span><br><span class="line">lw $10,4($2)</span><br><span class="line">beq $5,$10,loop1</span><br><span class="line">beq $5,$9,loop2</span><br><span class="line">loop1:sw $10,8($2)</span><br><span class="line">loop2:beq $6,$10,loop3</span><br><span class="line">loop4:sw $9,12($2)</span><br></pre></td></tr></table></figure></div>
+<h1 id="单周期CPU思考题"><a href="#单周期CPU思考题" class="headerlink" title="单周期CPU思考题"></a>单周期CPU思考题</h1><h2 id="单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"><a href="#单周期-CPU-所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？" class="headerlink" title="单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？"></a>单周期 CPU 所用到的模块中，哪些发挥状态存储功能，哪些发挥状态转移功能？</h2><h3 id="状态转移功能"><a href="#状态转移功能" class="headerlink" title="状态转移功能"></a>状态转移功能</h3><ul>
+<li>NPC模块</li>
+<li><ul>
+<li>NPC模块当中，需要判断下一个PC的值，如果当前指令不是beq指令，则PC相对于当前值加4便得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器，否则在加4的基础上，与当前获得的立即数的4倍相加得到下一个PC值，并在下个时钟上沿到来时存入PC寄存器。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="状态存储功能"><a href="#状态存储功能" class="headerlink" title="状态存储功能"></a>状态存储功能</h3><ul>
+<li>PC存储器</li>
+<li><ul>
+<li>PC存储器存储当前周期PC的值，并以该值指导后续工作电路的所有操作。</li>
+</ul>
+</li>
+<li>GRF模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，GRF根据指令做出相关操作，并决定是否在内部某个存储器存入新的值。</li>
+</ul>
+</li>
+<li>DM模块</li>
+<li><ul>
+<li>在Controller根据当前PC的值读出对应的指令后，DM根据指令做出相关操作，并决定是否在内部某个空间写入新的值。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出"><a href="#模块中-IM-使用-ROM，-DM-使用-RAM，-GRF-使用-Register，这种做法合理吗？-请给出分析，若有改进意见也请一并给出" class="headerlink" title="模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出"></a>模块中 IM 使用 ROM， DM 使用 RAM， GRF 使用 Register，这种做法合理吗？ 请给出分析，若有改进意见也请一并给出</h2><ul>
+<li>IM模块为指令存储器，由于在CPU执行操作的时候是从相应的地址空间里读取该周期使用的指令，不会对指令作出修改，也就是针对指令只需实现读的操作，因此使用ROM来实现IM模块是合理的。</li>
+<li>DM模块为数据存储器，是在相应的地址空间存储数据，在指令不同时，可以从相应的地址空间读取数据，也可以将新的数据写入相应的地址空间，因此需要同时做到读和写的操作，因此使用RAM可以实现且最为方便。</li>
+<li>GRF是通用寄存器组，里面放置了三十二个寄存器用于读取和写入数据，且搭建的是单周期CPU，因此在每个周期最多对里面的一个寄存器写入新数据（该新数据将在下一个时钟上沿存入寄存器），因此使用三十二个寄存器的组合来实现GRF是合理的。</li>
+</ul>
+<hr>
+<h2 id="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"><a href="#在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路" class="headerlink" title="在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路"></a>在上述提示的模块之外，你是否在实际实现时设计了其他的模块？如果是的话，请给出介绍和设计的思路</h2><h3 id="beq指令操作模块"><a href="#beq指令操作模块" class="headerlink" title="beq指令操作模块"></a>beq指令操作模块</h3><ul>
+<li>该模块是实现beq操作的模块，因为针对beq指令，最终所需要操作改变的数并不是寄存器里的值或者内存空间的值，而是PC的值，因此需要将其单独拿出来进行一个操作。该模块由原本的（PC+4）与当前立即数的四倍相加的一个运算电路再加上由beq信号和alu模块判断相等信号的与作为选择信号的多路选择器构成，若当前两个寄存器的值相等且beq信号为1，那么下一个PC将为经过运算电路得到的值，否则就为（PC+4）。</li>
+</ul>
+<hr>
+<h2 id="实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？"><a href="#实现-nop-空指令，我们并不需要将它加入控制信号真值表，为什么？" class="headerlink" title="实现 nop 空指令，我们并不需要将它加入控制信号真值表，为什么？"></a>实现 <code>nop</code> 空指令，我们并不需要将它加入控制信号真值表，为什么？</h2><ul>
+<li>nop指令为空指令，如若该周期CPU执行该条指令，则不会发生任何操作（除了PC自增）。不将nop指令加入控制信号真值表说明在计算相应控制信号的值时，我们不需考虑nop指令的影响，也即当当前指令为nop时，所有控制信号的值均为0。这时，首先考虑beq指令操作部分，由于此时beq信号为0，因此下一个PC的值只是当前PC的值的简单自增，不受影响；而针对其他指令操作部分，我们关心的仅是这些操作部分会不会在nop指令期间影响寄存器的值或者内存空间里存储的值，这都与写操作有关，但nop指令期间寄存器写信号和数据存储器写信号均为0，因此不会执行写操作，所以二者内部的值都不会改变。</li>
+</ul>
+<hr>
+<h2 id="阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"><a href="#阅读-Pre-的-“MIPS-指令集及汇编语言”-一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。" class="headerlink" title="阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。"></a>阅读 Pre 的 [“MIPS 指令集及汇编语言”]一节中给出的测试样例，评价其强度（可从各个指令的覆盖情况，单一指令各种行为的覆盖情况等方面分析），并指出具体的不足之处。</h2><p>测试样例的数据针对其给出的几条指令（<code>ori</code>, <code>lui</code>, <code>add</code>, <code>sw</code>, <code>lw</code>, <code>beq</code>）已经较强，每个指令的覆盖率都较高，但仍在一些方面存在不足，下面列出不足之处：</p>
+<ul>
+<li><code>add</code>进行了正数和正数，正数和负数，负数和负数的操作，但未进行0与正负数的操作，不能确保CPU是否会在至少有一个数为0时出差错。</li>
+<li>测试样例针对<code>beq</code>指令只考虑了单向向下的跳转，未考虑立即数为负数，即往回跳转的情况，而CPU很可能在这种情况出错</li>
+</ul>
+]]></content>
+      <categories>
+        <category>计算机组成原理</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>计算机组成原理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算机组成原理P6</title>
     <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P6/</url>
     <content><![CDATA[<h1 id="流水线CPU设计文档（多指令版）"><a href="#流水线CPU设计文档（多指令版）" class="headerlink" title="流水线CPU设计文档（多指令版）"></a>流水线CPU设计文档（多指令版）</h1><h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><p>本次流水线CPU的搭建在上一次的基础上多增了很多指令，其中包括计算型指令，存储型指令，跳转型指令。对于新增指令，我们其实只需考虑增加这条指令后要修改原来电路的哪些东西，想明白这一点之后，我们对代码的修改便会变得得心应手起来。</p>
@@ -811,133 +1045,6 @@ endmodule
       <tags>
         <tag>BUAA</tag>
         <tag>计算机组成原理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA操作系统lab0</title>
-    <url>/2025/03/12/OS/Lab0%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
-    <content><![CDATA[<h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><strong>执行命令cat Modified.txt，观察其结果和第一次执行 add 命令之前的 status 是否一样，并思考原因</strong><br>这两次的结果是不一样的。第一次将<code>git status</code>命令结果重定向至<code>Untracked.txt</code>文件中时，这时的<code>README.txt</code>文件还未被放入暂存区，所以状态是未被追踪，而第二次进行类似操作时，<code>README.txt</code>文件已被放入暂存区，所以状态应该是已修改。</p>
-<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><strong>仔细看看0.10，思考一下箭头中的add thefile、stage thefile和commit分别对应的是Git里的哪些命令呢</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/pic10.png"
-                     
-                >  </p>
-<ol>
-<li><strong>Untracked-&gt;Staged</strong>：<code>git add</code>  </li>
-<li><strong>Modified-&gt;Staged</strong>：<code>git add</code>  </li>
-<li><strong>Staged-&gt;Modified</strong>：<code>git commit</code></li>
-</ol>
-<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><strong>代码文件print.c被错误删除时，应当使用什么命令将其恢复</strong><br><code>git checkout -- print.c </code><br><strong>代码文件print.c被错误删除后，执行了gitrmprint.c命令，此时应当使用什么命令将其恢复</strong><br><code>git reset HEAD print.c</code><br><code>git checkout -- print.c</code><br><strong>无关文件hello.txt已经被添加到暂存区时，如何在不删除此文件的前提下将其移出暂存区？</strong><br><code>git rm --cached hello.txt</code>  </p>
-<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><p><strong>reset命令作用</strong><br>在循着Thinking中给出的步骤练习后，可以发现reset命令的作用就是让我们回退或恢复版本的，可以通过<code>git reset --hard HEAD~(num)</code>来进行版本回退，也可以直接用版本的哈希值（通过<code>git log</code>查询）来指定移动到哪个版本。</p>
-<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><p><strong>执行如下命令, 并查看结果</strong><br><strong>· echo first</strong><br>result:first(stdout)<br><strong>· echo second &gt; output.txt</strong><br>result:second(output.txt)<br><strong>• echo third &gt; output.txt</strong><br>result:third(otuput.txt)<br><strong>• echo forth &gt;&gt; output.txt</strong><br>result:<br>third<br>forth(output.txt)</p>
-<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><p><strong>使用你知道的方法（包括重定向）创建下图内容的文件（文件命名为test），将创建该文件的命令序列保存在command文件中，并将test文件作为批处理文件运行，将运行结果输出至result文件中。给出command文件和result文件的内容，并对最后的结果进行解释说明（可以从test文件的内容入手）. 具体实现的过程中思考下列问题: echo<br> echo Shell Start 与 echo <code>echo Shell Start</code> 效果是否有区别; echo echo $c&gt;file1与echo <code>echo $c&gt;file1</code> 效果是否有区别</strong><br>command文件内容如图所示：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/command.png"
-                     
-                ><br>result文件内容如图所示：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab0/result.png"
-                     
-                ><br><strong>解释</strong><br>根据test文件内容，不难发现执行test文件其实就是为变量<code>a</code>，<code>b</code>，<code>c</code>赋值后再把它们的值存到不同的文件中，之后再根据顺序把相应值依次添加到file4文件中，最后输出到result文件中，因此result文件最终结果为”3 2 1”</p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人认为本次实验的难点还是在于接触新的东西时各方面的不熟悉导致的，具体来说有如下：  </p>
-<ul>
-<li>git的使用，对工作区、暂存区、分支、状态、版本的体会  </li>
-<li>linux相关指令的使用，对指令和选项功能的体会（尤其是多功能指令例如sed、awk等命令）  </li>
-<li>shell脚本的编写，对语法的把握和认识</li>
-</ul>
-<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>lab0的实验难度并不算大，主要是让我们熟悉实验环境，回顾之前的知识，了解操作系统基本的概念和原理，并了解linux的基本使用。本人之前并未太多使用linux系统，只能使用一些基本的指令，对于编写脚本，编译代码等并不熟悉，在做完本次实验后，我才终于理解为什么都说程序员要想提高自己的效率一定要会使用linux，当使用多了linux系统后，也会真正体会到cli的魅力，可能它没有gui那么简单，那么直观，但是通过输入指令来控制电脑让我们进一步能体会到人与机器的交互。</p>
-]]></content>
-      <categories>
-        <category>OS(BUAA)</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>Linux</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA操作系统lab1</title>
-    <url>/2025/03/25/OS/Lab1%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
-    <content><![CDATA[<h1 id="Lab1实验报告"><a href="#Lab1实验报告" class="headerlink" title="Lab1实验报告"></a>Lab1实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-1-1"><a href="#Thinking-1-1" class="headerlink" title="Thinking 1.1"></a>Thinking 1.1</h3><p><strong>尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS交叉编译工具链（带有mips-linux-gnu- 前缀，如 mips-linux-gnu-gcc、mips-linux-gnu-ld），重复其中的编译和解析过程，观察相应的结果，并解释其中向objdump传入的参数的含义</strong><br>objdump是一个强大的二进制文件分析工具，常用于反汇编和查看目标文件的详细信息，常用的参数有以下几个：  </p>
-<ul>
-<li>-d：反汇编可执行段  </li>
-<li>-D：反汇编所有段</li>
-<li>-S：在反汇编代码中混合显示源代码</li>
-<li>-j：指定要反汇编的段</li>
-<li>-g：显示调试信息</li>
-<li>-f：显示文件头信息，包括文件类型、架构、字节序等</li>
-</ul>
-<p>在过程中，我使用最多的是-D和-S选项，用来将目标文件反汇编出来。<br>我在使用原生x86工具链和MIPS交叉编译工具链并观察相应结果时发现，它们最大的差异就是相应架构的不同，x86工具链适用于x86架构，而MIPS工具链适用于MIPS架构。<br>比如，我编写了一个简单的C程序，如下：</p>
-<div class="code-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Hello,World!\n&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>使用原生工具链gcc正常编译出可执行文件，即”gcc hello.c”后，通过file查看文件类型，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/x86file.png"
-                     
-                ><br>可以发现其是一个64位的x86-64架构的ELF可执行文件，同时用readelf查看其信息，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/x86elf.png"
-                     
-                ><br>再运用gcc的-c选项只编译不链接并使用objdump进行反汇编后，相应结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/x86dump.png"
-                     
-                ><br>可见其中的指令全是x86指令集架构中的指令。<br>再使用MIPS交叉编译工具链，用mips-linux-gnu-gcc编译出可执行文件，通过file查看文件类型，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/mipsfile.png"
-                     
-                ><br>其是一个32位的mips架构的ELF可执行文件，使用readelf查看其信息，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/mipself.png"
-                     
-                ><br>再只对其编译不链接并使用objdump进行反汇编，结果如下：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/mipsdump.png"
-                     
-                ><br>其指令全是mips指令集架构中的指令。  </p>
-<h3 id="Thinking-1-2"><a href="#Thinking-1-2" class="headerlink" title="Thinking 1.2"></a>Thinking 1.2</h3><p><strong>也许你会发现我们编写的readelf程序是不能解析readelf 文件本身的，而我们刚才介绍的系统工具readelf 则可以解析，这是为什么呢？</strong><br>首先查看Makefile：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/makefile.png"
-                     
-                ><br>可以发现，制作readelf和hello的语句选项并不相同，制作hello时多了”-m32”、”-static”、”-g”三个选项，指定了目标文件是32位架构，且其为静态链接。再分别查看hello和readelf的文件头：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/helloelf.png"
-                     
-                ><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab1/elfelf.png"
-                     
-                ><br>可以发现hello确实是32位架构，而readelf是64位架构，而我们整个实验是在mips32位架构下进行的，所以我们自己写的readelf可以解析hello而不能解析自己  </p>
-<h3 id="Thinking-1-3"><a href="#Thinking-1-3" class="headerlink" title="Thinking 1.3"></a>Thinking 1.3</h3><p><strong>在理论课上我们了解到，MIPS体系结构上电时，启动入口地址为0xBFC00000（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？</strong><br>我们的整个实验是在QEMU模拟器上运行的，在运行第一行代码之前，我们已经拥有了一个正常的程序运行环境，已经可以访问内存了，我们还设置好了相应节的位置和程序入口，因此可以直接通过访问内存来正确跳转到内核入口。  </p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>个人觉得本次实验由于有很多理论上较为晦涩的东西，因此在啃实验指导书的时候十分痛苦，但真正到跳板机上做实验的时候很多东西并没有用到，相应的难度降低了不少，但还是有一些困难的，个人总结下来有如下：  </p>
-<ul>
-<li>ELF相关数据结构的定义的认识与理解</li>
-<li>如何用指针去访问节和段</li>
-<li>链接的逻辑</li>
-<li>print的实现逻辑</li>
-<li>MIPS内存如何布局</li>
-</ul>
-<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab1中，我学习了操作系统是如何启动的，其启动过程是一个十分纠结的过程，好在实验所用qemu模拟器省去了那纠结的过程，我还了解到ELF格式的相关定义，以及内存的布局，链接器的工作原理等，这些东西对一向对底层硬件和软件不怎么感冒的我来说理解起来有一定的难度，就算完成了实验之后仍然觉得这些过程、原理和结构异常复杂，因为所完成的实验几乎没有怎么涉及到这些过程。最具挑战性的是最后对printf函数功能的实现，这个部分也花费了我很多时间，一来是相关注释的提示太模糊，二是我最初的想法和注释的想法大相径庭，实现的角度很不一样，导致我在耗费了大量时间去揣测注释的意思，最后又因为语法等原因进行了一定时间的debug，但在看到输出和期望输出相同的那一瞬间，我还是发自内心的开心，并理解到其实现逻辑的合理性。</p>
-]]></content>
-      <categories>
-        <category>OS(BUAA)</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
@@ -1208,169 +1315,115 @@ endmodule
       </tags>
   </entry>
   <entry>
-    <title>BUAA操作系统lab2</title>
-    <url>/2025/04/07/OS/Lab2%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
-    <content><![CDATA[<h1 id="Lab2实验报告"><a href="#Lab2实验报告" class="headerlink" title="Lab2实验报告"></a>Lab2实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-2-1"><a href="#Thinking-2-1" class="headerlink" title="Thinking 2.1"></a>Thinking 2.1</h3><p><strong>在编写的 C 程序中，指针变量中存储的地址被视为虚拟地址，还是物理地址？MIPS 汇编程序中 lw和sw 指令使用的地址被视为虚拟地址，还是物理地址？</strong><br>在编写的C程序中，指针变量存储的地址为虚拟地址，MIPS汇编中lw和sw使用的地址也是虚拟地址</p>
-<h3 id="Thinking-2-2"><a href="#Thinking-2-2" class="headerlink" title="Thinking 2.2"></a>Thinking 2.2</h3><p><strong>1)从可重用性的角度，阐述用宏来实现链表的好处。</strong><br>在实验中定义的有关链表的宏是一些十分常用的对于链表的操作，而在实验中多次使用到定义的链表结构，因此相应的链表操作也是十分频繁的，通过宏来实现链表，可以让进行相关操作时不必在编写代码实现逻辑，直接使用宏即可，这省去了不必要的代码，同时提高了代码的可读性<br><strong>2)查看实验环境中的&#x2F;usr&#x2F;include&#x2F;sys&#x2F;queue.h，了解其中单向链表与循环链表的实现，比较它们与本实验中使用的双向链表，分析三者在插入与删除操作上的性能差异</strong><br>在这个文件中，有单向链表、双向链表和循环链表的定义，其中双向链表的定义与我们实验中使用的双向链表类似，我们可以看不同类型链表链表项的定义：<br>单向链表：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab2/singly_list.png"
-                     
-                ><br>双向链表：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab2/list.png"
-                     
-                ><br>循环链表：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab2/singly_tail.png"
-                     
-                ><br>实现上，单向链表和循环链表类似，都有指向下一个元素的指针，其中循环链表最后一个元素相应指针指向第一个元素，同时其维护了一个指向尾项的指针，而双向链表不仅有指向下一个元素的指针，还有一个指向前一个元素的指向下一个元素的指针的指针。<br>操作性能：</p>
-<ul>
-<li>单向链表：在某一项前插入，需要遍历链表，在某一项后插入，可以直接插入，删除也需要遍历链表  </li>
-<li>循环链表：在某一项前插入，需要遍历链表，在某一项后插入，可以直接插入，同时可以直接在尾部插入，删除需要遍历链表  </li>
-<li>双向链表：插入可以直接插入，但在尾部插入需要遍历链表，删除也可以直接删除</li>
+    <title>计算机组成原理P4</title>
+    <url>/2025/02/09/%E8%AE%A1%E7%BB%84/%E8%AE%A1%E7%BB%84P4/</url>
+    <content><![CDATA[<h1 id="单周期CPU设计草稿（verilog"><a href="#单周期CPU设计草稿（verilog" class="headerlink" title="单周期CPU设计草稿（verilog)"></a>单周期CPU设计草稿（verilog)</h1><p>本次课下需要我们通过verilog来设计一个支持10条指令的单周期CPU。由于在上周我们已经通过logisim搭建了一个单周期CPU，所以本次的任务其实简单来说就是通过一个硬件描述语言去描述搭建好的电路。<br>我们还是先来简单捋一下构建思路。</p>
+<h2 id="构建思路"><a href="#构建思路" class="headerlink" title="构建思路"></a>构建思路</h2><ul>
+<li>工作流程：每一个周期，PC给出指令所在的地址，CPU去寻找这个地址中的指令，在之后，根据得到的指令判断具体执行什么操作，并判断下一个周期的PC的取值。</li>
+<li>模块需求：我们希望在编写verilog的时候能像在logisim里一样使用不同的模块，并在最后使用这些模块来构成整个CPU。而通过相应的指令和流程，我们可以编写以下几个模块：im（指令存储器），grf（寄存器堆），alu（算术运算模块），dm（数据存储器），controller（控制器）以及最顶层的模块mips。</li>
 </ul>
-<h3 id="Thinking-2-3"><a href="#Thinking-2-3" class="headerlink" title="Thinking 2.3"></a>Thinking 2.3</h3><p><strong>选择Page_list正确的展开结构</strong><br>阅读代码可以知道Page_list其实包含的就是一个指向Page的指针，而Page的定义如下：<br><img  
+<p>（附上单周期CPUlogisim搭建图）<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/img/os/lab2/page.png"
-                     
-                ><br>即一个链表项，一个被引用次数，所以相应的Page_list的结构应该是选项C所展示：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab2/page_list.png"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p5/single_cpu.png"
                      
                 ></p>
-<h3 id="Thinking-2-4"><a href="#Thinking-2-4" class="headerlink" title="Thinking 2.4"></a>Thinking 2.4</h3><p><strong>1)从虚拟内存和多进程操作系统的实现角度，阐述ASID的必要性</strong><br>操作系统为每一个进程维护一个独立的虚拟地址空间，并维护相应的页表，所以很可能同一虚拟地址在不同进程中映射到不同的物理地址，如果没有ASID，那操作系统无法知道当前虚拟地址是在哪个地址空间，也就无法给出正确的映射，导致无法正确访问相应的物理内存<br><strong>2)说明 4Kc 中可容纳不同的地址空间的最大数量</strong><br>官方文档描述如下：<br><img  
+<h2 id="模块分析"><a href="#模块分析" class="headerlink" title="模块分析"></a>模块分析</h2><ul>
+<li><ul>
+<li>mips：作为最顶层的模块，这个模块也即CPU本身，它包含了其他的子模块，在这个模块当中，只需要定义相关的信号将子模块联系起来，除此之外其唯一需要做的就是计算下一个pc的值，因此该模块中应有一个pc的计算部分。图示如下：<br/><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/img/os/lab2/asid.png"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/mips.png"
                      
-                ><br>ASID占8位，所以4Kc中最多可容纳256个不同的地址空间</p>
-<h3 id="Thinking-2-5"><a href="#Thinking-2-5" class="headerlink" title="Thinking 2.5"></a>Thinking 2.5</h3><p><strong>1)tlb_invalidate和tlb_out的调用关系</strong><br>tlb_invalidate调用tlb_out<br><strong>2)请用一句话概括tlb_invalidate的作用</strong><br>删除特定虚拟地址在TLB中的旧表项<br><strong>3)逐行解释tlb_out中的汇编代码</strong>  </p>
-<pre><code class="language-MIPS">LEAF(tlb_out)
-.set noreorder
-        mfc0    t0, CP0_ENTRYHI
-        mtc0    a0, CP0_ENTRYHI
-        nop
-        /* Step 1: Use &#39;tlbp&#39; to probe TLB entry */
-        /* Exercise 2.8: Your code here. (1/2) */
-        tlbp
-        nop
-        /* Step 2: Fetch the probe result from CP0.Index */
-        mfc0    t1, CP0_INDEX
-.set reorder
-        bltz    t1, NO_SUCH_ENTRY
-.set noreorder
-        mtc0    zero, CP0_ENTRYHI
-        mtc0    zero, CP0_ENTRYLO0
-        mtc0    zero, CP0_ENTRYLO1
-        nop
-        /* Step 3: Use &#39;tlbwi&#39; to write CP0.EntryHi/Lo into TLB at CP0.Index  */
-        /* Exercise 2.8: Your code here. (2/2) */
-        tlbwi
-.set reorder
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>im：指令存储器模块，需要一个地址信号输入，并输出指令编码。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/im.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>grf：寄存器堆模块，需要三个地址信号，一个写入数据，一个写入数据使能信号，时钟和复位信号。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/grf.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>alu：算术运算模块，在这个模块本人设计了与或加减左移及相等6种运算，需要两个运算数输入，一个操作选择信号，一个结果输出，为了方便并再加一个等于输出信号（判断输入的两数是否相等）<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/alu.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>dm：数据存储器模块，需要时钟和复位信号，写使能和读使能信号，地址和写入数据信号，并输出一个读出的数据。<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/dm.png"
+                     
+                ></li>
+</ul>
+</li>
+<li><ul>
+<li>controller：控制器模块，输入仍然是指令的操作码和功能码，输出包括了该电路中所有的控制信号。但本次增加了两条跳转指令，分别是jal和jr，因此在确定控制信号时还要考虑进这两条指令。简单分析即可知，由于这两条都是跳转指令，所以数据存储器既不写数据也不读数据即可，但对于jal来说，需要对31号寄存器存入下一条指令的地址，因此grf的写入地址应为31，写入数据为下一条指令的地址，对于jr来说就简单了，寄存器堆也不用写数据，因此将其写使能信号置零即可。<br/>jal:regwe-&gt;1,memwe-&gt;0,loadwe-&gt;0<br/>jr:regwe-&gt;0,memwe-&gt;0,loadwe-&gt;0<br/><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/img/%E8%AE%A1%E7%BB%84/p4/%E6%88%AA%E5%B1%8F_2024-10-25_10.45.06.png"
+                     
+                ><br/>由于grf写入地址现在有三种情况，下一个pc的值也有三种情况，因此我们还得在上一次控制信号的基础上再加上两个控制信号，但这两个控制信号直接由jal和jr来当即可，也即当目前指令为jal（jr）时，jal（jr）置1.</li>
+</ul>
+</li>
+</ul>
+<h1 id="测试方案"><a href="#测试方案" class="headerlink" title="测试方案"></a>测试方案</h1><ol>
+<li>基本指令测试（不含jal和jr）</li>
+</ol>
+<div class="code-container" data-rel="Mips"><figure class="iseeu highlight mips"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ori </span>$<span class="number">1</span>,$<span class="number">0</span>,<span class="number">0x1011</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">2</span>,$<span class="number">1</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">11</span>,$<span class="number">0</span>,<span class="number">2</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">4</span>,$<span class="number">3</span>,<span class="number">0xffff</span></span><br><span class="line"><span class="keyword">lui </span>$<span class="number">3</span>,<span class="number">0x0111</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">4</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">add </span>$<span class="number">5</span>,$<span class="number">5</span>,$<span class="number">5</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">add </span>$<span class="number">11</span>,$<span class="number">11</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">beq </span>$<span class="number">11</span>,$<span class="number">0</span>,loop4</span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">0</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="keyword">ori </span>$<span class="number">7</span>,$<span class="number">0</span>,<span class="number">1</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">8</span>,$<span class="number">4</span>,$<span class="number">7</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">4</span>,$<span class="number">8</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">6</span>,$<span class="number">6</span></span><br><span class="line"><span class="keyword">sub </span>$<span class="number">6</span>,$<span class="number">3</span>,$<span class="number">4</span></span><br><span class="line"><span class="symbol">loop3:</span><span class="keyword">sw </span>$<span class="number">5</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">sw </span>$<span class="number">6</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">nop</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">lw </span>$<span class="number">9</span>,<span class="number">4</span>($<span class="number">1</span>)</span><br><span class="line"><span class="keyword">lw </span>$<span class="number">10</span>,<span class="number">4</span>($<span class="number">2</span>)</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">10</span>,loop1</span><br><span class="line"><span class="keyword">beq </span>$<span class="number">5</span>,$<span class="number">9</span>,loop2</span><br><span class="line"><span class="symbol">loop1:</span><span class="keyword">sw </span>$<span class="number">10</span>,<span class="number">8</span>($<span class="number">2</span>)</span><br><span class="line"><span class="symbol">loop2:</span><span class="keyword">beq </span>$<span class="number">6</span>,$<span class="number">10</span>,loop3</span><br><span class="line"><span class="symbol">loop4:</span><span class="keyword">sw </span>$<span class="number">9</span>,<span class="number">12</span>($<span class="number">2</span>)</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>jal与jr测试</li>
+</ol>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">ori $1,$0,1</span><br><span class="line">ori $31,$0,0x3014</span><br><span class="line">loop:add $2,$1,$1</span><br><span class="line">jr $ra</span><br><span class="line">add $3,$2,$0</span><br><span class="line">add $4,$3,$2</span><br><span class="line">jal loop</span><br><span class="line">ori $5,$4,$0</span><br></pre></td></tr></table></figure></div>
+<h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？"><a href="#根据你的理解回答，这个-addr-信号又是从哪里来的？地址信号-addr-位数为什么是-11-2-而不是-9-0-？" class="headerlink" title="根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？"></a>根据你的理解回答，这个 addr 信号又是从哪里来的？地址信号 addr 位数为什么是 [11:2] 而不是 [9:0] ？</h2><p>addr信号是从alu的输出中得来的。我们自行写的dm当中，一个地址可以存储一个字，但在MIPS里，地址是字对齐的，也即存一个字的地址都是4的倍数，因此实际上dm对应的地址是真正的地址除以4，dm地址有10位，也就对应aluout的第11到第2位。</p>
+<h2 id="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"><a href="#思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣" class="headerlink" title="思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣"></a>思考上述两种控制器设计的译码方式，给出代码示例，并尝试对比各方式的优劣</h2><ol>
+<li>指令对应控制信号<br>代码示例（在此仅给出ori指令相关代码作为示例）：</li>
+</ol>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">module controller(</span><br><span class="line">	//信号定义</span><br><span class="line">	)</span><br><span class="line">	always @(*) begin</span><br><span class="line">	if(ori == 1)begin</span><br><span class="line">	regwe=1;</span><br><span class="line">	aluopt=&#x27;b001</span><br><span class="line">	ori=1;</span><br><span class="line">	end</span><br><span class="line">	//其余指令判断相关控制信号</span><br><span class="line">	end</span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure></div>
+<ol start="2">
+<li>控制信号对应指令<br>代码示例：</li>
+</ol>
+<pre><code>module controller(
+	//信号定义
+	)
+	always @(*)begin
+	regwe = add | sub | ori | lw | lui | jal;
+	regdst = add | sub ;
+	//其余信号
+endmodule
 </code></pre>
-<p>tlb_out汇编代码如上，首先将ENTRYHI寄存器的值放入t0寄存器，同时将a0寄存器里面保存的参数即KEY存入ENTRYHI，再通过 tlbp 指令寻找TLB中对应的旧表项，将表项的索引放入t1寄存器，如果索引大于等于0，向ENTRYHI、ENTRYLO0、ENTRYLO1寄存器中写入0，并使用tlbwi指令将这三个寄存器的值写入相应索引的表项</p>
-<h3 id="Thinking-2-6"><a href="#Thinking-2-6" class="headerlink" title="Thinking 2.6"></a>Thinking 2.6</h3><p><strong>请结合 Lab2 开始的 CPU 访存流程与下图中的 Lab2 用户函数部分，尝试将函数调用与CPU访存流程对应起来，思考函数调用与CPU访存流程的关系</strong><br>CPU访存流程：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab2/cpu.png"
-                     
-                ><br>函数调用：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab2/function.png"
-                     
-                ><br>函数调用需要将参数压入栈，这个操作需要对内存进行写，由于地址是虚拟地址，于是触发CPU访存。执行函数体时，CPU会跳转到函数入口地址，逐条开始执行指令，这时若遇到局部变量或者访存指令，又需要进行CPU的访存流程</p>
-<h3 id="Thinking-2-7"><a href="#Thinking-2-7" class="headerlink" title="Thinking 2.7"></a>Thinking 2.7</h3><p><strong>简单了解并叙述X86体系结构中的内存管理机制，比较X86和MIPS在内存管理上的区别</strong><br>X86体系结构的内存管理是通过分段和分页协同工作实现的。<br>其主要思想是将内存划分为逻辑段，每个段通过段描述符定义其基址、长度和权限，当有逻辑地址时，首先将通过分段将逻辑地址转化为线性地址，针对线性地址，采用分页机制，进一步将线性地址映射到物理地址，这和MIPS体系结构相似，而分页和分段既是协同的，又是独立的，两个机制共同实现了X86体系的内存管理。<br>在分页机制上，两种体系的实现也不同，MIPS体系结构是通过软件来管理页表和TLB的，而X86体系结构完全是通过硬件来管理二者的。</p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><ul>
-<li>Exercise 2.1:对相关宏定义的查找与了解</li>
-<li>Exercise 2.2:对双向链表的理解，尤其是对其中le_prev这个指针的理解，思考如何实现双向链表的插入、删除等操作，清楚要修改哪些值</li>
-<li>Exercise 2.3 - Exercise 2.5：对页结构体和页表结构体的理解，理解相应的地址变换操作，清楚该由什么地址变换到什么地址，同时熟悉链表相应宏的使用</li>
-<li>Exercise 2.6 - Exercise 2.7：对二级页表机制的理解，清楚相应的地址变换，熟练链表宏的使用  </li>
-<li>Exercise 2.8 - Exercise 2.10：对TLB的组成及替换机制的理解</li>
+<ul>
+<li>第二种方式代码量可能更小，第一种方式更为直观，且在运行时出错的话较容易定位到问题</li>
 </ul>
-<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab2中，我学会了操作系统是如何去管理内存的，包括怎么实现分页机制，怎么实现TLB机制，以及如何将逻辑地址转换到物理地址。说实话，我认为本单元的难度较大，机制本身并不难以理解，甚至如果在纸面上，应该是较为简单的，但是到要真正用软件去实现这些机制的时候，我才意识到这件事到底有多么的复杂，其中有数不清的结构体的定义，有数不清的宏定义，有难以理解的链表实现，有分不清楚的指针……最关键的是，一个文件里要用到的函数、宏定义等很可能来自其他文件，一方面，可能根本不知道有哪些函数和宏可以使用，另一方面，想用某个函数和宏的时候，如果突然不太记得其功能，可这时又不知道其定义在哪个文件。总的来说，完成本单元的代码对我来说是极具挑战性的，但是最终看到测试通过的时候我也有一种成就感，为自己付出的时间感到值得。</p>
+<h2 id="请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系"><a href="#请对比同步复位与异步复位这两种方式的-reset-信号与-clk-信号优先级的关系" class="headerlink" title="请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系"></a>请对比同步复位与异步复位这两种方式的 reset 信号与 clk 信号优先级的关系</h2><p>在同步复位下，clk信号的优先级高于reset信号，要等到每一个时钟周期上升沿到来时才能进行复位；而异步复位下，reset信号的优先级高于clk信号，只要reset为高电平，便可进行复位，无需考虑时钟的限制。</p>
+<h2 id="请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的"><a href="#请说明为什么在忽略溢出的前提下，addi-与-addiu-是等价的，add-与-addu-是等价的" class="headerlink" title="请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的"></a>请说明为什么在忽略溢出的前提下，addi 与 addiu 是等价的，add 与 addu 是等价的</h2><ul>
+<li>add：If the addition results in 32-bit 2’s complement arithmetic overflow, the destination register is not modified and an Integer Overflow exception occurs</li>
+<li>addu：The term “unsigned” in the instruction name is a misnomer; this operation is 32-bit modulo arithmetic that does not trap on overflow. This instruction is appropriate for unsigned arithmetic, such as address arithmetic, or integer arithmetic environments that ignore overflow, such as C language arithmetic<br>根据以上解释可知，addu其实是一种32位的模运算，就算溢出了也不会有影响，取其模值即可，而add如果溢出，也不会修改目标寄存器的值，但会抛出一个溢出异常，因此在不考虑溢出的情况下，目标寄存器的值其实也是32位模运算下的值，所以二者等价，同理对addi与addiu</li>
+</ul>
 ]]></content>
       <categories>
-        <category>OS(BUAA)</category>
+        <category>计算机组成原理</category>
       </categories>
       <tags>
         <tag>BUAA</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA操作系统lab3</title>
-    <url>/2025/04/19/OS/Lab3%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
-    <content><![CDATA[<h1 id="Lab3实验报告"><a href="#Lab3实验报告" class="headerlink" title="Lab3实验报告"></a>Lab3实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-3-1"><a href="#Thinking-3-1" class="headerlink" title="Thinking 3.1"></a>Thinking 3.1</h3><p><strong>请结合MOS中的页目录自映射应用解释代码中e-&gt;env_pgdir[PDX(UVPT)] &#x3D; PADDR(e-&gt;env_pgdir) | PTE_V 的含义</strong><br>从虚拟地址UVPT开始往上到ULIM之间是进程自己的页表，因此在二级页表映射机制当中，页目录中也应该含有自己本身的相关映射，由虚拟地址可知其在页目录中的第[PDX(UVPT)]项中，因此做代码中的赋值，本质上是让进程可以真正访问自己的页目录和页表。</p>
-<h3 id="Thinking-3-2"><a href="#Thinking-3-2" class="headerlink" title="Thinking 3.2"></a>Thinking 3.2</h3><p><strong>elf_load_seg 以函数指针的形式，接受外部自定义的回调函数 map_page。请你找到与之相关的data这一参数在此处的来源，并思考它的作用。没有这个参数可不可以？为什么？</strong><br>该参数是由elf_load_seg传递给map_page的，data的作用是传递进程控制块以及其内部的属性，让相关的插入等操作得以实现。该参数使用void*的方式定义，能够很大程度上提升其复用性，较为方便。没有这个参数是不可以的，这样回调函数的需求得不到满足。</p>
-<h3 id="Thinking-3-3"><a href="#Thinking-3-3" class="headerlink" title="Thinking 3.3"></a>Thinking 3.3</h3><p><strong>结合 elf_load_seg 的参数和实现，考虑该函数需要处理哪些页面加载的情况</strong><br>如果段头地址未对齐，首先加载其数据在内存中起始位置bin所处的那一页。之后会加载所有数据内容。如果该段在文件中的大小小于其在内存中的大小，则一直分配和加载页面到该段在文件中大小不小于其在内存中大小为止。</p>
-<h3 id="Thinking-3-4"><a href="#Thinking-3-4" class="headerlink" title="Thinking 3.4"></a>Thinking 3.4</h3><p><strong>你认为这里的env_tf.cp0_epc存储的是物理地址还是虚拟地址?</strong><br>结合mips汇编的异常中断处理及Lab2内容容易知道，env_tf.cp0_epc存储的应该是虚拟地址。</p>
-<h3 id="Thinking-3-5"><a href="#Thinking-3-5" class="headerlink" title="Thinking 3.5"></a>Thinking 3.5</h3><p><strong>试找出0、1、2、3号异常处理函数的具体实现位置</strong><br>它们的实现位置在kern&#x2F;genex.S</p>
-<h3 id="Thinking-3-6"><a href="#Thinking-3-6" class="headerlink" title="Thinking 3.6"></a>Thinking 3.6</h3><p><strong>阅读entry.S、genex.S和env_asm.S这几个文件，并尝试说出时钟中断在哪些时候开启，在哪些时候关闭</strong><br>发生时钟中断的时候，首先跳到异常分发程序，检测发生了那种异常，针对时钟中断，应该检测出0号异常，通过handle_int函数处理，handle_int函数根据Cause寄存器的值判断是否是Timer对应的7号中断位引发的时钟中断，如果是，则执行中断服务函数timer_irq，跳转到schedule中执行</p>
-<h3 id="Thinking-3-7"><a href="#Thinking-3-7" class="headerlink" title="Thinking 3.7"></a>Thinking 3.7</h3><p><strong>阅读相关代码，思考操作系统是怎么根据时钟中断切换进程的。</strong><br>由schedule函数的实现逻辑可以看出，每次产生时间中断，操作系统都会将相应进程的时间片长度减1，当一个进程时间片长度为0时，便切换当前进程到调度队列的首个进程，并通过env_run方法运行它。</p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>由于在上一次实验中渐渐熟悉了对链表宏的使用以及相关地址的转换，所以本次实验的难度较上次没有那么大，但我认为仍有以下一些难点：  </p>
-<ul>
-<li>对用户空间和内核空间的认识</li>
-<li>对每一个进程的地址空间的认识</li>
-<li>对回调函数的实现和作用的理解</li>
-<li>对异常与中断和进程之间的联系的理解</li>
-</ul>
-<h2 id="三、实验体会"><a href="#三、实验体会" class="headerlink" title="三、实验体会"></a>三、实验体会</h2><p>在Lab3中，我学会了操作系统是怎么去创建进程、管理进程、运行进程、切换进程的。由于在Lab2中有大量的链表宏的使用，因此逐渐对其熟悉，所以这次在Lab3中再次遇到大量使用链表宏的情况下，我不再像Lab2那样手足无措了，因此本次作业写得也会比上一次轻松不少。但完成实验代码是一方面，理解Lab3的内容又是另一方面。我认为相较于Lab2的内容来说，本次的内容的理解难度完全不比上一次低，其实细究会发现上一次是有关操作系统管理内存的内容，这次是管理进程的内容，但其实这次有很多的实现还是和内存脱不了关系的，整个操作系统似乎都是围绕着内存来进行的，因此对内存管理有一个得当的理解和认识是很重要的。</p>
-]]></content>
-      <categories>
-        <category>OS(BUAA)</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA操作系统lab4</title>
-    <url>/2025/05/06/OS/Lab4%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/</url>
-    <content><![CDATA[<h1 id="Lab4实验报告"><a href="#Lab4实验报告" class="headerlink" title="Lab4实验报告"></a>Lab4实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-4-1"><a href="#Thinking-4-1" class="headerlink" title="Thinking 4.1"></a>Thinking 4.1</h3><p><strong>内核在保存现场的时候是如何避免破坏通用寄存器的</strong><br>内存在保护现场的时候，通过将自身的局部变量、返回地址、调用函数的参数等压入栈中这样来保存此时通用寄存器中的值，放置在后续操作中这些值丢失，在返回时，再将这些值弹出栈并赋给相应的寄存器。<br><strong>系统陷入内核调用后可以直接从当时的$a0-$a3参数寄存器中得到用户调用msyscall留下的信息吗</strong><br>不可以，因为这四个寄存器在系统陷入内核态后可能会进行其他的操作而导致里面的值被破坏，直接访问是不安全的，应该从栈帧中来读取相关参数。<br><strong>我们是怎么做到让sys开头的函数“认为”我们提供了和用户调用msyscall时同样的参数的</strong><br>在用户态调用msyscall时，前四个参数会被存入$a0-$a3寄存器，同时在栈帧底部保留16字节的空间，后两个参数被存入在预留空间之上的8字节空间内，内核态中显式地从保存的用户上下文中获取这些参数值，这样就可以让sys开头的函数认为我们提供了和用户调用msyscall时同样的参数。<br><strong>内核处理系统调用的过程对Trapframe做了哪些更改？这种修改对应的用户态的变化是什么</strong><br>将EPC值加4以保证系统调用完成后返回到正确地址，同时将返回值存入2号寄存器。用户态会正确执行下一条指令。</p>
-<h3 id="Thinking-4-2"><a href="#Thinking-4-2" class="headerlink" title="Thinking 4.2"></a>Thinking 4.2</h3><p><strong>为什么 envid2env中需要判断 e-&gt;env_id !&#x3D; envid的情况？如果没有这步判断会发生什么情况</strong><br>不同envid的后十位可能相同（二进制），所以如果不加上该判断，可能会取到错误的进程。</p>
-<h3 id="Thinking-4-3"><a href="#Thinking-4-3" class="headerlink" title="Thinking 4.3"></a>Thinking 4.3</h3><p><strong>请回顾 kern&#x2F;env.c 文件中 mkenvid()函数的实现，该函数不会返回 0，请结合系统调用和 IPC 部分的实现与envid2env()函数的行为进行解释</strong><br>首先，若mkenvid()函数会返回0，那么就会有进程的id为0，但在envid2env()的实现中，如果envid为0，则查询到的进程将会是目前的进程，这和我们的预期不符，同时也让进程间的通信发生错误，因此mkenvid()函数不会返回0。同时由于curenv是内核态的变量，用户态不能获取其id，这样实现方便用户进程将当前进程的envid传给内核。</p>
-<h3 id="Thinking-4-4"><a href="#Thinking-4-4" class="headerlink" title="Thinking 4.4"></a>Thinking 4.4</h3><p><strong>关于 fork 函数的两个返回值，下面说法正确的是：<br>A、fork 在父进程中被调用两次，产生两个返回值<br>B、fork 在两个进程中分别被调用一次，产生两个不同的返回值<br>C、fork 只在父进程中被调用了一次，在两个进程中各产生一个返回值<br>D、fork 只在子进程中被调用了一次，在两个进程中各产生一个返回值</strong><br>正确的是C</p>
-<h3 id="Thinking-4-5"><a href="#Thinking-4-5" class="headerlink" title="Thinking 4.5"></a>Thinking 4.5</h3><p><strong>我们并不应该对所有的用户空间页都使用duppage进行映射。那么究竟哪<br>些用户空间页应该映射，哪些不应该呢？请结合kern&#x2F;env.c中env_init函数进行的页<br>面映射、include&#x2F;mmu.h里的内存布局图以及本章的后续描述进行思考</strong><br>从0到USTACKTOP的用户空间页应该映射，USTACKTOP到UTOP之间的内容是拿来处理页写入异常的，因此不需要与子进程共享，UTOP之上的内容是所有进程共享的，也不需要做父子进程之间单独的共享。</p>
-<h3 id="Thinking-4-6"><a href="#Thinking-4-6" class="headerlink" title="Thinking 4.6"></a>Thinking 4.6</h3><p><strong>vpt和vpd的作用是什么？怎样使用它们</strong><br>vpt和vpd相当于两个数组，一个是页表项的数组，一个是页目录项的数组，只需通过页表项和页目录项的下标就可通过这两个宏来访问相应的页表项或页目录项。<br><strong>从实现的角度谈一下为什么进程能够通过这种方式来存取自身的页表</strong><br>页表和页目录是存放在用户空间中的，且逻辑上是连续的，因此进程可以通过这种方式来存取自身页表。<br><strong>它们是如何体现自映射设计的</strong><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/img/os/lab3/ziyingshe.png"
-                     
-                ><br>如图，可以发现页目录是处于页表中的，同时在页表中的位置相当于页表在整个内存中的位置，这体现了自映射设计。<br><strong>进程能够通过这种方式来修改自己的页表项吗</strong><br>不能，虽然该区域处于用户空间，但是对用户态只读不写，要修改必须陷入内核态。  </p>
-<h3 id="Thinking-4-7"><a href="#Thinking-4-7" class="headerlink" title="Thinking 4.7"></a>Thinking 4.7</h3><p><strong>在 do_tlb_mod 函数中，你可能注意到了一个向异常处理栈复制 Trapframe<br>运行现场的过程，请思考并回答这几个问题：<br>这里实现了一个支持类似于“异常重入”的机制，而在什么时候会出现这种“异常重入”</strong><br>出现写时复制异常时。<br><strong>内核为什么需要将异常的现场 Trapframe复制到用户空间？</strong><br>因为最终需要恢复到用户态后跳转到用户异常处理函数，由用户程序完成写时复制等自定义处理，这时用户异常处理函数需要相应的现场。  </p>
-<h3 id="Thinking-4-8"><a href="#Thinking-4-8" class="headerlink" title="Thinking 4.8"></a>Thinking 4.8</h3><p><strong>在用户态处理页写入异常，相比于在内核态处理有什么优势</strong>  </p>
-<ul>
-<li>缓解内核压力</li>
-<li>使得其更安全，防止更改不必要的页面</li>
-<li>使其更加灵活，能够完成很多自定义的处理</li>
-<li>降低异常处理错误而导致的影响</li>
-</ul>
-<h3 id="Thinking-4-9"><a href="#Thinking-4-9" class="headerlink" title="Thinking 4.9"></a>Thinking 4.9</h3><p><strong>为什么需要将 syscall_set_tlb_mod_entry的调用放置在 syscall_exofork之前</strong><br>因为子进程需要修改env指针的值，这涉及到对写时复制页面的写入，因此会触发写时复制异常，而该异常需要调用syscall_set_tlb_mod_entry才能正确触发。<br><strong>如果放置在写时复制保护机制完成之后会有怎样的效果</strong><br>这样将会不能正确处理异常。  </p>
-<h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>本次实验的代码量进一步增加，且内容也很多，从异常处理到fork的实现，中间有很多需要停下来仔细思考理解的点，我认为主要有以下：</p>
-<ul>
-<li>对系统调用流程的理解</li>
-<li>对何时在内核态何时在用户态的辨析</li>
-<li>对Trapframe结构体的理解</li>
-<li>对写时复制机制的理解与实现</li>
-<li>对页写入异常处理流程的理解</li>
-<li>对进程的共享空间的理解</li>
-<li>对进程通信之间的实现</li>
-</ul>
-<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>在Lab4中，我学会了如何实现系统调用机制，并以此来实现进程创建函数fork()。整体来说，我认为本次实验还是较难的，前后关系很紧密，又引入了大量的宏以及函数，如何去使用或者实现它们是一大难点，同时由于实验代码的完成还涉及到对整个内存空间的认识，很多时候很容易分不清楚内核空间和用户空间，因此完成起来还是较为困难的。但是完成了实验之后，我对系统调用和进程创建的理解确实加深了不少，虽说仍然有一些地方存在些许疑惑，理解起来不是那么容易，担仍然感受到了操作系统设计的巧妙，同时也对整个内存空间的认识更深入。一句话总结起来就是困难但丰富。</p>
-]]></content>
-      <categories>
-        <category>OS(BUAA)</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>操作系统</tag>
+        <tag>计算机组成原理</tag>
       </tags>
   </entry>
 </search>

@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdostan.github.io/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-05-20T11:00:00.000Z">
-<meta property="article:modified_time" content="2025-05-20T16:19:50.987Z">
+<meta property="article:modified_time" content="2025-06-04T15:25:01.786Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="操作系统">
@@ -655,8 +655,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-05-21 00:19:50</span>
-            <span class="mobile">2025-05-21 00:19:50</span>
+            <span class="desktop">2025-06-04 23:25:01</span>
+            <span class="mobile">2025-06-04 23:25:01</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -732,12 +732,12 @@
 <p>答：如图：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:/hexo_program/source/img/os/lab5/file_struct_size.png"
+                     data-src="/img/os/lab5/file_struct_size.png"
                      
                 ><br>可知一个文件控制块的大小是256字节，而一个磁盘块为4KB，所以一个磁盘块最多能存储16个文件控制块。<br>一个目录最多有1024个目录项，每个目录项对应一个磁盘块，所以一个目录下最多能有16384个文件。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:/hexo_program/source/img/os/lab5/fcb.png"
+                     data-src="/img/os/lab5/fcb.png"
                      
                 ><br>由该图可以知道，文件系统支持的单个文件最大为1024*4KB&#x3D;4MB。</p>
 <h3 id="Thinking-5-3"><a href="#Thinking-5-3" class="headerlink" title="Thinking 5.3"></a>Thinking 5.3</h3><blockquote>
@@ -754,7 +754,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="D:/hexo_program/source/img/os/lab5/sequence.png"
+                     data-src="/img/os/lab5/sequence.png"
                      
                 ><br>根据UML时序图相关知识可知，图中有同步和异步两种箭头。<br>ENV_CREATE()是异步操作，init()发出消息后继续执行不必阻塞，之后fs和user开始初始化。再之后fs进入serv函数，同时在未接收到user发来的请求信息时，由ipc_receive()将自身状态修改为ENV_NOT_RUNNABLE进行阻塞，等到user发送信息后fs再开始进行服务，与此同时user进程被阻塞，fs服务完成后将相应信息发送给user，然后等待下一个请求，user执行之后的操作。</p>
 <h2 id="二、难点分析"><a href="#二、难点分析" class="headerlink" title="二、难点分析"></a>二、难点分析</h2><p>本次实验是实现文件系统，文件系统本身就是操作系统里面一个重要的部分，实现文件系统才能方便操作系统的管理。文件系统与IO有很强的关联，所以完成本次实验需要对IO和文件系统都有较深的理解，而这两部分的内容都是庞大的，所以本次实验难度较大。具体分析，我认为有以下难点：  </p>
@@ -784,7 +784,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-05-21 00:19:50
+                    :</strong> 2025-06-04 23:25:01
             </li>
         
         <li>
